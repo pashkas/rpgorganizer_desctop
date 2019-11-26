@@ -596,7 +596,6 @@
                                     AvailableColorsHeader="Цвета"
                                     RecentColorsHeader="Последние"
                                     SelectedColor="{Binding BackGroundColor}"
-                                    ShowAdvancedButton="False"
                                     ShowRecentColors="False"
                                     StandardColorsHeader="Стандартные цвета" />
                             </DockPanel>

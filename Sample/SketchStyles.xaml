@@ -63,7 +63,7 @@
     <Style x:Key="ColorPic" TargetType="xctk:ColorPicker">
         <Setter Property="AvailableColorsHeader" Value="Дополнительные цвета" />
         <Setter Property="StandardColorsHeader" Value="Стандартные цвета" />
-        <Setter Property="ShowAdvancedButton" Value="False" />
+
         <Setter Property="RecentColorsHeader" Value="Последние выбранные" />
         <Setter Property="ShowRecentColors" Value="False" />
     </Style>

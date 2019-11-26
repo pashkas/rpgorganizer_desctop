@@ -16,14 +16,16 @@ using System.Text;
 
 namespace Sample
 {
+    using CommonServiceLocator;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Ioc;
 
-    using Microsoft.Practices.ServiceLocation;
+    
 
     using Sample.Model;
     using Sample.View;
     using Sample.ViewModel;
+    
 
     /// <summary>
     /// This class contains static references to all the view models in the
