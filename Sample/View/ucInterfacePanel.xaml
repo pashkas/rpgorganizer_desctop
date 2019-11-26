@@ -1,0 +1,718 @@
+﻿<UserControl
+    x:Class="Sample.View.ucInterfacePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:DotNetLead.DragDrop.UI.Behavior"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:sample="clr-namespace:Sample"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <model:UniformGridColumnsConverter x:Key="UniformGridColumnsConverter" />
+        <model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <model:UniformRowsConverter x:Key="UniformRowsConverter" />
+        <BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
+        <Style x:Key="InterBorder" TargetType="{x:Type GroupBox}">
+            <Setter Property="BorderBrush" Value="#D5DFE5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="6" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="6" />
+                            </Grid.RowDefinitions>
+                            <Border
+                                Name="Header"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Padding="3,1,3,0">
+                                <ContentPresenter
+                                    ContentSource="Header"
+                                    RecognizesAccessKey="true"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.RowSpan="3"
+                                Grid.ColumnSpan="4"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                                <Border.OpacityMask>
+                                    <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="7">
+                                        <Binding ElementName="Header" Path="ActualWidth" />
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </Border.OpacityMask>
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.RowSpan="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="4"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="Transparent"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4" />
+                            <ContentPresenter
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Margin="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <sample:rectConverter x:Key="rectConverter" />
+        <sample:InerPanelNameTasksConverter x:Key="InerPanelNameTasksConverter" />
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Path="MainVM" Source="{StaticResource Locator}" />
+    </UserControl.DataContext>
+    <Grid Background="{StaticResource TopBrush}">
+        <Grid.Resources>
+            <Style x:Key="ActiveDockPanel" TargetType="DockPanel">
+                <Setter Property="MaxWidth" Value="800" />
+                <Setter Property="Margin" Value="2" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <!--  EndRegion  -->
+        <!--  Region (Картинка)  -->
+        <Button
+            Grid.Column="1"
+            Margin="0"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Command="{Binding OpenQwickButtonCommand}"
+            CommandParameter="Информация"
+            Style="{StaticResource Button-Sketch}">
+            <Image
+                Margin="2,4"
+                Source="{Binding DataContext.Pers.ImageProperty, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Style="{StaticResource ImageStyle}" />
+        </Button>
+
+        <!--  EndRegion  -->
+        <!--  Region (Панели)  -->
+
+        <!--  EXTENDEDVERS  -->
+        <!--  Кнопки  -->
+        <UniformGrid
+            Grid.Column="0"
+            Margin="2"
+            Columns="1"
+            Visibility="Collapsed">
+            <UniformGrid.Resources>
+                <Thickness x:Key="PicMarg">14</Thickness>
+                <Style x:Key="mainButtonsStyle" TargetType="ContentControl">
+                    <Setter Property="Margin" Value="4" />
+                </Style>
+            </UniformGrid.Resources>
+            <Button
+                Margin="1"
+                Background="{StaticResource FadeBacgrounBrush}"
+                BorderBrush="Transparent"
+                Command="{Binding OpenQwickButtonCommand}"
+                CommandParameter="Характеристики"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Характеристики">
+                <ContentControl
+                    MaxHeight="40"
+                    Style="{StaticResource mainButtonsStyle}"
+                    Template="{StaticResource ContentControlCharacteristics}" />
+            </Button>
+
+            <Button
+                Margin="1"
+                Background="{StaticResource FadeBacgrounBrush}"
+                BorderBrush="Transparent"
+                Command="{Binding OpenQwickButtonCommand}"
+                CommandParameter="Навыки"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Навыки">
+                <ContentControl
+                    MaxHeight="40"
+                    Style="{StaticResource mainButtonsStyle}"
+                    Template="{StaticResource ContentControlAbilitis}" />
+            </Button>
+
+            <Button
+                Margin="1"
+                Background="{StaticResource FadeBacgrounBrush}"
+                BorderBrush="Transparent"
+                Command="{Binding OpenQwickButtonCommand}"
+                CommandParameter="Квесты"
+                IsEnabled="{Binding Pers.IsQwestsEnabled}"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Квесты">
+                <ContentControl
+                    MaxHeight="40"
+                    Style="{StaticResource mainButtonsStyle}"
+                    Template="{StaticResource ContentControlQwests}" />
+            </Button>
+
+            <Button
+                Margin="1"
+                Background="{StaticResource FadeBacgrounBrush}"
+                BorderBrush="Transparent"
+                Command="{Binding OpenQwickButtonCommand}"
+                CommandParameter="Инвентарь"
+                IsEnabled="{Binding Pers.IsRewardsEnabled}"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Инвентарь">
+                <ContentControl
+                    MaxHeight="40"
+                    Style="{StaticResource mainButtonsStyle}"
+                    Template="{StaticResource ContentControlInventory}" />
+            </Button>
+        </UniformGrid>
+
+        <!--  EndRegion  -->
+
+        <!--  Характеристики  -->
+        <Border
+            Grid.Column="2"
+            Margin="10,2"
+            BorderBrush="{StaticResource BorderBrush}"
+            Visibility="{Binding Pers.PersSettings.IsNotShowCharacteristicsInMain, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+            <Border.Resources>
+                <CollectionViewSource
+                    x:Key="CharactView"
+                    IsLiveSortingRequested="True"
+                    Source="{Binding Pers.Characteristics}">
+                    <!--<CollectionViewSource.SortDescriptions>
+                    -->
+                    <!--<componentModel:SortDescription Direction="Descending" PropertyName="KExpForNew" />-->
+                    <!--
+                        <componentModel:SortDescription Direction="Descending" PropertyName="ValueProperty" />
+                    </CollectionViewSource.SortDescriptions>-->
+                </CollectionViewSource>
+            </Border.Resources>
+            <ItemsControl ItemsSource="{Binding Source={StaticResource CharactView}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding Pers.PersSettings.ColumnsOfCharacteristicsInMain}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:Name="ch" Margin="1,2">
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding DataContext.OpenChaCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    Gesture="LeftDoubleClick" />
+                            </Grid.InputBindings>
+                            <ProgressBar
+                                Name="progressBarHP"
+                                HorizontalAlignment="Stretch"
+                                Background="{StaticResource PressedBrush}"
+                                Foreground="Yellow"
+                                Maximum="{Binding Path=(model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                Minimum="0"
+                                Value="{Binding ValueToProgress, Mode=OneWay}">
+                                <ProgressBar.Clip>
+                                    <RectangleGeometry RadiusX="10" RadiusY="10">
+                                        <RectangleGeometry.Rect>
+                                            <MultiBinding Converter="{StaticResource rectConverter}">
+                                                <Binding ElementName="ch" Path="ActualWidth" />
+                                                <Binding ElementName="ch" Path="ActualHeight" />
+                                            </MultiBinding>
+                                        </RectangleGeometry.Rect>
+                                    </RectangleGeometry>
+                                </ProgressBar.Clip>
+                            </ProgressBar>
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Foreground="DarkSlateGray"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                TextAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                        <Binding Path="NameOfProperty" />
+                                        <Binding Source=": " />
+                                        <Binding Path="ChaRang" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <!--  Region (Инфа)  -->
+        <Border
+            Grid.Column="3"
+            Margin="10,2"
+            BorderBrush="{StaticResource BorderBrush}">
+            <UniformGrid Columns="1">
+                <TextBlock Foreground="White" Style="{StaticResource TextBlock-Sketch}">
+                    <TextBlock.Inlines>
+                        <Run Text="Имя:" TextDecorations="Underline" />
+                        <Run Text="{Binding Pers.NameOfProperty}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+
+
+
+                <TextBlock
+                    Foreground="White"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Visibility="{Binding Pers.PersSettings.IsActtivateRangse, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock.Inlines>
+                        <Run Text="Звание:" TextDecorations="Underline" />
+                        <Run Text="{Binding Pers.CurRang.NameOfRang}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+
+                <TextBlock Foreground="White" Style="{StaticResource TextBlock-Sketch}">
+                    <TextBlock.Inlines>
+                        <Run Text="Уровень:" TextDecorations="Underline" />
+                        <Run Text="{Binding Pers.PersLevelProperty}" />
+                        <!--<Run Text="/" />
+                        <Run Text="{Binding Pers.MaxLevelProperty, Mode=OneWay}" />-->
+                    </TextBlock.Inlines>
+                </TextBlock>
+
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="White" Style="{StaticResource TextBlock-Sketch}">
+                            <TextBlock.Inlines>
+                                <Run Text="Опыт:" TextDecorations="Underline" />
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <Border Margin="4,0" BorderThickness="0">
+                            <Grid>
+
+                                <ProgressBar
+                                    Name="progressBarGoal"
+                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                                    Height="22"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{StaticResource PressedBrush}"
+                                    Foreground="Gold"
+                                    Maximum="{Binding Pers.ValueMaxProperty}"
+                                    Minimum="{Binding Pers.ValueMinProperty}"
+                                    Value="{Binding Pers.PersExpProperty}">
+                                    <ProgressBar.Clip>
+                                        <RectangleGeometry RadiusX="10" RadiusY="10">
+                                            <RectangleGeometry.Rect>
+                                                <MultiBinding Converter="{StaticResource rectConverter}">
+                                                    <Binding ElementName="progressBarGoal" Path="ActualWidth" />
+                                                    <Binding ElementName="progressBarGoal" Path="ActualHeight" />
+                                                </MultiBinding>
+                                            </RectangleGeometry.Rect>
+                                        </RectangleGeometry>
+                                    </ProgressBar.Clip>
+                                </ProgressBar>
+
+                                <!--<ProgressBar
+                                    VerticalAlignment="Center"
+                                    MinHeight="0"
+                                    BorderThickness="0"
+                                    Maximum="{Binding Pers.ValueMaxProperty}"
+                                    Minimum="{Binding Pers.ValueMinProperty}"
+                                    Value="{Binding Pers.PersExpProperty}">
+                                    <ProgressBar.Style>
+                                        <Style TargetType="{x:Type ProgressBar}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                                                        <Grid MinHeight="22">
+                                                            <Border
+                                                                Name="PART_Track"
+                                                                Background="{StaticResource PressedBrush}"
+                                                                BorderBrush="{StaticResource SolidBorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="10" />
+                                                            <Border
+                                                                Name="PART_Indicator"
+                                                                HorizontalAlignment="Left"
+                                                                Background="Gold"
+                                                                BorderBrush="Transparent"
+                                                                BorderThickness="1"
+                                                                CornerRadius="10" />
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ProgressBar.Style>
+                                </ProgressBar>-->
+
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="DarkSlateGray"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    TextAlignment="Center">
+                                    <TextBlock.Inlines>
+                                        <Run Text="{Binding Pers.ExpString, Mode=OneWay}" />
+                                    </TextBlock.Inlines>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Visibility="{Binding Pers.PersSettings.IsHP, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="White" Style="{StaticResource TextBlock-Sketch}">
+                            <TextBlock.Inlines>
+                                <Run TextDecorations="Underline">
+                                    <Run.Text>
+                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                            <Binding Path="Pers.HPOrDmgString" />
+                                            <Binding Source=":" />
+                                        </MultiBinding>
+                                    </Run.Text>
+                                </Run>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <Border Margin="4,0" BorderThickness="0">
+                            <Grid>
+                                <ProgressBar
+                                    Name="progressBarHP"
+                                    Width="{Binding ActualWidth, ElementName=progressBarGoal}"
+                                    Height="22"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{StaticResource PressedBrush}"
+                                    Foreground="Coral"
+                                    Maximum="{Binding Pers.MaxHPIneger, Mode=OneWay}"
+                                    Minimum="0"
+                                    Value="{Binding Pers.CurHpFrontEnd, Mode=OneWay}">
+                                    <ProgressBar.Clip>
+                                        <RectangleGeometry RadiusX="10" RadiusY="10">
+                                            <RectangleGeometry.Rect>
+                                                <MultiBinding Converter="{StaticResource rectConverter}">
+                                                    <Binding ElementName="progressBarGoal" Path="ActualWidth" />
+                                                    <Binding ElementName="progressBarGoal" Path="ActualHeight" />
+                                                </MultiBinding>
+                                            </RectangleGeometry.Rect>
+                                        </RectangleGeometry>
+                                    </ProgressBar.Clip>
+                                </ProgressBar>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="DarkSlateGray"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    TextAlignment="Center">
+                                    <TextBlock.Inlines>
+                                        <Run>
+                                            <Run.Text>
+                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                    <Binding Mode="OneWay" Path="Pers.CurHpFrontEnd" />
+                                                    <Binding Mode="OneWay" Source="/" />
+                                                    <Binding Mode="OneWay" Path="Pers.MaxHPIneger" />
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </TextBlock.Inlines>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock
+                    Foreground="White"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Visibility="{Binding Pers.PersSettings.IsGoldEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock.Inlines>
+                        <Run Text="Золото:" TextDecorations="Underline" />
+                        <Run Text="{Binding Pers.GoldProperty}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+
+                <TextBlock
+                    Foreground="White"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Visibility="{Binding Pers.PersSettings.IsHPActiveteProperty, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock.Inlines>
+                        <Run Text="ОЗ:" TextDecorations="Underline" />
+                        <Run Text="{Binding Pers.HitPoints}" />
+                        <Run Text="/" />
+                        <Run Text="100" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </UniformGrid>
+        </Border>
+        <!--  EndRegion  -->
+
+        <!--  Region (Локации)  -->
+        <!--<GroupBox
+            Grid.Column="5"
+            Margin="2"
+            Foreground="White"
+            Header="Локации"
+            Style="{StaticResource InterBorder}"
+            Visibility="Visible">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Foreground="White"
+                        Style="{StaticResource TextBlock-SketchWrap}"
+                        Text="{Binding}" />
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>-->
+        <ListBox
+            Grid.Column="5"
+            MinWidth="0"
+            MinHeight="0"
+            Margin="2,2,-12,2"
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            BorderBrush="{StaticResource BorderBrush}"
+            ItemsSource="{Binding Pers.Views}"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Style="{StaticResource ListBoxStyle4}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="model:ViewsModel">
+                    <TextBlock
+                        Margin="10,0,10,0"
+                        Foreground="White"
+                        Style="{StaticResource TextBlock-SketchWrap}"
+                        Text="{Binding NameOfView}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!--</GroupBox>-->
+        <!--  EndRegion  -->
+
+        <UniformGrid
+            Grid.Column="4"
+            Rows="1"
+            Visibility="{Binding InterfaceActiveGroupsVisibillity, Converter={StaticResource BoolToVisibilityConverter}}">
+            <!--  Region (Квесты)  -->
+            <ItemsControl
+                Name="ActiveQwests"
+                Margin="2"
+                ItemsSource="{Binding AllSpells}"
+                Style="{StaticResource ActiveAbQwestStyle}"
+                Visibility="{Binding HasItems, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type ContentPresenter}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ColorItemProperty}" Value="#00FFFFFF">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </UniformGrid>
+        <ListBox
+            Grid.Column="4"
+            Margin="6,4"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            ItemsSource="{Binding TasksForInterfacePanel}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectedValue="{Binding LastParTask}"
+            SelectedValuePath="Task"
+            Visibility="{Binding IsFocMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter>
+                                    <i:Interaction.Behaviors>
+                                        <behavior:FrameworkElementDragBehavior />
+                                        <behavior:FrameworkElementDropBehavior />
+                                    </i:Interaction.Behaviors>
+                                </ContentPresenter>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding TasksCount, Converter={StaticResource UniformGridColumnsConverter}, ConverterParameter=ПанельЗадач}" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0">
+                        <!--  ToolTip="{Binding ToolTip}"  -->
+                        <Border x:Name="aaa" Opacity="0.6">
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding DataContext.OpenLinkElementForEditCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding Guid}"
+                                    Gesture="LeftDoubleClick" />
+                            </Border.InputBindings>
+                            <Border.Background>
+                                <SolidColorBrush Opacity="0" Color="White" />
+                            </Border.Background>
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    Source="{Binding PictureProperty}"
+                                    Style="{StaticResource ImageStyle}" />
+                                <!--<Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Visibility="{Binding DataContext.Pers.IsParetto, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+                                    <Border
+                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderThickness="0"
+                                        Visibility="{Binding Task.isSuper, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <Border.Background>
+                                            <SolidColorBrush Opacity="0" Color="White" />
+                                        </Border.Background>
+                                        <Image Source="../Images/good.png" Style="{StaticResource ImageStyle}" />
+                                    </Border>
+                                </Border>-->
+
+                            </Grid>
+                        </Border>
+                        <Border
+                            x:Name="bbb"
+                            Panel.ZIndex="10"
+                            BorderBrush="Green"
+                            BorderThickness="2"
+                            Opacity="1"
+                            Visibility="Hidden" />
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                            <Setter TargetName="bbb" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="aaa" Property="Opacity" Value="1" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--<ListBox
+            Grid.Column="4"
+            Margin="6"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            ItemsSource="{Binding TasksForInterfacePanel}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectedValue="{Binding LastParTask}"
+            Visibility="{Binding IsFocMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter>
+                                    <i:Interaction.Behaviors>
+                                        <behavior:FrameworkElementDragBehavior />
+                                        <behavior:FrameworkElementDropBehavior />
+                                    </i:Interaction.Behaviors>
+                                </ContentPresenter>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding TasksCount, Converter={StaticResource UniformGridColumnsConverter}, ConverterParameter=ПанельЗадач}" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="model:Task">
+                    <Grid>
+                        <Border
+                            x:Name="bbb"
+                            Margin="1"
+                            Background="White"
+                            Opacity="0.1"
+                            Visibility="Hidden" />
+                        <Border
+                            Margin="1"
+                            Background="White"
+                            Opacity="0"
+                            Visibility="Visible" />
+                        <Viewbox StretchDirection="DownOnly">
+                            <TextBlock
+                                MaxWidth="275"
+                                VerticalAlignment="Stretch"
+                                FontSize="14"
+                                Foreground="{Binding ForegroundForInterfacePanel}"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                TextAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource InerPanelNameTasksConverter}">
+                                        <Binding Path="NameOfProperty" />
+                                        <Binding Path="DataContext.TasksCount" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                            <Setter TargetName="bbb" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>-->
+    </Grid>
+</UserControl>

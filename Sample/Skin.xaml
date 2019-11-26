@@ -1,0 +1,730 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:drawing="clr-namespace:System.Drawing;assembly=System.Drawing"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:pc="http://schemas.microsoft.com/prototyping/2010/controls"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    mc:Ignorable="d">
+
+    <!--  Created with Ai->XAML Export Plug-In Version 0.2 (PC/64)  -->
+    <!--  By Mike Swanson (http://blog.mikeswanson.com/)  -->
+
+    <Brush x:Key="ListHilit">Yellow</Brush>
+    <Color x:Key="BrounColor">#FF9E7E51</Color>
+    <SolidColorBrush x:Key="Brush1" Color="#FFE5DBBF" />
+
+    <ImageBrush
+        x:Key="TopBrush"
+        ImageSource="/Sample;component/Текстуры/шапка.png"
+        Stretch="UniformToFill"
+        TileMode="FlipXY"
+        Viewport="0 0 300 300"
+        ViewportUnits="Absolute" />
+
+    <SolidColorBrush x:Key="MenuTextColor" Color="#FFFFFDFD" />
+    <SolidColorBrush x:Key="2MenuBrush" Color="{StaticResource BrounColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#FF5D615D" />
+    <ControlTemplate x:Key="DataGridControlTemplate1" TargetType="{x:Type DataGrid}">
+        <Border
+            Padding="{TemplateBinding Padding}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            SnapsToDevicePixels="True">
+            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="False">
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </ScrollViewer>
+        </Border>
+    </ControlTemplate>
+    <Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <ContentPresenter
+                        Content="{TemplateBinding Content}"
+                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                        Style="{DynamicResource ContentPresenterStyle1}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style x:Key="PopupStyle">
+        <Setter Property="Popup.AllowsTransparency" Value="True" />
+        <Setter Property="Popup.Placement" Value="Center" />
+        <Setter Property="Popup.PopupAnimation" Value="Fade" />
+        <Setter Property="Popup.StaysOpen" Value="True" />
+    </Style>
+
+    <Style x:Key="DataGridColumnHeader">
+        <Setter Property="Control.FontFamily" Value="Buxton Sketch" />
+        <Setter Property="Control.FontSize" Value="14" />
+        <Setter Property="Control.Foreground" Value="{DynamicResource BaseForeground-Sketch}" />
+
+    </Style>
+
+    <!--  Sketch Button  -->
+
+
+    <!--  Здесь необходимо определить записи словаря ресурсов.  -->
+    <!--  Sketch Textbox - базовый  -->
+    <Style x:Key="AutoSelectTextField" TargetType="{x:Type xctk:AutoSelectTextBox}">
+        <Setter Property="MinWidth" Value="250" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="Margin" Value="2,0,0,0" />
+        <Setter Property="AutoSelectBehavior" Value="OnFocus" />
+        <Setter Property="AutoMoveFocus" Value="False" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}" />
+        <Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid>
+                        <!--  Реализация помещает содержимое (Content) в область прокрутки (ScrollViewer). Для правильного функционирования этого элемента управления ему необходимо присвоить имя PART_ContentHost  -->
+                        <ScrollViewer
+                            x:Name="PART_ContentHost"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            FontFamily="./#Segoe Print"
+                            Foreground="{TemplateBinding Foreground}"
+                            Style="{DynamicResource ScrollViewer-Sketch2}"
+                            d:IsStaticText="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Background" Value="LightGray" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_ContentHost" Property="Background" Value="{DynamicResource DisabledBackground-Sketch}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="SelectionBrush" Value="SteelBlue" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}" />
+        <Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="PopupBorder" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource Brush1}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+    <Style x:Key="StylePopup" TargetType="Popup">
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="Placement" Value="Center" />
+        <Setter Property="PopupAnimation" Value="Scroll" />
+        <Setter Property="StaysOpen" Value="True" />
+    </Style>
+    <Thickness x:Key="PanelMarginDefoult">2</Thickness>
+    <System:Double x:Key="BaseMinWidth">250</System:Double>
+    <Style x:Key="AutoSelectTextBoxStyle" TargetType="{x:Type xctk:AutoSelectTextBox}">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}" />
+        <Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="AutoMoveFocus" Value="False" />
+        <Setter Property="AutoSelectBehavior" Value="OnFocus" />
+        <Setter Property="Margin" Value="2,1" />
+        <Setter Property="MinWidth" Value="{StaticResource BaseMinWidth}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}" />
+    </Style>
+
+    <Style
+        x:Key="Property2TextBox"
+        BasedOn="{StaticResource AutoSelectTextBoxStyle}"
+        TargetType="{x:Type xctk:AutoSelectTextBox}">
+        <Setter Property="MinWidth" Value="150" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="DockPanelStyle" TargetType="{x:Type DockPanel}">
+        <Setter Property="Margin" Value="{DynamicResource PanelMarginDefoult}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Thickness x:Key="BaseBorderThickness">2</Thickness>
+    <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="BorderBrush" Value="{StaticResource BaseBorder-Sketch}" />
+        <Setter Property="Background" Value="{StaticResource BaseBackground-Sketch}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}" />
+        <Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}" />
+        <Setter Property="Foreground" Value="{StaticResource BaseBorder-Sketch}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <!--  BulletDecorator используется для выравнивания флажка и содержимого по базовой линии  -->
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Grid
+                                x:Name="grid"
+                                Width="12"
+                                Height="12">
+                                <pc:SketchRectangleUC
+                                    x:Name="SketchRectangleUC1"
+                                    Margin="-2,-2,-2,-2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    ExtensionLength="0"
+                                    ExtensionVariance="0"
+                                    FocusVisualStyle="{DynamicResource FocusControl-Sketch}"
+                                    SegmentLength="4"
+                                    SegmentOffset="0.2"
+                                    StrokeWidth="1" />
+                                <Path
+                                    x:Name="CheckIcon"
+                                    Width="10.5"
+                                    Height="10"
+                                    Data="M102.03442,598.79645 L105.22962,597.78918 L106.78825,600.42358 C106.78825,600.42358 108.51028,595.74304 110.21724,593.60419 C112.00967,591.35822 114.89314,591.42316 114.89314,591.42316 C114.89314,591.42316 112.67844,593.42645 111.93174,594.44464 C110.7449,596.06293 107.15683,604.13837 107.15683,604.13837 z"
+                                    Fill="{TemplateBinding BorderBrush}"
+                                    Opacity="0"
+                                    RenderTransformOrigin="0.5,0.5"
+                                    Stretch="Fill">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <pc:SketchRectangleUC
+                                    x:Name="Indetermined"
+                                    Margin="2"
+                                    Background="{TemplateBinding BorderBrush}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    ExtensionLength="0"
+                                    ExtensionVariance="0"
+                                    FocusVisualStyle="{DynamicResource FocusControl-Sketch}"
+                                    SegmentLength="4"
+                                    SegmentOffset="0.2"
+                                    StrokeWidth="1"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter
+                            Margin="7,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{TemplateBinding Content}" />
+                    </BulletDecorator>
+
+                    <!--  Свойство видимости (Visibility) используется для скрытия и отображения флажка (CheckMark) в зависимости от события IsChecked  -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="Indetermined" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="SketchRectangleUC1" Property="BorderBrush" Value="{DynamicResource FocusedBorder-Sketch}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckIcon" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="SketchRectangleUC1" Property="Background" Value="{DynamicResource MouseOverBackground-Sketch}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="SketchRectangleUC1" Property="Background" Value="{DynamicResource PressedBackground-Sketch}" />
+                            <Setter TargetName="CheckIcon" Property="Margin" Value="0,-1,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="SketchRectangleUC1" Property="Background" Value="{DynamicResource BaseBackground-Sketch}" />
+                            <Setter TargetName="SketchRectangleUC1" Property="BorderBrush" Value="{DynamicResource DisabledBorder-Sketch}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Thickness x:Key="CheckBoxMargin">6,2,2,2</Thickness>
+
+
+
+    <Style
+        x:Key="ToolButtonStyle"
+        BasedOn="{x:Null}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="{DynamicResource ToolButtonWidth}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--  В качестве корневого элемента используется Grid, поскольку так проще добавлять дополнительные элементы для настройки кнопки  -->
+                    <Grid x:Name="Grid">
+                        <!--  ContentPresenter — это область, где элемент управления размещает текстовое и другое содержимое  -->
+                        <Border
+                            x:Name="SketchRectangleUC"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            FocusVisualStyle="{DynamicResource FocusControl-Sketch}" />
+                        <ContentPresenter
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="SketchRectangleUC" Property="Background" Value="{DynamicResource MouseOverBackground-Sketch}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="SketchRectangleUC" Property="Background" Value="{DynamicResource PressedBackground-Sketch}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusControl-Sketch}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}" />
+                <Setter Property="Opacity" Value="0.7" />
+                <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorder-Sketch}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <ControlTemplate x:Key="ContentControlClear" TargetType="{x:Type ContentControl}">
+        <ContentPresenter
+            Content="{TemplateBinding Content}"
+            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+            ContentTemplate="{TemplateBinding ContentTemplate}" />
+    </ControlTemplate>
+    <Style
+        x:Key="AddNewButtonStyle"
+        BasedOn="{x:Null}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="auto" />
+        <Setter Property="Height" Value="{DynamicResource ToolButtonHeight}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily-Sketch}" />
+        <Setter Property="FontSize" Value="{DynamicResource SizeDouble-Sketch}" />
+        <Setter Property="Foreground" Value="{DynamicResource BaseForeground-Sketch}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--  В качестве корневого элемента используется Grid, поскольку так проще добавлять дополнительные элементы для настройки кнопки  -->
+                    <Grid x:Name="Grid">
+                        <!--  ContentPresenter — это область, где элемент управления размещает текстовое и другое содержимое  -->
+                        <Border
+                            x:Name="SketchRectangleUC"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            FocusVisualStyle="{DynamicResource FocusControl-Sketch}" />
+                        <ContentPresenter
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="SketchRectangleUC" Property="Background" Value="{DynamicResource MouseOverBackground-Sketch}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="SketchRectangleUC" Property="Background" Value="{DynamicResource PressedBackground-Sketch}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeight-Sketch}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusControl-Sketch}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForeground-Sketch}" />
+                <Setter Property="Opacity" Value="0.7" />
+                <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorder-Sketch}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ProgressBarTaskProgress" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Maximum" Value="{Binding MaxValueOfTaskProperty}" />
+        <Setter Property="Value" Value="{Binding ValueOfTaskProperty}" />
+        <Setter Property="Panel.ZIndex" Value="-1" />
+        <Setter Property="Opacity" Value="0.85" />
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush SpreadMethod="Reflect" StartPoint="0,0" EndPoint="0,0.5">
+                    <GradientStop Offset="0" Color="Gold" />
+                    <GradientStop Offset="1" Color="Yellow" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="IndeterminateAnimation" RepeatBehavior="Forever">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="IndeterminateGradientFill" Storyboard.TargetProperty="(UIElement.OpacityMask).(Brush.Transform).(TransformGroup.Children)[0].X">
+                                <SplineDoubleKeyFrame KeyTime="0" Value="0" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:.5" Value="20" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <Grid x:Name="Background" SnapsToDevicePixels="true">
+                        <Rectangle x:Name="PART_Track" Margin="1" />
+                        <pc:SketchRectangleUC
+                            x:Name="background"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{x:Null}"
+                            Foreground="{x:Null}"
+                            Style="{DynamicResource Rectangle-Sketch}" />
+                        <Decorator
+                            x:Name="PART_Indicator"
+                            Margin="0"
+                            HorizontalAlignment="Left">
+                            <Grid x:Name="Foreground">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MaxWidth="15" />
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition MaxWidth="15" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <pc:SketchRectangleUC
+                                    x:Name="Determinate"
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="3"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Foreground}"
+                                    BorderBrush="{x:Null}"
+                                    Foreground="{x:Null}"
+                                    Style="{DynamicResource Rectangle-Sketch}" />
+                                <pc:SketchRectangleUC
+                                    x:Name="Indeterminate"
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="3"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{x:Null}"
+                                    Style="{DynamicResource Rectangle-Sketch}"
+                                    Visibility="Collapsed" />
+                                <Rectangle
+                                    x:Name="IndeterminateGradientFill"
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="3"
+                                    Fill="{TemplateBinding Foreground}"
+                                    RadiusX="2"
+                                    RadiusY="2"
+                                    StrokeThickness="1"
+                                    Visibility="Collapsed">
+                                    <Rectangle.OpacityMask>
+                                        <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
+                                            <LinearGradientBrush.Transform>
+                                                <TransformGroup>
+                                                    <TranslateTransform X="0" />
+                                                    <SkewTransform AngleX="-30" />
+                                                </TransformGroup>
+                                            </LinearGradientBrush.Transform>
+                                            <GradientStop Offset="0.237" Color="#FF000000" />
+                                            <GradientStop Offset=".25" />
+                                            <GradientStop Offset="0.677" Color="#FF000000" />
+                                            <GradientStop Offset="0.655" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Grid>
+                        </Decorator>
+                        <pc:SketchRectangleUC
+                            x:Name="border"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{x:Null}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Foreground="{x:Null}"
+                            Style="{DynamicResource Rectangle-Sketch}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="Background" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Indicator" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Foreground" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsIndeterminate" Value="true">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="IndeterminateAnimation_BeginStoryboard" Storyboard="{StaticResource IndeterminateAnimation}" />
+                            </Trigger.EnterActions>
+                            <Setter TargetName="Indeterminate" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="IndeterminateGradientFill" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Determinate" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsIndeterminate" Value="false">
+                            <Setter TargetName="Determinate" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Indeterminate" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IndeterminateGradientFill" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Thickness x:Key="PanelInScrollMargin">10,0</Thickness>
+    <Style x:Key="ImageStyle" TargetType="{x:Type Image}">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Linear" />
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="False" />
+    </Style>
+    <Style
+        x:Key="FantImageStyle"
+        BasedOn="{StaticResource ImageStyle}"
+        TargetType="{x:Type Image}">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
+    </Style>
+    <Style x:Key="ScrollWithoutBorder" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BaseBorder-Sketch}" />
+        <Setter Property="Background" Value="{DynamicResource BaseBackground-Sketch}" />
+        <Setter Property="Template" Value="{StaticResource ScrollWithoutBorderTemplate}" />
+    </Style>
+    <Style
+        x:Key="EditableItemScroll"
+        BasedOn="{StaticResource ScrollWithoutBorder}"
+        TargetType="{x:Type ScrollViewer}">
+
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+    <HorizontalAlignment x:Key="ChParHorizontalAlignment">Center</HorizontalAlignment>
+    <Thickness x:Key="NeedImageMargin">2,5</Thickness>
+    <Style x:Key="ToolBorder" TargetType="Border">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="150,50" />
+        <Setter Property="MinHeight" Value="600" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="3" />
+    </Style>
+    <Thickness x:Key="ToolMargin">3</Thickness>
+
+    <Duration x:Key="BarAnimationSpeed">0:0:4</Duration>
+    <ItemsPanelTemplate x:Key="MenuItemPanelTemplate1">
+        <StackPanel Margin="-35,0,-50,0" Background="White" />
+    </ItemsPanelTemplate>
+    <ControlTemplate x:Key="MenuItemControlTemplate1" TargetType="{x:Type MenuItem}">
+        <Border
+            x:Name="templateRoot"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            UseLayoutRounding="True">
+            <Grid VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter
+                    Margin="{TemplateBinding Padding}"
+                    Content="{TemplateBinding Header}"
+                    ContentSource="Header"
+                    ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                    RecognizesAccessKey="True"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <Popup
+                    x:Name="PART_Popup"
+                    AllowsTransparency="True"
+                    Focusable="False"
+                    IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                    Placement="Mouse"
+                    PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+                    <Border
+                        x:Name="SubMenuBorder"
+                        Padding="2"
+                        Background="#FFF0F0F0"
+                        BorderBrush="#FF999999"
+                        BorderThickness="1">
+                        <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                            <Grid RenderOptions.ClearTypeHint="Enabled">
+                                <ItemsPresenter
+                                    x:Name="ItemsPresenter"
+                                    Grid.IsSharedSizeScope="True"
+                                    KeyboardNavigation.DirectionalNavigation="Cycle"
+                                    KeyboardNavigation.TabNavigation="Cycle"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSuspendingPopupAnimation" Value="True">
+                <Setter TargetName="PART_Popup" Property="PopupAnimation" Value="None" />
+            </Trigger>
+
+
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="templateRoot" Property="Background" Value="LightGray" />
+                <Setter TargetName="templateRoot" Property="BorderBrush" Value="LightGray" />
+            </Trigger>
+
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="MenuItemStyle1" TargetType="{x:Type MenuItem}">
+        <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate1}" />
+        <Setter Property="Template" Value="{StaticResource MenuItemControlTemplate1}" />
+    </Style>
+    <System:Double x:Key="TaskMenuItemHeight">28</System:Double>
+    <VerticalAlignment x:Key="MenuVerticalAlignment">Top</VerticalAlignment>
+    <System:Double x:Key="ToolMenuWidth">28</System:Double>
+    <Style x:Key="FullWindowStyle" TargetType="Window">
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="WindowState" Value="Maximized" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="ResizeMode" Value="CanResize" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+
+        <Setter Property="Stylus.IsTapFeedbackEnabled" Value="False" />
+        <Setter Property="Stylus.IsTouchFeedbackEnabled" Value="False" />
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="True" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+
+
+        <!--
+        <Style.Triggers>
+            <Trigger Property="Window.IsActive" Value="true">
+                <Setter Property="UIElement.Effect">
+                    <Setter.Value>
+                        <BlurEffect Radius="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Window.IsActive" Value="false">
+                <Setter Property="UIElement.Effect">
+                    <Setter.Value>
+                        <BlurEffect />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+        Размытие-->
+
+
+    </Style>
+    <Style x:Key="RelaysBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <GridLength x:Key="ToolInfoWidth">3*</GridLength>
+    <GridLength x:Key="ToolImageWidth">*</GridLength>
+    <ItemsPanelTemplate x:Key="RelayItemsPanelTemplate">
+        <UniformGrid Columns="3" IsItemsHost="True" />
+    </ItemsPanelTemplate>
+    <System:Double x:Key="RelayItemsHeight">85</System:Double>
+    <System:Double x:Key="CongrantWidth">800</System:Double>
+    <Style x:Key="GridSplitterStyle" TargetType="{x:Type GridSplitter}">
+        <Setter Property="Opacity" Value="0" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity"
+                                To="1"
+                                Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <SolidColorBrush x:Key="FadeBacgrounBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="BrounBacgrounBrush" Color="#6A4420" />
+    <System:Double x:Key="TaskMenuWidth">28</System:Double>
+    <Thickness x:Key="CCMargin">1</Thickness>
+    <System:Double x:Key="MapItemHeight">22</System:Double>
+    <SolidColorBrush x:Key="LinkColor" Color="#FF0066CC" />
+    <Thickness x:Key="TaskBorderThikness">1</Thickness>
+    <System:Double x:Key="ChParActiveHeight">100</System:Double>
+    <GridLength x:Key="PipBoyWidth">425</GridLength>
+
+
+</ResourceDictionary>

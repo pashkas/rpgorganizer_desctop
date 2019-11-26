@@ -1,0 +1,102 @@
+﻿<UserControl
+    x:Class="Sample.View.MainWindowPersUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="UserControl"
+    d:DataContext="{Binding MainVM, Source={StaticResource Locator}}"
+    d:DesignHeight="172"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Картинка  -->
+            <Border
+                Grid.Column="0"
+                Margin="0,3,0,0"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="2,0,2,2">
+                <Image
+                    Margin="1"
+                    Source="{Binding DataContext.Pers.ImageProperty, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource ImageStyle}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseUp">
+                            <i:InvokeCommandAction Command="{Binding OpenQwickButtonCommand}" CommandParameter="Информация" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+            </Border>
+
+            <!--  Быстрый доступ к настройкам перса  -->
+            <UniformGrid
+                Grid.Column="1"
+                Margin="0,3,0,2"
+                Rows="2">
+
+
+                <UniformGrid.Resources>
+                    <Thickness x:Key="PicMarg">14</Thickness>
+                    <Style x:Key="mainButtonsStyle" TargetType="ContentControl">
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="MaxHeight" Value="35" />
+                    </Style>
+                </UniformGrid.Resources>
+
+
+
+                <Button
+                    Margin="2,2,1,1"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    Command="{Binding OpenQwickButtonCommand}"
+                    CommandParameter="Характеристики"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Характеристики">
+                    <ContentControl Style="{StaticResource mainButtonsStyle}" Template="{StaticResource ContentControlCharacteristics}" />
+                </Button>
+
+                <Button
+                    Margin="1,2,2,1"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    Command="{Binding OpenQwickButtonCommand}"
+                    CommandParameter="Навыки"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Навыки">
+                    <ContentControl Style="{StaticResource mainButtonsStyle}" Template="{StaticResource ContentControlAbilitis}" />
+                </Button>
+
+                <Button
+                    Margin="2,1,1,2"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    Command="{Binding OpenQwickButtonCommand}"
+                    CommandParameter="Квесты"
+                    IsEnabled="{Binding Pers.IsQwestsEnabled}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Квесты">
+                    <ContentControl Style="{StaticResource mainButtonsStyle}" Template="{StaticResource ContentControlQwests}" />
+                </Button>
+
+                <Button
+                    Margin="1,1,2,2"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    Command="{Binding OpenQwickButtonCommand}"
+                    CommandParameter="Магазин/инвентарь"
+                    IsEnabled="{Binding Pers.IsRewardsEnabled}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Инвентарь/лавка оружейника">
+                    <ContentControl Style="{StaticResource mainButtonsStyle}" Template="{StaticResource ContentControlInventory}" />
+                </Button>
+
+            </UniformGrid>
+        </Grid>
+    </Grid>
+</UserControl>

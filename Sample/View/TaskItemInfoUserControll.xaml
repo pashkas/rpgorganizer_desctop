@@ -1,0 +1,236 @@
+﻿<UserControl x:Class="Sample.View.TaskItemInfoUserControll"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:Sample.Behavior"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Sample.Model"
+             xmlns:view="clr-namespace:Sample.View"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <model:DateToStringConverter x:Key="DateToStringConverter" />
+        <model:SplitStringsConverter x:Key="SplitStringsConverter" />
+        <model:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid x:Name="infoPanel" DataContext="{Binding Task, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0" />
+            <ColumnDefinition Width="{StaticResource ToolInfoWidth}" />
+        </Grid.ColumnDefinitions>
+
+        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+        <view:ucImageInTool Margin="2"
+                            Picture="{Binding PictureProperty}"
+                            Visibility="Collapsed" />
+
+        <DockPanel Grid.Column="1"
+                   Margin="2"
+                   VerticalAlignment="Center">
+
+
+            <!--  Вид задачи  -->
+            <StackPanel Margin="2"
+                        HorizontalAlignment="Center"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal"
+                        Visibility="{Binding TaskTypeVisibility,
+                                             RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <TextBlock FontSize="11"
+                           FontStyle="Italic"
+                           Style="{StaticResource TextBlock-Sketch}"
+                           Text="("
+                           TextWrapping="Wrap" />
+                <TextBlock FontSize="11"
+                           FontStyle="Italic"
+                           Style="{StaticResource TextBlock-Sketch}"
+                           Text="{Binding TaskType.NameOfTypeOfTask}"
+                           TextWrapping="Wrap" />
+                <TextBlock FontSize="11"
+                           FontStyle="Italic"
+                           Style="{StaticResource TextBlock-Sketch}"
+                           Text=")"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!--  Срок задачи  -->
+            <Button Margin="2"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding QwickSetDateAimCommand}"
+                    CommandParameter="конецС"
+                    DockPanel.Dock="Top"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Дата завершения. Клик - задать сегодняшнюю дату.">
+                <TextBlock FontSize="13"
+                           FontStyle="Italic"
+                           Foreground="{Binding EndDateForeground}"
+                           Style="{StaticResource TextBlock-Sketch}"
+                           Text="{Binding EndDate,
+                                          Converter={StaticResource DateToStringConverter}}" />
+            </Button>
+
+
+            <!--  Название  -->
+            <TextBlock Margin="4"
+                       DockPanel.Dock="Top"
+                       Foreground="{StaticResource DarkText}"
+                       Style="{StaticResource TextBlock-Sketch}"
+                       Text="{Binding NameOfProperty}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+
+            <ProgressBar Height="8"
+                         Margin="2"
+                         Background="Transparent"
+                         BorderBrush="Transparent"
+                         DockPanel.Dock="Top"
+                         Foreground="Gold"
+                         Maximum="{Binding MaxValueOfTaskProperty}"
+                         Style="{StaticResource ProgressBarStyle}"
+                         Visibility="{Binding IsProgressVisibleProperty}"
+                         Value="{Binding ValueOfTaskProperty}" />
+
+            <!--  Ранг задачи  -->
+            <TextBlock x:Name="taskrang"
+                       Margin="2"
+                       HorizontalAlignment="Center"
+                       DockPanel.Dock="Top"
+                       FontSize="12"
+                       FontStyle="Italic"
+                       Style="{StaticResource TextBlock-Sketch}"
+                       Text="{Binding TaskRangAndDescr}"
+                       Visibility="{Binding TaskRangVisibilityProperty}" />
+
+            <!--  Таймер  -->
+            <Button Margin="2"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding ClickTimerCommand}"
+                    DockPanel.Dock="Top"
+                    Style="{StaticResource Button-Sketch}"
+                    Visibility="{Binding TimerVisibility}">
+                <StackPanel Margin="10,5" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}"
+                               Text="! "
+                               ToolTip="Таймер запущен!"
+                               Visibility="{Binding IsTimerStartProperty,
+                                                    Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding TimerValueProperty}" />
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}" Text=" мин" />
+                </StackPanel>
+            </Button>
+
+            <!--  Счетчик  -->
+            <Button Margin="2"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding ClickCounterCommand}"
+                    DockPanel.Dock="Top"
+                    Style="{StaticResource Button-Sketch}"
+                    Visibility="{Binding CounterVisibility}">
+                <StackPanel Margin="10,5" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding CounterValuePlusProperty}" />
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}" Text=" раз" />
+                </StackPanel>
+            </Button>
+
+
+
+            <!--  На что влияет задача  -->
+            <Grid Margin="2"
+                  DockPanel.Dock="Bottom"
+                  Visibility="{Binding relaysVisibility,
+                                       RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <ItemsControl x:Name="relTask"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{Binding RelaysItems}"
+                              Visibility="{Binding RelaysVisibility}">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="model:TaskRelaysItem">
+                            <TextBlock TextAlignment="Center">
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <Hyperlink Command="{Binding UcParContext.OpenLinkedAbilityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                                    <TextBlock FontSize="12"
+                                               Text="{Binding Tag}"
+                                               TextWrapping="Wrap" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+
+            <!--  Ссылки  -->
+            <ItemsControl Margin="2"
+                          HorizontalAlignment="Center"
+                          DockPanel.Dock="Top"
+                          ItemsSource="{Binding LinksesProperty}"
+                          Visibility="{Binding LinksesVisible}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:Links}">
+
+
+                        <TextBlock Style="{DynamicResource TextBlock-Sketch}">
+                            <Hyperlink NavigateUri="{Binding Link}">
+                                <i:Interaction.Behaviors>
+                                    <behavior:OpenHyperlinkBehavior />
+                                </i:Interaction.Behaviors>
+                                <TextBlock FontSize="12" TextWrapping="Wrap">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                            <Binding Source="&lt;&lt; " />
+                                            <Binding Path="LinkName" />
+                                            <Binding Source=" &gt;&gt;" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Hyperlink>
+                        </TextBlock>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--  Подзадачи  -->
+            <ItemsControl Margin="2"
+                          HorizontalAlignment="Center"
+                          DockPanel.Dock="Top"
+                          ItemsSource="{Binding NotDoneSubtasks}"
+                          Visibility="{Binding SubTasksVisibility}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:SubTask}">
+                        <DockPanel>
+                            <CheckBox VerticalAlignment="Center"
+                                      IsChecked="{Binding isDone}"
+                                      Style="{DynamicResource CheckBox-Sketch}" />
+                            <TextBlock Style="{DynamicResource TextBlock-Sketch}">
+                                <Hyperlink NavigateUri="{Binding LinkProperty}">
+                                    <i:Interaction.Behaviors>
+                                        <behavior:OpenHyperlinkBehavior />
+                                    </i:Interaction.Behaviors>
+                                    <TextBlock FontSize="12"
+                                               Text="{Binding Tittle}"
+                                               TextWrapping="Wrap" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
+
+
+        </DockPanel>
+
+
+    </Grid>
+</UserControl>

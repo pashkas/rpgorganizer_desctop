@@ -1,0 +1,12 @@
+﻿<Window x:Class="Sample.View.CountBalanceView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:model="clr-namespace:Sample.Model"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Расчет баланса"
+        Width="480"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen" UseLayoutRounding="True">
+   
+</Window>

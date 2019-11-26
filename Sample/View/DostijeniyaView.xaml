@@ -1,0 +1,522 @@
+﻿
+<Window
+    x:Class="Sample.View.DostijeniyaView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+    Title="Достижения (лучшие значения по дням)"
+    DataContext="{Binding DostijeniyaVM, Source={StaticResource Locator}}"
+    Style="{StaticResource FullWindowStyle}">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <Model:SplitStringsConverter x:Key="SplitStringsConverter" />
+        <Model:invertDouble x:Key="InvertDouble" />
+        <Model:DostijeniyaTittleConverter x:Key="DostijeniyaTittleConverter" />
+
+        <DataTemplate x:Key="ItemsCharts">
+            <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+            <chartingToolkit:Chart
+                Title="{Binding Items, Converter={StaticResource DostijeniyaTittleConverter}}"
+                Height="300"
+                Margin="2"
+                FontSize="12"
+                FontWeight="Regular"
+                LegendStyle="{DynamicResource LegendStyle1}"
+                TitleStyle="{DynamicResource TitleStyle1}">
+                <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+
+                <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                <chartingToolkit:LineSeries
+                    x:Name="chLev"
+                    AnimationSequence="Simultaneous"
+                    DataPointStyle="{DynamicResource LineDataPointStyle1}"
+                    DependentValuePath="ValueOfChar"
+                    IndependentValuePath="count"
+                    ItemsSource="{Binding Items}">
+                    <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+                    <chartingToolkit:LineSeries.IndependentAxis>
+                        <chartingToolkit:CategoryAxis AxisLabelStyle="{DynamicResource sum}" Orientation="X" />
+                    </chartingToolkit:LineSeries.IndependentAxis>
+
+
+
+                </chartingToolkit:LineSeries>
+            </chartingToolkit:Chart>
+        </DataTemplate>
+        <Style x:Key="LegendStyle1" TargetType="{x:Type visualizationToolkit:Legend}">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="#FFDBDBDB" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.558,0.995" EndPoint="0.442,0.005">
+                        <GradientStop Color="#FFDBDBDB" />
+                        <GradientStop Offset="1" Color="White" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TitleStyle1" TargetType="{x:Type visualizationToolkit:Title}">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="1" />
+        </Style>
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+            <StackPanel IsItemsHost="True" />
+        </ItemsPanelTemplate>
+        <Style x:Key="LineDataPointStyle1" TargetType="{x:Type chartingToolkit:LineDataPoint}">
+            <Setter Property="Background" Value="Blue" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Height" Value="8" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                        <Grid x:Name="Root" Opacity="0">
+                            <Grid.ToolTip>
+                                <ContentControl Content="{TemplateBinding FormattedDependentValue}" />
+                            </Grid.ToolTip>
+                            <Ellipse
+                                Fill="{TemplateBinding Background}"
+                                Stroke="{TemplateBinding BorderBrush}"
+                                Visibility="Collapsed" />
+                            <Ellipse RenderTransformOrigin="0.661,0.321">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush GradientOrigin="0.681,0.308">
+                                        <GradientStop Color="Transparent" />
+                                        <GradientStop Offset="1" Color="#FF3D3A3A" />
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Ellipse
+                                x:Name="SelectionHighlight"
+                                Fill="Red"
+                                Opacity="0" />
+                            <Ellipse
+                                x:Name="MouseOverHighlight"
+                                Fill="White"
+                                Opacity="0" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="sum" TargetType="{x:Type chartingToolkit:AxisLabel}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="chartingToolkit:AxisLabel">
+                        <TextBlock Text="{TemplateBinding FormattedContent}">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="270" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="badProgress" Color="HotPink" />
+    </Window.Resources>
+
+    <Border
+        Background="{DynamicResource PaperTexture}"
+        BorderBrush="{DynamicResource BorderBrush}"
+        BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TabControl Margin="5" Style="{DynamicResource TabControl-Sketch}">
+
+                <TabItem
+                    Header="Статистика"
+                    HeaderTemplate="{DynamicResource Group-box-sketch}"
+                    Style="{DynamicResource TabItem-Sketch}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
+                            <Button
+                                Width="100"
+                                Height="{DynamicResource ToolButtonHeight}"
+                                Margin="2"
+                                Command="{Binding SetDateMinCommand}"
+                                CommandParameter="неделя"
+                                Content="За неделю"
+                                Style="{DynamicResource Button-Sketch}" />
+                            <Button
+                                Width="100"
+                                Height="{DynamicResource ToolButtonHeight}"
+                                Margin="2"
+                                Command="{Binding SetDateMinCommand}"
+                                CommandParameter="двеНедели"
+                                Content="За две недели"
+                                Style="{DynamicResource Button-Sketch}" />
+                            <Button
+                                Width="100"
+                                Height="{DynamicResource ToolButtonHeight}"
+                                Margin="2"
+                                Command="{Binding SetDateMinCommand}"
+                                CommandParameter="месяц"
+                                Content="За месяц"
+                                Style="{DynamicResource Button-Sketch}" />
+                            <Button
+                                Width="100"
+                                Height="{DynamicResource ToolButtonHeight}"
+                                Margin="2"
+                                Command="{Binding SetDateMinCommand}"
+                                CommandParameter="всеВремя"
+                                Content="За все время"
+                                Style="{DynamicResource Button-Sketch}" />
+                        </DockPanel>
+
+
+                        <TabControl
+                            Grid.Row="1"
+                            Grid.RowSpan="1"
+                            Grid.ColumnSpan="3"
+                            Style="{DynamicResource TabControl-Sketch}"
+                            TabStripPlacement="Top">
+                            <TabItem Header="Опыт" Style="{DynamicResource TabItem-Sketch}">
+
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Visibility="Collapsed">
+                                        <DockPanel HorizontalAlignment="Center">
+                                            <TextBlock
+                                                Margin="4"
+                                                Foreground="Green"
+                                                Text="Эффективность: " />
+                                            <TextBlock Margin="4" Text="{Binding EffecticityProperty}" />
+                                        </DockPanel>
+                                        <DockPanel HorizontalAlignment="Center">
+                                            <TextBlock
+                                                Margin="4"
+                                                Foreground="Green"
+                                                Text="Прирост эффективности: " />
+                                            <TextBlock Margin="4" Text="{Binding ProgreessEffectivityProperty}" />
+                                        </DockPanel>
+                                    </StackPanel>
+
+                                    <chartingToolkit:Chart
+                                        Title="Опыт"
+                                        Grid.Row="1"
+                                        Margin="5"
+                                        FontSize="13"
+                                        FontWeight="Regular"
+                                        LegendStyle="{DynamicResource LegendStyle1}">
+                                        <chartingToolkit:LineSeries
+                                            AnimationSequence="Simultaneous"
+                                            DataPointStyle="{DynamicResource LineDataPointStyle1}"
+                                            DependentValuePath="ValueOfChar"
+                                            IndependentValuePath="count"
+                                            ItemsSource="{Binding GraphicsExp}">
+                                            <chartingToolkit:LineSeries.IndependentAxis>
+                                                <chartingToolkit:CategoryAxis AxisLabelStyle="{DynamicResource sum}" Orientation="X" />
+                                            </chartingToolkit:LineSeries.IndependentAxis>
+
+
+
+                                        </chartingToolkit:LineSeries>
+                                    </chartingToolkit:Chart>
+
+
+                                </Grid>
+
+
+
+
+                            </TabItem>
+                            <TabItem Header="Характеристики" Style="{DynamicResource TabItem-Sketch}">
+
+                                <ScrollViewer>
+
+                                    <ItemsControl
+                                        Margin="2"
+                                        ItemTemplate="{DynamicResource ItemsCharts}"
+                                        ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
+                                        ItemsSource="{Binding CharsGrafs.Groups}" />
+
+                                </ScrollViewer>
+                            </TabItem>
+                            <TabItem Header="Навыки" Style="{DynamicResource TabItem-Sketch}">
+                                <ScrollViewer>
+
+                                    <ItemsControl
+                                        Margin="2"
+                                        ItemTemplate="{DynamicResource ItemsCharts}"
+                                        ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
+                                        ItemsSource="{Binding CharsAbils.Groups}" />
+
+                                </ScrollViewer>
+
+                            </TabItem>
+                            <TabItem Header="Квесты" Style="{DynamicResource TabItem-Sketch}">
+                                <ScrollViewer>
+
+                                    <ItemsControl
+                                        Margin="2"
+                                        ItemTemplate="{DynamicResource ItemsCharts}"
+                                        ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
+                                        ItemsSource="{Binding CharsQwests.Groups}" />
+
+                                </ScrollViewer>
+                            </TabItem>
+
+
+
+
+                        </TabControl>
+
+
+
+
+
+
+
+                    </Grid>
+                </TabItem>
+
+                <TabItem
+                    Header="Сегодняшние достижения"
+                    HeaderTemplate="{DynamicResource Group-box-sketch}"
+                    Style="{DynamicResource TabItem-Sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{DynamicResource ScrollViewer-Sketch}"
+                        VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10">
+                            <GroupBox
+                                Margin="2"
+                                Header="Изменения опыта"
+                                HeaderTemplate="{DynamicResource Group-box-sketch}">
+                                <ItemsControl ItemsSource="{Binding TodayExpUpdate}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Border
+                                                    Margin="1"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                    <UniformGrid Rows="1">
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="{DynamicResource badProgress}"
+                                                            Foreground="White"
+                                                            Maximum="0"
+                                                            Minimum="{Binding DataContext.ExpMaxDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InvertDouble}}"
+                                                            Value="{Binding Degree}" />
+                                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="White"
+                                                            Foreground="Chartreuse"
+                                                            Maximum="{Binding DataContext.ExpMaxDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Minimum="0"
+                                                            Value="{Binding Degree}" />
+                                                    </UniformGrid>
+                                                </Border>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource TextBlock-Sketch}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                            <Binding Path="NameUpdate" />
+                                                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                            <Binding Path="Degree" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </GroupBox>
+                            <GroupBox
+                                Margin="2"
+                                Header="Прогресс в квестах"
+                                HeaderTemplate="{DynamicResource Group-box-sketch}">
+                                <ItemsControl ItemsSource="{Binding TodayQwestsUpdatesProperty}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Border
+                                                    Margin="1"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                    <UniformGrid Rows="1">
+                                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="{DynamicResource badProgress}"
+                                                            Foreground="White"
+                                                            Maximum="0"
+                                                            Minimum="{Binding DataContext.MaxQwestsDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InvertDouble}}"
+                                                            Value="{Binding Degree}" />
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="White"
+                                                            Foreground="Chartreuse"
+                                                            Maximum="{Binding DataContext.MaxQwestsDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Minimum="0"
+                                                            Value="{Binding Degree}" />
+                                                    </UniformGrid>
+                                                </Border>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource TextBlock-Sketch}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <Binding Path="NameUpdate" />
+                                                            <Binding Path="Degree" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </GroupBox>
+                            <GroupBox
+                                Margin="2"
+                                Header="Прогресс в характеристиках"
+                                HeaderTemplate="{DynamicResource Group-box-sketch}">
+                                <ItemsControl ItemsSource="{Binding TodayChaUpdatesProperty}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Border
+                                                    Margin="1"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                    <UniformGrid Rows="1">
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="{DynamicResource badProgress}"
+                                                            Foreground="White"
+                                                            Maximum="0"
+                                                            Minimum="{Binding DataContext.MaxChaDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InvertDouble}}"
+                                                            Value="{Binding Degree}" />
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="White"
+                                                            Foreground="Chartreuse"
+                                                            Maximum="{Binding DataContext.MaxChaDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Minimum="0"
+                                                            Value="{Binding Degree}" />
+                                                    </UniformGrid>
+                                                </Border>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource TextBlock-Sketch}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <Binding Path="NameUpdate" />
+                                                            <Binding Path="Degree" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </GroupBox>
+                            <GroupBox
+                                Margin="2"
+                                Header="Прогресс в навыках"
+                                HeaderTemplate="{DynamicResource Group-box-sketch}">
+                                <ItemsControl ItemsSource="{Binding TodayAbilsUpdateProperty}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Border
+                                                    Margin="1"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                    <UniformGrid Rows="1">
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="{DynamicResource badProgress}"
+                                                            Foreground="White"
+                                                            Maximum="0"
+                                                            Minimum="{Binding DataContext.MaxAbDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InvertDouble}}"
+                                                            Value="{Binding Degree}" />
+                                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                                        <ProgressBar
+                                                            Height="30"
+                                                            Background="White"
+                                                            Foreground="Chartreuse"
+                                                            Maximum="{Binding DataContext.MaxAbDegreeProperty, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Minimum="0"
+                                                            Value="{Binding Degree}" />
+                                                    </UniformGrid>
+                                                </Border>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource TextBlock-Sketch}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <Binding Path="NameUpdate" />
+                                                            <Binding Path="Degree" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </GroupBox>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </TabItem>
+            </TabControl>
+            <Button
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                Height="{DynamicResource DownButtonHeight}"
+                Background="{DynamicResource TopBrush}"
+                Click="Close"
+                Content="Ok"
+                Foreground="White"
+                Style="{DynamicResource Button-Sketch}" />
+        </Grid>
+    </Border>
+
+</Window>

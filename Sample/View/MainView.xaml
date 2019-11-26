@@ -1,0 +1,167 @@
+﻿<Window
+    x:Class="Sample.View.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:Sample="clr-namespace:Sample"
+    xmlns:b="clr-namespace:DotNetLead.DragDrop.UI.Behavior"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="mainWindow"
+    Title="RPG Organizer V"
+    Activated="MainView_OnActivated"
+    Background="{StaticResource BackGround}"
+    ContentRendered="MainView_OnContentRendered"
+    FocusVisualStyle="{x:Null}"
+    Loaded="MainView_OnLoaded"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <Model:UniformRowsConverter x:Key="UniformRowsConverter" />
+        <system:Double x:Key="MainWindowProgHeight">26</system:Double>
+        <Model:HPValueConverter x:Key="HpValueConverter" />
+        <Model:IsElementVisibleConverter x:Key="IsElementVisibleConverter" />
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Model:taskTimerVisibilityConverter x:Key="taskTimerVisibilityConverter" />
+        <Model:UniformGridColumnsConverter x:Key="UniformGridColumnsConverter" />
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding
+            Key="Add"
+            Command="{Binding DataContext.AlternatePlusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+            CommandParameter="{Binding SellectedTask}" />
+        <KeyBinding Key="Insert" Command="{Binding AddNewTask}" />
+        <KeyBinding
+            Key="Subtract"
+            Command="{Binding DataContext.AlternateMinusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+            CommandParameter="{Binding SellectedTask}" />
+
+        <KeyBinding
+            Key="Return"
+            Command="{Binding DataContext.OpenFirstLinkTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+            CommandParameter="{Binding SellectedTask}" />
+        <KeyBinding
+            Key="Q"
+            Command="{Binding DataContext.OpenFirstLinkQwestCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+            CommandParameter="{Binding SellectedTask}" />
+    </Window.InputBindings>
+
+
+    <Window.DataContext>
+        <Binding Path="MainVM" Source="{StaticResource Locator}" />
+    </Window.DataContext>
+    <Window.Style>
+        <StaticResource ResourceKey="FullWindowStyle" />
+    </Window.Style>
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+    </i:Interaction.Behaviors>
+
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <ei:CallMethodAction MethodName="SaveWhenClosing" TargetObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
+
+    <Border>
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="{Binding HeightOfDataGrid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid.RowDefinitions>
+
+            <!--  Меню  -->
+
+            <Sample:MainWindowAllMenu>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <i:InvokeCommandAction Command="{Binding ExpandShrinkHUDCommand}" CommandParameter="показать" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <i:InvokeCommandAction Command="{Binding ExpandShrinkHUDCommand}" CommandParameter="скрыть" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Sample:MainWindowAllMenu>
+
+
+
+
+            <!--<Grid
+                Name="focGrid"
+                Grid.Row="1"
+                Grid.RowSpan="3"
+                Panel.ZIndex="1"
+                Background="White"
+                Visibility="{Binding IsFocTaksVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <local:FocusedViewUC
+                    Grid.Row="1"
+                    Margin="8,2,5,2"
+                    FocusedItemsVisibility="Collapsed"
+                    SelectedFocus="{Binding SelFoc}" />
+
+                <Button
+                    Grid.Row="2"
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="{StaticResource TopBrush}"
+                    Command="{Binding CloseFocCommand}"
+                    Content="ОК"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+            </Grid>-->
+
+            <Grid Grid.Row="1" Background="White">
+                <Grid
+                    x:Name="TsksPanel"
+                    Grid.Column="0"
+                    Margin="0"
+                    Visibility="{Binding DataContext.IsFocMode, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=инверсия, RelativeSource={RelativeSource AncestorType=Window}}">
+
+                    <Grid Margin="0">
+                        <!--  Второй вид задач  -->
+                        <Sample:TasksViewUC
+                            Margin="4"
+                            Alignment="Top"
+                            Items="{Binding Tasks}"
+                            PipBoyVisibility="Visible"
+                            ShowImageTaskVisibility="Collapsed"
+                            colNums="{Binding DataContext.TasksNumOfColumnProperty, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </Grid>
+                </Grid>
+                <local:ucTaskFocusView Grid.Row="1" Visibility="{Binding DataContext.IsFocMode, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
+
+            </Grid>
+
+
+            <!--  Region (Панель интерфейса)  -->
+
+            <!--  EndRegion  -->
+
+            <!--  Шапка персонажа + золото, опыт и ХП  -->
+            <GridSplitter
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Height="6"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Panel.ZIndex="10"
+                Background="AliceBlue"
+                Style="{StaticResource GridSplitterStyle}"
+                Visibility="{Binding AntyFocTasksVisibility}" />
+            <local:ucInterfacePanel Grid.Row="2" Grid.ColumnSpan="2" />
+        </Grid>
+    </Border>
+</Window>

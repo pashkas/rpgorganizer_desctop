@@ -1,0 +1,15 @@
+﻿<Window x:Class="Sample.View.ClassAndAbGroupsSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:model="clr-namespace:Sample.Model"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="ClassAndAbGroupsSettingsView"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        WindowStyle="None" UseLayoutRounding="True">
+   
+</Window>

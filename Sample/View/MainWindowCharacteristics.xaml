@@ -1,0 +1,173 @@
+﻿<UserControl
+    x:Class="Sample.View.MainWindowCharacteristics"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:View="clr-namespace:Sample.View"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Sample"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    x:Name="UserControl"
+    d:DataContext="{Binding MainVM, Source={StaticResource Locator}}"
+    d:DesignHeight="166"
+    d:DesignWidth="200"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <CollectionViewSource
+            x:Key="CharactView"
+            IsLiveSortingRequested="True"
+            Source="{Binding Pers.Characteristics}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="ValueProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+            <UniformGrid
+                x:Name="PART_RowsPresenter"
+                IsItemsHost="True"
+                Rows="2" />
+        </ItemsPanelTemplate>
+
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <!--  Шаблон для характеистик персонажа  -->
+        <DataTemplate x:Key="charItemTemplate" DataType="Model:Characteristic">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    x:Name="Border"
+                    Grid.Column="0"
+                    Width="75"
+                    Margin="1"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    Visibility="{Binding DataContext.Pers.PersSettings.IsChaPicMainWindowEnabledProperty, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <Image
+                        Margin="2"
+                        Source="{Binding ImageProperty}"
+                        Stretch="Uniform"
+                        Style="{StaticResource ImageStyle}" />
+                </Border>
+                <Border
+                    x:Name="borderCharact"
+                    Grid.Column="1"
+                    Margin="1"
+                    Panel.ZIndex="-1"
+                    Background="{StaticResource FadeBacgrounBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1">
+
+                    <Button
+                        Margin="1"
+                        Command="{Binding DataContext.ShowCharactCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding}">
+                        <Button.Style>
+                            <Style BasedOn="{x:Null}" TargetType="{x:Type Button}">
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <!--  В качестве корневого элемента используется Grid, поскольку так проще добавлять дополнительные элементы для настройки кнопки  -->
+                                            <Grid x:Name="Grid">
+                                                <!--  ContentPresenter — это область, где элемент управления размещает текстовое и другое содержимое  -->
+                                                <Border
+                                                    x:Name="SketchRectangleUC"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="2"
+                                                    FocusVisualStyle="{StaticResource FocusControl-Sketch}" />
+                                                <ContentPresenter
+                                                    Margin="0,0,0,0"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    Content="{TemplateBinding Content}" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="SketchRectangleUC" Property="Background" Value="Gold" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="SketchRectangleUC" Property="Background" Value="Transparent" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+
+
+                        <Grid>
+
+
+                            <ProgressBar
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Maximum="{Binding MaxLevelProperty}"
+                                Minimum="0"
+                                Visibility="Collapsed"
+                                Value="{Binding LevelProperty, Mode=OneWay}">
+
+                                <ProgressBar.Foreground>
+                                    <LinearGradientBrush SpreadMethod="Reflect" StartPoint="0,0" EndPoint="0,0.5">
+                                        <GradientStop Offset="0" Color="Yellow" />
+                                        <GradientStop Offset="1" Color="#FF9E7E51" />
+                                    </LinearGradientBrush>
+                                </ProgressBar.Foreground>
+                            </ProgressBar>
+
+                            <TextBlock
+                                Foreground="{StaticResource MenuTextColor}"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                TextAlignment="Center">
+                                <TextBlock.Inlines>
+                                    <Run Text="{Binding NameOfProperty}" TextDecorations="Underline" />
+                                    <Run Text=" +" />
+                                    <Run Text="{Binding LevelProperty}" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                        </Grid>
+                    </Button>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ItemsControl
+            Width="Auto"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Background="{x:Null}"
+            BorderBrush="Transparent"
+            ItemTemplate="{StaticResource charItemTemplate}"
+            ItemsPanel="{StaticResource ItemsPanelTemplate1}"
+            ItemsSource="{Binding Pers.Characteristics}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            Visibility="{Binding Pers.PersSettings.ShowCharacteristicsInMainWindowProperty, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+
+
+
+
+    </Grid>
+</UserControl>

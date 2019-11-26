@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="436" height="440" viewBox="15 28 218 220" sodipodi:docname="Gold_coins_in_a_stack_jo_01.svg" sodipodi:version="0.32" version="1.1">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title></dc:title>
+        <dc:description />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>en</rdf:li>
+            <rdf:li>gold</rdf:li>
+            <rdf:li>money</rdf:li>
+            <rdf:li>coins</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://www.openclipart.org">
+            <dc:title>Jonadab the Unsightly One</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Jonadab the Unsightly One</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Jonadab the Unsightly One</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date />
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license rdf:resource="http://web.resource.org/cc/PublicDomain" />
+        <dc:language>en</dc:language>
+      </cc:Work>
+      <cc:License rdf:about="http://web.resource.org/cc/PublicDomain">
+        <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient id="linearGradient4144">
+      <stop style="stop-color:white;stop-opacity:1;" offset="0" id="stop4146" />
+      <stop style="stop-color:#7f7f7f;stop-opacity:1;" offset="1" id="stop4148" />
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient4144" id="linearGradient4230" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.1903,0,0,1.1903,-17.299,-16.569)" x1="167.61" y1="149.11" x2="-27.059" y2="16.269" />
+  </defs>
+  <g id="layer1" inkscape:groupmode="layer" inkscape:label="Layer 1">
+    <g id="g14466" transform="matrix(-22.182,0,0,22.182,6990.2,-12203)">
+      <g id="g4102" transform="matrix(-0.04508,0,0,0.04508,313.74,551.91)">
+        <path style="fill:gray;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path3239" d="m 194.74,99.804 c 0,55.766 -44.42,101.036 -99.174,101.036 C 40.832,200.84 -3.5886,155.57 -3.5886,99.804 C -3.5886,44.022 40.832,-1.25 95.566,-1.25 c 54.754,0 99.174,45.272 99.174,101.054 z" inkscape:connector-curvature="0" />
+        <path style="fill:url(#linearGradient4230);fill-opacity:1;stroke:none" id="path3241" d="m 191.25,93.433 c 0,54.127 -44.28,98.047 -98.831,98.047 c -54.55,0 -98.8173,-43.92 -98.8173,-98.047 c 0,-54.124 44.2673,-98.0532 98.8173,-98.0532 c 54.551,0 98.831,43.9292 98.831,98.0532 z" inkscape:connector-curvature="0" />
+        <path style="fill:gray;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path3231" d="M 17.514,113.48 C 6.6733,73.02 30.638,31.399 71.018,20.579 C 111.4,9.76 152.97,33.821 163.81,74.277 C 174.65,114.74 150.68,156.35 110.3,167.17 C 69.917,177.99 28.355,153.94 17.514,113.48 z" inkscape:connector-curvature="0" />
+        <path style="fill:#e7c83a;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path3243" d="M 21.452,115.07 C 10.836,75.455 34.636,34.614 74.563,23.915 C 114.49,13.216 155.52,36.687 166.14,76.307 c 10.61,39.623 -13.18,80.463 -53.11,91.163 C 73.101,178.17 32.068,154.7 21.452,115.07 z" inkscape:connector-curvature="0" />
+        <g id="g4173">
+          <rect y="63.644" x="49.512" height="20.766" width="83.47" id="rect4168" style="color:black;fill:#e8d740;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+          <path style="fill:none;stroke:#f5efb0;stroke-width:3.00011;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4158" d="m 133.44,63.282 l 0,21.63 l -83.349,0" inkscape:connector-curvature="0" sodipodi:nodetypes="ccc" />
+          <path sodipodi:nodetypes="ccc" inkscape:connector-curvature="0" d="m 50.091,84.912 l 0,-21.63 l 83.349,0" id="path4160" style="fill:none;stroke:#b28516;stroke-width:3.00011;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+        </g>
+        <g id="g4178" transform="translate(0.96692,43.511)">
+          <rect style="color:black;fill:#e8d740;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" id="rect4180" width="83.47" height="20.766" x="49.512" y="63.644" />
+          <path sodipodi:nodetypes="ccc" inkscape:connector-curvature="0" d="m 133.44,63.282 l 0,21.63 l -83.349,0" id="path4182" style="fill:none;stroke:#f5efb0;stroke-width:3.00011;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+          <path style="fill:none;stroke:#b28516;stroke-width:3.00011;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4184" d="m 50.091,84.912 l 0,-21.63 l 83.349,0" inkscape:connector-curvature="0" sodipodi:nodetypes="ccc" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

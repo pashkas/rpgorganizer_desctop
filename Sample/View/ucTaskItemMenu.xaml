@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Sample.View.ucTaskItemMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Sample.Model"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:view="clr-namespace:Sample.View"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             Background="White"
+             mc:Ignorable="d">
+    <UniformGrid Margin="1"
+                 CacheMode="{DynamicResource CasheResource}"
+                 Columns="1">
+
+        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+        <Button Command="{Binding UcContext.AlternatePlusTaskCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                CommandParameter="{Binding}"
+                Style="{StaticResource ButtonDone}"
+                ToolTip="Атака! Задача выполнена." />
+
+        <Button Command="{Binding UcContext.AlternateMinusTaskCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                CommandParameter="{Binding}"
+                Style="{StaticResource ButtonNotDone}"
+                ToolTip="Защита! Задача не выполнена. (+cntrl перенести на завтра)" />
+
+        <Button Command="{Binding UcContext.SendTaskToTomorowCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                CommandParameter="{Binding}"
+                Style="{StaticResource ButtonRight}"
+                ToolTip="Перенести на завтра" />
+
+        <Button Command="{Binding UcContext.AlterEditTaskCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                CommandParameter="{Binding}"
+                Style="{StaticResource ButtonSettings}"
+                ToolTip="Редактировать задачу" />
+
+        <Button Command="{Binding UcContext.AlternateRemoveTaskCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                CommandParameter="{Binding}"
+                Style="{StaticResource ButtonDelete}"
+                ToolTip="Удалить задачу" />
+
+        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+    </UniformGrid>
+</UserControl>

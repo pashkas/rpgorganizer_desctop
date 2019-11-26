@@ -1,0 +1,148 @@
+﻿<UserControl
+    x:Class="Sample.ucMaterPage.ucMasterAbilitiesTasks"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.ucMaterPage"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:Sample.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewModel:MasterPageViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="500"
+    d:DesignWidth="700"
+    mc:Ignorable="d">
+    <Grid Margin="30,0,30,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--  Заголовок  -->
+        <Grid>
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="28"
+                FontWeight="Bold"
+                Style="{StaticResource TextBlock-SketchWrap}"
+                Text="Настройка заданий навыков"
+                TextAlignment="Left" />
+            <Button
+                Width="50"
+                Height="50"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                CommandParameter="http://nerdistway.blogspot.com/2013/05/blog-post_12.html"
+                Content="?"
+                FontSize="26"
+                FontWeight="Bold"
+                Foreground="White"
+                ToolTip="Справка">
+                <i:Interaction.Behaviors>
+                    <behavior:OpenHyperlinkButtonBehavior />
+                </i:Interaction.Behaviors>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Ellipse Fill="LightBlue" />
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,5,0,0">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <i:Interaction.Behaviors>
+                    <behavior:VerticalScrollBehavior />
+                </i:Interaction.Behaviors>
+                <ItemsControl ItemsSource="{Binding MasterPersProperty.MasterAbilities}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <!--  Название и настройки навыка  -->
+                                <DockPanel>
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                        TextDecorations="Underline" />
+
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <GroupBox Header="Задачи по очереди">
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding IsTasksQued}" />
+                                        </GroupBox>
+                                        <GroupBox Header="Задачи постепенно">
+                                            <CheckBox
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding IsTasksParallel}" />
+                                        </GroupBox>
+                                    </StackPanel>
+
+                                </DockPanel>
+                                <!--  Задачи навыка  -->
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    CanUserSortColumns="False"
+                                    ItemsSource="{Binding MasterRelayTasks}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="3*"
+                                            Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource MasterDataGridProperty}"
+                                            ElementStyle="{StaticResource MasterDataGridProperty}"
+                                            Header="Название"
+                                            HeaderTemplate="{StaticResource MasterDataGridHeader}" />
+                                        <DataGridTextColumn
+                                            Width="Auto"
+                                            Binding="{Binding AimTime, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource MasterDataGridProperty}"
+                                            ElementStyle="{StaticResource MasterDataGridProperty}"
+                                            Header="Минут"
+                                            HeaderTemplate="{StaticResource MasterDataGridHeader}" />
+                                        <DataGridTextColumn
+                                            Width="Auto"
+                                            Binding="{Binding AimVal, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource MasterDataGridProperty}"
+                                            ElementStyle="{StaticResource MasterDataGridProperty}"
+                                            Header="Раз"
+                                            HeaderTemplate="{StaticResource MasterDataGridHeader}" />
+                                        <DataGridTemplateColumn Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <DataGrid
+                                                        AutoGenerateColumns="False"
+                                                        CanUserSortColumns="False"
+                                                        ItemsSource="{Binding States, Mode=OneWay}">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn
+                                                                Width="*"
+                                                                Binding="{Binding Tittle, UpdateSourceTrigger=PropertyChanged}"
+                                                                EditingElementStyle="{StaticResource MasterDataGridProperty}"
+                                                                ElementStyle="{StaticResource MasterDataGridProperty}"
+                                                                Header="Состояния" />
+
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

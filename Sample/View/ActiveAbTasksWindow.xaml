@@ -1,0 +1,57 @@
+﻿<Window x:Class="Sample.View.ActiveAbTasksWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:Sample.View"
+        xmlns:model="clr-namespace:Sample.Model"
+        Title="ActiveAbTasksWindow"
+        Style="{StaticResource FullWindowStyle}">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+
+    <Border Margin="0"
+            VerticalAlignment="Stretch"
+            Background="{StaticResource OldPaperBackground}"
+            Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+
+            <local:ActiveAbTasksView x:Name="ucActiveTasks"
+                                     Grid.Row="1"
+                                     Margin="{StaticResource ToolMargin}" />
+
+            <Button Grid.Row="2"
+                    Grid.Column="0"
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="{StaticResource TopBrush}"
+                    Click="ButtonBase_OnClick"
+                    Content="Ок"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+
+
+
+
+
+
+
+
+
+
+
+        </Grid>
+    </Border>
+</Window>

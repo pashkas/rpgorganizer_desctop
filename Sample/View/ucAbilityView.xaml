@@ -1,0 +1,514 @@
+﻿<UserControl
+    x:Class="Sample.View.ucAbilityView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:DotNetLead.DragDrop.UI.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:view="clr-namespace:Sample.View"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    DataContext="{Binding ucAbilitisVM, Source={StaticResource Locator}}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <model:nullToVisibleConverter x:Key="NullToVisibleConverter" />
+        <model:MapQwestOpacityConverter x:Key="MapQwestOpacityConverter" />
+        <model:IsElementVisibleConverter x:Key="IsElementVisibleConverter" />
+        <model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <model:AbilityNeedConverter x:Key="AbilityNeedConverter" />
+        <!--  ReSharper disable once Xaml.RedundantResource  -->
+        <Style x:Key="GroupAbilityStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                        <Expander
+                            Margin="1"
+                            HorizontalContentAlignment="Stretch"
+                            Header="{Binding Name}"
+                            IsExpanded="True">
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=ActualWidth}"
+                                        Background="#FF9E7E51"
+                                        CornerRadius="2">
+                                        <TextBlock
+                                            Margin="2"
+                                            HorizontalAlignment="Center"
+                                            Foreground="DarkSlateGray"
+                                            Style="{StaticResource TextBlock-Sketch}"
+                                            Text="{Binding}"
+                                            TextAlignment="Center" />
+                                    </Border>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <ItemsPresenter Margin="2" />
+                        </Expander>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <model:ItemsCountVisibilityConverter x:Key="ItemsCountVisibilityConverter" />
+    </UserControl.Resources>
+
+    <!--  Ограничения для количества доступных скиллов  -->
+
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="{StaticResource PipBoyWidth}" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Margin="5,5,5,0"
+            Style="{StaticResource PipBoyBorder}"
+            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <DockPanel>
+                <DockPanel Visibility="Collapsed">
+                    <Image
+                        Height="30"
+                        Margin="2"
+                        Source="../Images/diamond.png" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        DockPanel.Dock="Right"
+                        FontSize="22"
+                        Foreground="Green"
+                        Style="{StaticResource TextBlock-SketchWrap}">
+                        <TextBlock.Inlines>
+                            <Run Text="{Binding PersProperty.AbilitisPoints, Mode=OneWay}" />
+                        </TextBlock.Inlines>
+                    </TextBlock>
+                </DockPanel>
+                <!--  Настройка отображения скиллов  -->
+                <!--  Добавить скилл  -->
+                <UniformGrid Rows="1">
+                    <Button
+                        Width="auto"
+                        Command="{Binding AddAbilitiModelCommand, Mode=OneWay}"
+                        Style="{StaticResource ButtonAdd}"
+                        ToolTip="Добавление" />
+                    <Button
+                        Command="{Binding ImportAbCommand}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource ButtonImport}"
+                        ToolTip="Импорт"
+                        Visibility="Collapsed" />
+                </UniformGrid>
+            </DockPanel>
+        </Border>
+
+        <!--  Region (ПипБой)  -->
+        <Grid
+            Name="PipBoy"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border DataContext="{Binding SelectedAbilitiModelProperty}" Style="{StaticResource PipBoyBorder}">
+
+                <Grid Margin="10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <UniformGrid
+                        Name="AbilityMenu"
+                        Rows="1"
+                        Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        <Button
+                            Width="Auto"
+                            Command="{Binding DataContext.EditAbilityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonSettings}"
+                            ToolTip="Настроить навык" />
+                        <Button
+                            Width="Auto"
+                            Command="{Binding DataContext.DeleteAbilitiModelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonDelete}"
+                            ToolTip="Удаление навыка" />
+                    </UniformGrid>
+                    <DockPanel Grid.Row="1">
+                        <TextBlock
+                            Margin="2"
+                            DockPanel.Dock="Top"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NameOfProperty}"
+                            TextAlignment="Center" />
+
+                        <Grid Margin="2" DockPanel.Dock="Bottom">
+                            <view:ucProgressBarWithScale
+                                IsShowScale="Visible"
+                                Maximum="{Binding Path=(model:StaticMetods.MaxAbLevel), Mode=OneWay}"
+                                Minimum="0"
+                                Text="{Binding RangName, Mode=OneWay}"
+                                Value="{Binding ValueToProgress, Mode=OneWay}" />
+                        </Grid>
+
+                        <Button
+                            Command="{Binding DataContext.EditAbilityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonWidthImageStyle}">
+                            <Image Source="{Binding PictureProperty}" Style="{StaticResource PipBoyImage}" />
+                        </Button>
+                    </DockPanel>
+
+                    <ScrollViewer
+                        Grid.Row="2"
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource ScrollViewer-Sketch}"
+                        VerticalScrollBarVisibility="Auto"
+                        Visibility="{Binding Converter={StaticResource NullToVisibleConverter}}">
+                        <StackPanel Margin="15,0,0,0">
+                            <Border Visibility="{Binding UcElementRewardsViewModel.IsVisible}">
+                                <view:ucElementRewardsView
+                                    Margin="3"
+                                    HorizontalAlignment="Center"
+                                    DataContext="{Binding UcElementRewardsViewModel}" />
+                            </Border>
+
+                            <TextBlock Style="{StaticResource about}" Text="{Binding DescriptionProperty}" />
+
+                            <StackPanel>
+                                <!--  На че влияет  -->
+                                <ItemsControl
+                                    Margin="2"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    ItemsPanel="{StaticResource LstRelaysItemsPanel}"
+                                    ItemsSource="{Binding RelToCharacts}"
+                                    Visibility="{Binding RelToCharacts, Converter={StaticResource ItemsCountVisibilityConverter}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <DockPanel>
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                                        TextAlignment="Center">
+                                                        <Hyperlink
+                                                            Command="{Binding DataContext.SelectedAbilitiModelProperty.ShowComplecsNeedItemAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding Item1}"
+                                                            Style="{StaticResource HyperStyle2}">
+                                                            <Run>
+                                                                <Run.Text>
+                                                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                        <Binding Path="Item1.NameOfProperty" />
+                                                                        <Binding Source=" (" />
+                                                                        <Binding Path="Item2" />
+                                                                        <Binding Source=")" />
+                                                                    </MultiBinding>
+                                                                </Run.Text>
+                                                            </Run>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <TextBlock
+                                                        DockPanel.Dock="Right"
+                                                        FontSize="14"
+                                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                                        Text="{Binding Item1.RangName}"
+                                                        TextAlignment="Center" />
+
+                                                    <Line
+                                                        Grid.Column="2"
+                                                        Margin="1,1,1,3"
+                                                        VerticalAlignment="Bottom"
+                                                        Stroke="Black"
+                                                        StrokeDashArray="2 2"
+                                                        X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!--  Ссылки на квесты  -->
+                                <ItemsControl
+                                    Name="LinksQwests"
+                                    Margin="2"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    ItemsPanel="{StaticResource LstRelaysItemsPanel}"
+                                    ItemsSource="{Binding DataContext.SelectedAbilitiModelProperty.NotDoneLinkedQwests, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    Visibility="{Binding DataContext.SelectedAbilitiModelProperty.NotDoneLinkedQwests, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ItemsCountVisibilityConverter}}">
+                                    <!--  Visibility="{Binding HasItems, ElementName=LinksQwests, Converter={StaticResource BoolToVisibilityConverter}}"  -->
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    TextAlignment="Center">
+                                                    <Hyperlink
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.ShowQwestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource HyperStyle2}">
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                    <Binding Source="~ " />
+                                                                    <Binding Path="NameOfProperty" />
+                                                                </MultiBinding>
+                                                            </Run.Text>
+                                                        </Run>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!--  Условия прокачки  -->
+                                <ItemsControl
+                                    Margin="2"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    ItemsPanel="{StaticResource LstRelaysItemsPanel}"
+                                    ItemsSource="{Binding PipBoyNeeds}"
+                                    Visibility="{Binding PipBoyNeeds, Converter={StaticResource ItemsCountVisibilityConverter}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    TextAlignment="Center">
+                                                    <Hyperlink
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.ShowComplecsNeedItemAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource HyperStyle2}">
+                                                        <Run>
+                                                            <Run.Text>
+                                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                    <Binding Source=" *  " />
+                                                                    <Binding Path="NameProperty" />
+                                                                    <Binding Path="NeedTask.TaskProperty.PlusNameOf2" />
+                                                                    <Binding Path="NeedTask.TaskProperty.SubTasksStringAb" />
+                                                                </MultiBinding>
+                                                            </Run.Text>
+                                                        </Run>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <TextBlock
+                                Margin="2"
+                                FontSize="14"
+                                Foreground="Red"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                Text="{Binding ClearedNotAllowReqwirements}"
+                                TextAlignment="Center"
+                                Visibility="{Binding ClearedNotAllowReqwirements, Converter={StaticResource NullToVisibleConverter}, ConverterParameter=string}" />
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border
+            Name="AbilitisList"
+            Grid.Row="1"
+            Grid.Column="0"
+            Style="{StaticResource PipBoyBorder}">
+            <ListBox
+                x:Name="gridChar"
+                Grid.Column="0"
+                ItemContainerStyle="{DynamicResource ListBoxDragDropStyle}"
+                ItemsSource="{Binding ChaAbilitises}"
+                SelectedValue="{Binding SelectedAbilitiModelProperty}"
+                Style="{StaticResource AbChaPanel2}">
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <ScrollViewer
+                            CanContentScroll="False"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{DynamicResource ScrollViewer-Sketch}"
+                            VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="model:AbilitiModel">
+                        <Border
+                            Grid.Column="0"
+                            Margin="{StaticResource ChaAbQwMargin}"
+                            Background="White"
+                            BorderBrush="YellowGreen"
+                            BorderThickness="0">
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding DataContext.EditAbilityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Gesture="LeftDoubleClick" />
+                            </Border.InputBindings>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    Grid.Column="0"
+                                    Background="Transparent"
+                                    Command="{Binding DataContext.UpAbLevelAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource ButtonUpLittle}"
+                                    Visibility="{Binding IsBuyVisibility}" />
+
+                                <ProgressBar
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Maximum="{Binding Path=(model:StaticMetods.MaxAbLevel), Mode=OneWay}"
+                                    Opacity="{Binding Opacity}"
+                                    Style="{StaticResource AttriburtesProgressBarStyle}"
+                                    Value="{Binding ValueToProgress, Mode=OneWay}" />
+                                <!--  Value="{Binding CellValue, Mode=OneWay, IsAsync=True}"  -->
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Bottom"
+                                    Foreground="{Binding ForeGroundd}"
+                                    Opacity="{Binding Opacity}"
+                                    Style="{StaticResource TextBlock-SketchWrap}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                            <Binding Path="PlusAbName" />
+                                            <Binding Path="NameOfProperty" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+
+                                <Line
+                                    Grid.Column="2"
+                                    Margin="1,1,1,3"
+                                    VerticalAlignment="Bottom"
+                                    Opacity="{Binding ForeGroundd}"
+                                    Stroke="DarkSlateGray"
+                                    StrokeDashArray="2 2"
+                                    X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+
+                                <TextBlock
+                                    Grid.Column="3"
+                                    VerticalAlignment="Bottom"
+                                    DockPanel.Dock="Right"
+                                    Foreground="{Binding ForeGroundd}"
+                                    Opacity="{Binding Opacity}"
+                                    Style="{StaticResource TextBlock-SketchWrap}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                            <Binding Path="RangName" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <!--<ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                                    <TextBlock
+                                        Background="LightSteelBlue"
+                                        Style="{StaticResource TextBlock-Sketch}"
+                                        Text="{Binding Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListBox.GroupStyle>-->
+            </ListBox>
+        </Border>
+        <!--  EndRegion  -->
+
+
+        <!--  Дерево навыков  -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="5,0,5,5"
+            Style="{StaticResource PipBoyBorder}"
+            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+            <Button
+                Width="auto"
+                Height="{StaticResource PipBoyHeyght}"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Command="{Binding ShowAbTreeCommand}"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Дерево навыков">
+                <ContentControl Margin="1" Template="{StaticResource ContentControlQwests}" />
+            </Button>
+
+        </Border>
+
+        <!--<Border
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="5,0,5,5"
+            Style="{StaticResource PipBoyBorder}">
+            <DockPanel>
+                <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Left">
+                    <TextBlock
+                        Margin="2"
+                        Style="{StaticResource TextBlock-Sketch}"
+                        Text="Скрывать неактивные? " />
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        FontStyle="Normal"
+                        IsChecked="{Binding hideNotActiveAbilitisProperty}"
+                        Style="{StaticResource CheckBox-Sketch}" />
+                </WrapPanel>
+        -->
+        <!--  Поиск  -->
+        <!--
+                <DockPanel Margin="2" DockPanel.Dock="Right">
+                    <Button
+                        Width="25"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Background="Transparent"
+                        Command="{Binding ClearFilterCommand}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource ButtonDelete}"
+                        ToolTip="Сбросить фильтр" />
+
+                    <xctk:WatermarkTextBox
+                        VerticalContentAlignment="Center"
+                        Text="{Binding FilterProperty, UpdateSourceTrigger=PropertyChanged}"
+                        Watermark="поиск..." />
+                </DockPanel>
+            </DockPanel>
+        </Border>-->
+    </Grid>
+</UserControl>

@@ -1,0 +1,276 @@
+﻿<UserControl
+    x:Class="Sample.View.ucViewChangesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Sample"
+    xmlns:view="clr-namespace:Sample.View"
+    x:Name="userControl"
+    d:DesignHeight="640"
+    d:DesignWidth="800"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Model:ChangeConverter x:Key="ChangeConverter" />
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Model:barValueConverter x:Key="barValueConverter" />
+        <Model:UniformGridColumnsConverter x:Key="UniformGridColumnsConverter" />
+        <Model:EmptyStringVisibilityConverter x:Key="EmptyStringVisibilityConverter" />
+        <sample:ViewChangesMinMaxConverter x:Key="ViewChangesMinMaxConverter" />
+        <DataTemplate x:Key="changesItemTemplate" DataType="Model:viewChangesModel">
+            <Border
+                Margin="4"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1.5">
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="225" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--  Картинка  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="White"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="0,0,1.5,0">
+                        <Image
+                            Margin="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Source="{Binding ImageProperty}"
+                            Style="{StaticResource ImageStyle}" />
+                    </Border>
+
+                    <Grid
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="0"
+                        Visibility="{Binding IsShowProgress, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                        <!--  Прогресс с анимацией!  -->
+                        <ProgressBar
+                            x:Name="Bar"
+                            Grid.RowSpan="2"
+                            MinHeight="30"
+                            Margin="0"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Foreground="{Binding Цвет}"
+                            Style="{StaticResource ProgressBar-Sketch}"
+                            Visibility="{Binding Цвет, Converter={StaticResource ChangeConverter}, ConverterParameter=vis}"
+                            Value="{Binding ValueProperty}">
+                            <ProgressBar.Minimum>
+                                <MultiBinding Converter="{StaticResource ViewChangesMinMaxConverter}" ConverterParameter="min">
+                                    <Binding Path="." />
+                                    <Binding Path="Value" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </ProgressBar.Minimum>
+                            <ProgressBar.Maximum>
+                                <MultiBinding Converter="{StaticResource ViewChangesMinMaxConverter}" ConverterParameter="max">
+                                    <Binding Path="." />
+                                    <Binding Path="Value" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </ProgressBar.Maximum>
+
+                            <!--  Foreground="{Binding ChangeProperty, Converter={StaticResource ChangeConverter}, ConverterParameter=+}"  -->
+                            <ProgressBar.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Value"
+                                                From="{Binding from}"
+                                                To="{Binding to}"
+                                                Duration="{StaticResource BarAnimationSpeed}" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </ProgressBar.Triggers>
+                        </ProgressBar>
+
+                        <Grid Grid.RowSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="15" />
+                            </Grid.RowDefinitions>
+                            <!--<UniformGrid
+                                x:Name="riska1"
+                                Grid.Row="0"
+                                Rows="1"
+                                Visibility="{Binding IsShowScale, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0,0" />
+                            </UniformGrid>-->
+
+                            <!--  Название и изменение  -->
+                            <Viewbox
+                                Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                StretchDirection="DownOnly">
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                        TextAlignment="Center">
+                                        <TextBlock.Inlines>
+                                            <Run Text="{Binding названиеХарактеристики}" />
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Style="{StaticResource TextBlock-SketchWrap}">
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource ViewChangesMinMaxConverter}" ConverterParameter="rang">
+                                                    <Binding Path="." />
+                                                    <Binding ElementName="Bar" Path="Value" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock x:Name="Block" Visibility="{Binding IsValVisibleProperty}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource ViewChangesMinMaxConverter}" ConverterParameter="vval">
+                                                    <Binding Path="." />
+                                                    <Binding ElementName="Bar" Path="Value" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource ViewChangesMinMaxConverter}" ConverterParameter="rang2">
+                                                    <Binding Path="." />
+                                                    <Binding ElementName="Bar" Path="Value" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Viewbox>
+
+                            <!--<UniformGrid
+                                x:Name="riska2"
+                                Grid.Row="2"
+                                Rows="1"
+                                Visibility="{Binding IsShowScale, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0.5,0" />
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0,0" />
+                            </UniformGrid>-->
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="levTemplate" DataType="Model:viewChangesModel">
+            <Border
+                Margin="1"
+                Background="White"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1">
+                <Grid Margin="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Название!  -->
+                    <TextBlock
+                        Margin="0"
+                        FontSize="17"
+                        FontWeight="Bold"
+                        Style="{StaticResource BasicTextBlock-Sketch}"
+                        Text="{Binding названиеХарактеристики}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+
+                    <!--  Картинка!  -->
+                    <Image
+                        Grid.Row="3"
+                        Source="{Binding ImageProperty}"
+                        Stretch="Uniform"
+                        Style="{StaticResource ImageStyle}"
+                        Visibility="{Binding DataContext.HideImagePropertysProperty, ConverterParameter=инверсия, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+
+                    <!--  Прогресс с анимацией!  -->
+                    <ProgressBar
+                        x:Name="Bar"
+                        Grid.Row="4"
+                        Margin="2"
+                        Foreground="{Binding Цвет}"
+                        Maximum="{Binding MaxValueProperty}"
+                        Minimum="{Binding MinValueProperty}"
+                        Style="{StaticResource ProgressBar-Sketch}"
+                        Value="{Binding ValueProperty}">
+                        <ProgressBar.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Value"
+                                            From="{Binding from}"
+                                            To="{Binding to}"
+                                            Duration="{StaticResource BarAnimationSpeed}" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ProgressBar.Triggers>
+                    </ProgressBar>
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Margin="2"
+                        HorizontalAlignment="Center"
+                        FontSize="17"
+                        Style="{StaticResource BasicTextBlock-Sketch}"
+                        Text="{Binding ChangeProperty}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModel:ucViewChangesViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <ItemsControl
+            Margin="5"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            ItemTemplate="{StaticResource changesItemTemplate}"
+            ItemsSource="{Binding ChangesProperty}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            Visibility="{Binding isLeveableChangesShow, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding ChangesProperty.Count, Converter={StaticResource UniformGridColumnsConverter}, ConverterParameter=changes}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
+</UserControl>

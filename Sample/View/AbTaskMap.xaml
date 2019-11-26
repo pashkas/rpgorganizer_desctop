@@ -1,0 +1,44 @@
+﻿<Window x:Class="Sample.View.AbTaskMap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:model="clr-namespace:Sample.Model"
+        xmlns:view="clr-namespace:Sample.View"
+        xmlns:viewModel="clr-namespace:Sample.ViewModel"
+        Title="AbTaskMap"
+        Width="300"
+        Height="300"
+        Style="{StaticResource FullWindowStyle}">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Border Background="{StaticResource PaperTexture}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <view:TaskMapUserControl Margin="2" AddTaskVisibility="Collapsed">
+                <view:TaskMapUserControl.DataContext>
+                    <viewModel:AbTaskMapViewModel />
+                </view:TaskMapUserControl.DataContext>
+            </view:TaskMapUserControl>
+
+            <Button x:Name="btnClose"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="{StaticResource TopBrush}"
+                    Content="Ок"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Закрыть окно" />
+        </Grid>
+    </Border>
+</Window>

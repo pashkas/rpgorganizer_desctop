@@ -1,0 +1,913 @@
+﻿<UserControl
+    x:Class="Sample.View.UcTasksSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Sample"
+    xmlns:svg="clr-namespace:Svg;assembly=Svg"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    d:DesignWidth="700"
+    Background="{StaticResource OpaBacground}"
+    FocusManager.FocusedElement="{Binding ElementName=nameTask}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Model:IsElementVisibleConverter x:Key="IsElementVisibleConverter" />
+        <Model:StringToColorConverter x:Key="StringToColorConverter" />
+        <Model:IntervalVisibleConverter x:Key="IntervalVisibleConverter" />
+        <DataTemplate x:Key="IntervalsTemplate" DataType="Model:IntervalsModel">
+            <TextBlock Text="{Binding NameInterval}" />
+        </DataTemplate>
+        <Style x:Key="WrapDataGridTextStyle">
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        </Style>
+        <CollectionViewSource
+            x:Key="stsksView"
+            IsLiveSortingRequested="True"
+            Source="{Binding SelectedTaskProperty.SubTasks}">
+            <!--<CollectionViewSource.LiveSortingProperties>
+                <system:String>isDone</system:String>
+            </CollectionViewSource.LiveSortingProperties>-->
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="isDone" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <sample:TimeBackgroundConverter x:Key="TimeBackgroundConverter" />
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModel:UcTasksSettingsViewModel />
+    </UserControl.DataContext>
+    <Border
+        Margin="0"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border Style="{StaticResource HeaderBorder}">
+                <TextBlock Style="{StaticResource HeaderText}">
+                    <TextBlock Text="Настройка монстра ''" />
+                    <TextBlock Text="{Binding Text, ElementName=nameTask}" />
+                    <TextBlock Text="''" />
+                </TextBlock>
+            </Border>
+
+            <Grid
+                Grid.Row="1"
+                Margin="{StaticResource EditItemGridMargin}"
+                DataContext="{Binding SelectedTaskProperty}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ScrollViewer Style="{StaticResource EditableItemScroll}">
+                    <i:Interaction.Behaviors>
+                        <behavior:VerticalScrollBehavior />
+                    </i:Interaction.Behaviors>
+                    <DockPanel Margin="{StaticResource InfoMarg}">
+                        <StackPanel DockPanel.Dock="Top">
+
+                            <!--  Region (Картинка)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" />
+                                <Button
+                                    Background="Transparent"
+                                    Command="{Binding DataContext.AddImagePropertyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="добавление"
+                                    Style="{StaticResource ButtonWithImageStyle}">
+                                    <local:ucImageInTool Picture="{Binding ImageProperty}" />
+                                </Button>
+                            </DockPanel>
+
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Название)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Название" />
+                                <DockPanel>
+                                    <TextBlock
+                                        Margin="4,0,0,0"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                        Visibility="{Binding IsWordHardness, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                <Binding Source="(" />
+                                                <Binding Path="plusName3" />
+                                                <Binding Source=")" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <Button
+                                        Background="Transparent"
+                                        Command="{Binding DataContext.ImgGenFromWord, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        Content=" веб изо! "
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource Button-Sketch}"
+                                        Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+                                    <xctk:AutoSelectTextBox
+                                        x:Name="nameTask"
+                                        Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                        TabIndex="0"
+                                        Text="{Binding NameOfProperty, NotifyOnValidationError=True, ValidatesOnExceptions=True}" />
+                                </DockPanel>
+                            </DockPanel>
+
+                            <!--  EndRegion  -->
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Ссылка" />
+                                <xctk:AutoSelectTextBox
+                                    Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                    TabIndex="1"
+                                    Text="{Binding Link, NotifyOnValidationError=True, ValidatesOnExceptions=True}" />
+                            </DockPanel>
+
+                            <!--  Влияние на характеристики  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.IsSetViz, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Влияние" />
+                                <ItemsControl ItemsSource="{Binding DataContext.RelaysToChas, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border
+                                                Margin="2"
+                                                BorderBrush="{StaticResource BorderBrush}"
+                                                BorderThickness="1">
+                                                <StackPanel
+                                                    Margin="4"
+                                                    HorizontalAlignment="Left"
+                                                    Orientation="Horizontal">
+                                                    <ComboBox
+                                                        MinWidth="70"
+                                                        Margin="0,0,5,0"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalContentAlignment="Center"
+                                                        DisplayMemberPath="NameProperty"
+                                                        ItemsSource="{Binding NeedAbility.Koefs}"
+                                                        SelectedValue="{Binding NeedAbility.KoeficientProperty}"
+                                                        SelectedValuePath="KProperty"
+                                                        Style="{StaticResource ComboBoxStyle}"
+                                                        ToolTip="Влияние" />
+                                                    <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="{Binding Charact.NameOfProperty}" />
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+
+
+                            <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Foreground="Green" Style="{StaticResource PropertyNameStyle}" Text="Вызов?" />
+                                <CheckBox VerticalAlignment="Bottom" IsChecked="{Binding IsChalange}" ToolTip="Дополнительный опыт за экстра сложное преодоление себя."></CheckBox>
+                                </DockPanel>-->
+
+                            <!--  Region (ТипТип задачи)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Тип" />
+                                <ComboBox
+                                    ItemsSource="{Binding DataContext.AllowTypes, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    SelectedItem="{Binding DataContext.TaskTypeProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    Style="{StaticResource ComboBoxStyle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="{Binding NameOfTypeOfTask}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Статус)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Статус" />
+
+                                <ComboBox
+                                    ItemsSource="{Binding DataContext.PersProperty.Statuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    SelectedItem="{Binding DataContext.TaskStatusProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    Style="{StaticResource ComboBoxStyle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="{Binding NameOfStatus}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Контекст)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Контекст" />
+
+                                <ComboBox
+                                    ItemsSource="{Binding DataContext.PersProperty.Contexts, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    SelectedItem="{Binding DataContext.TaskContextProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    Style="{StaticResource ComboBoxStyle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="{Binding NameOfContext}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Дата)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Дата" />
+
+                                <DockPanel>
+                                    <DockPanel
+                                        DockPanel.Dock="Right"
+                                        LastChildFill="False"
+                                        Visibility="{Binding IsTimeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel
+                                            Margin="5,0"
+                                            DockPanel.Dock="Right"
+                                            Orientation="Horizontal"
+                                            Visibility="{Binding DataContext.PersProperty.PersSettings.IsSmartTaskSort, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+                                            <Button
+                                                Background="{Binding TimeProperty, Converter={StaticResource TimeBackgroundConverter}, ConverterParameter=утро}"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.QwickSetTaskTimeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="утро"
+                                                Content=" утро "
+                                                Style="{StaticResource Button-Sketch}" />
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="|" />
+                                            <Button
+                                                Background="{Binding TimeProperty, Converter={StaticResource TimeBackgroundConverter}, ConverterParameter=день}"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.QwickSetTaskTimeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="день"
+                                                Content="день"
+                                                Style="{StaticResource Button-Sketch}" />
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="|" />
+                                            <Button
+                                                Background="{Binding TimeProperty, Converter={StaticResource TimeBackgroundConverter}, ConverterParameter=вечер}"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.QwickSetTaskTimeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="вечер"
+                                                Content="вечер"
+                                                Style="{StaticResource Button-Sketch}" />
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="|" />
+                                            <Button
+                                                Background="{Binding TimeProperty, Converter={StaticResource TimeBackgroundConverter}, ConverterParameter=нет}"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.QwickSetTaskTimeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="нет"
+                                                Content="нет"
+                                                Style="{StaticResource Button-Sketch}" />
+                                        </StackPanel>
+                                        <xctk:TimePicker
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            FontFamily="{StaticResource FontFamily-Sketch}"
+                                            FontSize="{StaticResource SizeDouble-Sketch}"
+                                            Foreground="{StaticResource BaseForeground-Sketch}"
+                                            StartTime="05:00"
+                                            TimeInterval="0:30:0"
+                                            ToolTip="Время начала задачи."
+                                            Visibility="Collapsed"
+                                            Value="{Binding TimeProperty}" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <StackPanel Margin="5,0" Orientation="Horizontal">
+                                            <Button
+                                                Background="White"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.TodayTomorrowDateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="НачалоСегодня"
+                                                Content="сегодня"
+                                                Style="{StaticResource Button-Sketch}" />
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="|" />
+
+                                            <Button
+                                                Background="White"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding DataContext.TodayTomorrowDateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="НачалоЗавтра"
+                                                Content="завтра"
+                                                Style="{StaticResource Button-Sketch}" />
+                                        </StackPanel>
+                                        <DatePicker
+                                            Background="White"
+                                            BorderBrush="{StaticResource BaseBorder-Sketch}"
+                                            BorderThickness="{StaticResource BaseBorderThickness}"
+                                            FontFamily="{StaticResource FontFamily-Sketch}"
+                                            FontSize="{StaticResource SizeDouble-Sketch}"
+                                            Foreground="{StaticResource BaseForeground-Sketch}"
+                                            SelectedDate="{Binding BeginDateProperty}"
+                                            ToolTip="Дата с которой задача появится в списке задач. Для повторяющихся задач одновременно является и датой завершения." />
+                                    </DockPanel>
+                                </DockPanel>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Тип повтора)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Повторение" />
+
+                                <ListBox
+                                    x:Name="cmbInterEdit"
+                                    HorizontalContentAlignment="Center"
+                                    ItemsSource="{Binding DataContext.IntervalsOfTime, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    SelectedValue="{Binding DataContext.IntervalProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    SelectedValuePath="Interval">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <Border
+                                                            Name="Border"
+                                                            Margin="0"
+                                                            SnapsToDevicePixels="true">
+                                                            <ContentPresenter />
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsSelected" Value="true">
+                                                                <Setter TargetName="Border" Property="Background" Value="Yellow" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="true">
+                                                                <Setter TargetName="Border" Property="Background" Value="{StaticResource MouseOverBackground-Sketch}" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Margin="0,5"
+                                                Style="{StaticResource TextBlock-SketchWrap}"
+                                                Text="{Binding NameInterval}"
+                                                TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid IsItemsHost="True" Rows="1" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Интервал повтора)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.IntervalProperty, Converter={StaticResource IntervalVisibleConverter}, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Интервал" />
+                                <xctk:AutoSelectTextBox
+                                    MinWidth="60"
+                                    Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                    Text="{Binding DataContext.IntervalValueProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
+                                    TextAlignment="Center" />
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <!--  Region (Дни недели)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.IntervalProperty, ConverterParameter=ДниНедели, Converter={StaticResource IntervalVisibleConverter}, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Дни недели" />
+
+                                <ItemsControl
+                                    Background="White"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    ItemsSource="{Binding DaysOfWeekRepeats}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid IsItemsHost="True" Rows="1" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox
+                                                Margin="2"
+                                                Content="{Binding NameDayOfWeekProperty}"
+                                                IsChecked="{Binding CheckedProperty}"
+                                                Style="{StaticResource CheckBox-Sketch}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <ei:CallMethodAction MethodName="TaskBalanceDefoults" TargetObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Требования" />
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Style="{StaticResource ButtonImport}" ToolTip="Добавить монстра, которого нужно победить чтобы этот монстр был доступен для сражения!">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <ei:ChangePropertyAction
+                                                    PropertyName="IsOpen"
+                                                    TargetName="pAddPrevAction"
+                                                    Value="true" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
+                                    <Popup
+                                        x:Name="pAddPrevAction"
+                                        Width="400"
+                                        AllowsTransparency="True"
+                                        Placement="Center"
+                                        PopupAnimation="Fade"
+                                        StaysOpen="True">
+                                        <Border
+                                            Background="White"
+                                            BorderBrush="{StaticResource BorderBrush}"
+                                            BorderThickness="2">
+                                            <Grid Margin="2">
+                                                <StackPanel>
+                                                    <UniformGrid Columns="1">
+                                                        <Grid Margin="2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <xctk:WatermarkTextBox Text="{Binding DataContext.PrevActionsFilterProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}" Watermark="фильтр" />
+                                                            <Button
+                                                                Grid.Column="1"
+                                                                Command="{Binding DataContext.ClearPrevActionsFilterCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                                Style="{StaticResource Button-Sketch}">
+                                                                <ContentControl Height="25" Template="{StaticResource ContentControlDelete}" />
+                                                            </Button>
+                                                        </Grid>
+
+                                                        <ComboBox
+                                                            x:Name="cmbNext"
+                                                            Margin="2"
+                                                            ItemsSource="{Binding DataContext.SortedTasks, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                                            <ComboBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock
+                                                                        Width="450"
+                                                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                                                        Text="{Binding NameOfProperty}" />
+                                                                </DataTemplate>
+                                                            </ComboBox.ItemTemplate>
+                                                        </ComboBox>
+                                                    </UniformGrid>
+
+                                                    <UniformGrid
+                                                        Height="{StaticResource DownButtonHeight}"
+                                                        Margin="2"
+                                                        Rows="1">
+                                                        <Button
+                                                            Background="{StaticResource TopBrush}"
+                                                            Command="{Binding DataContext.AddPrevTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                            CommandParameter="{Binding SelectedItem, ElementName=cmbNext}"
+                                                            Content="Ок"
+                                                            Foreground="White"
+                                                            Style="{StaticResource Button-Sketch}">
+                                                            <i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="Click">
+                                                                    <ei:ChangePropertyAction
+                                                                        PropertyName="IsOpen"
+                                                                        TargetName="pAddPrevAction"
+                                                                        Value="false" />
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </Button>
+                                                        <Button
+                                                            Background="{StaticResource TopBrush}"
+                                                            Content="Отмена"
+                                                            Foreground="White"
+                                                            Style="{StaticResource Button-Sketch}">
+                                                            <i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="Click">
+                                                                    <ei:ChangePropertyAction
+                                                                        PropertyName="IsOpen"
+                                                                        TargetName="pAddPrevAction"
+                                                                        Value="false" />
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </Button>
+                                                    </UniformGrid>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Popup>
+                                    <ItemsControl
+                                        Grid.Row="1"
+                                        Margin="2"
+                                        ItemsSource="{Binding DataContext.PreviewsActions, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border
+                                                    Margin="1"
+                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="{StaticResource NeedsImWidth}" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <local:ucImageInTool Picture="{Binding PictureProperty}" />
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="2"
+                                                            Style="{StaticResource TextBlock-Sketch}"
+                                                            Text="{Binding NameOfProperty}"
+                                                            TextWrapping="Wrap" />
+                                                        <Button
+                                                            Grid.Column="2"
+                                                            Command="{Binding DataContext.DeleteLinkCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                            CommandParameter="{Binding}"
+                                                            Style="{StaticResource ToolButtonStyle}"
+                                                            ToolTip="Удалить требование">
+                                                            <ContentControl Template="{StaticResource ContentControlDelete}" />
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </DockPanel>
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <UniformGrid Rows="1">
+                                    <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Множитель успех" />
+                                        <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding BoosterOfDone}" />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Множитель провал" />
+                                        <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding BoosterOfFail}" />
+                                    </DockPanel>
+                                </UniformGrid>
+                            </DockPanel>
+
+
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Волна" />
+                                <ComboBox
+                                    DisplayMemberPath="Item2"
+                                    ItemsSource="{Binding DataContext.PersProperty.PersSettings.WaveNames, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    SelectedValue="{Binding Wave}"
+                                    SelectedValuePath="Item1"
+                                    Style="{StaticResource ComboBoxStyle}"
+                                    ToolTip="Волна. Нужно для сортировки. Задачи большей волны появляются только после выполнения задач меньшей." />
+                            </DockPanel>
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Цвет" />
+                                <xctk:ColorPicker
+                                    AvailableColorsHeader="Цвета"
+                                    RecentColorsHeader="Последние"
+                                    SelectedColor="{Binding BackGroundColor}"
+                                    ShowAdvancedButton="False"
+                                    ShowRecentColors="False"
+                                    StandardColorsHeader="Стандартные цвета" />
+                            </DockPanel>
+
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Босс?" />
+                                <CheckBox
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsBoss}"
+                                    ToolTip="Будет выделено в списке задач цветом и картинкой более крутого монстра." />
+                            </DockPanel>
+
+                            <!--  Полностью выполнена?  -->
+                            <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding IsFullDoneVisibility}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Окончательно побежден?" />
+                                <CheckBox
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsDelProperty}"
+                                    ToolTip="Больше не будет повторяться" />
+                            </DockPanel>-->
+
+                            <!--  Условия активности  -->
+                            <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding IsReqVisibility}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="" />
+                                <TextBlock
+                                    Foreground="Red"
+                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                    Text="{Binding Reqvirements}" />
+                            </DockPanel>-->
+
+                            <!--  Награды?  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding UcElementRewardsViewModel.IsVisible}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Награды" />
+                                <local:ucElementRewardsView DataContext="{Binding UcElementRewardsViewModel}" />
+                            </DockPanel>
+                        </StackPanel>
+                        <!--  Описание  -->
+                        <DockPanel Grid.Row="1" Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock
+                                VerticalAlignment="Top"
+                                Style="{StaticResource PropertyNameStyle}"
+                                Text="Описание" />
+                            <xctk:AutoSelectTextBox
+                                Style="{StaticResource AboutTextBoxStyle}"
+                                TabIndex="1"
+                                Text="{Binding DescriptionProperty}" />
+                        </DockPanel>
+                    </DockPanel>
+                </ScrollViewer>
+
+                <TabControl Grid.Column="1" Margin="5">
+                    <!--  Условия  -->
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource TextBlock-SketchWrap}">
+                                    <Run Text="Условия" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <ScrollViewer Margin="{StaticResource ElementScrollMarg}" Style="{StaticResource EditableItemScroll}">
+                            <i:Interaction.Behaviors>
+                                <behavior:VerticalScrollBehavior />
+                            </i:Interaction.Behaviors>
+                            <StackPanel>
+                                <!--  Время и счетчик  -->
+                                <Grid Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <GroupBox Margin="0,2,0,2" Style="{StaticResource myGroupBoxStyle}">
+                                        <GroupBox.HeaderTemplate>
+                                            <DataTemplate>
+                                                <ContentControl
+                                                    Height="{StaticResource iconHeight}"
+                                                    Margin="{StaticResource MyGroupTemplMarg}"
+                                                    HorizontalAlignment="Left"
+                                                    Style="{StaticResource SandWatchStyle}" />
+                                            </DataTemplate>
+                                        </GroupBox.HeaderTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" MinWidth="50" />
+                                            </Grid.ColumnDefinitions>
+                                            <xctk:AutoSelectTextBox
+                                                MinWidth="0"
+                                                Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                Text="{Binding TimeMustProperty}"
+                                                TextAlignment="Left"
+                                                ToolTip="Таймер. Сколько минут в день нужно делать эту задачу" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Text=" → " />
+                                            <xctk:AutoSelectTextBox
+                                                Grid.Column="2"
+                                                MinWidth="0"
+                                                Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                Text="{Binding AimTimerMax}"
+                                                TextAlignment="Center"
+                                                ToolTip="Целевое значение" />
+                                        </Grid>
+                                    </GroupBox>
+                                    <!--<GroupBox
+                                        Margin="1,2,1,2"
+                                        Grid.Column="1"
+                                        Style="{StaticResource myGroupBoxStyle}">
+                                        <GroupBox.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock
+                                                    Height="{StaticResource iconHeight}"
+                                                    FontWeight="Bold"
+                                                    Foreground="Gray"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    Text="Smart" />
+                                            </DataTemplate>
+                                        </GroupBox.HeaderTemplate>
+                                        <CheckBox
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsChecked="{Binding IsWordHardness}"
+                                            ToolTip="Умное словесное описание сложности" />
+                                    </GroupBox>-->
+                                    <GroupBox
+                                        Grid.Column="2"
+                                        Margin="0,2,0,2"
+                                        Style="{StaticResource myGroupBoxStyle}">
+                                        <GroupBox.HeaderTemplate>
+                                            <DataTemplate>
+                                                <ContentControl
+                                                    Height="{StaticResource iconHeight}"
+                                                    Margin="{StaticResource MyGroupTemplMarg}"
+                                                    HorizontalAlignment="Left"
+                                                    Template="{StaticResource ContentControlDoneIcon}" />
+                                            </DataTemplate>
+                                        </GroupBox.HeaderTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" MinWidth="50" />
+                                            </Grid.ColumnDefinitions>
+                                            <xctk:AutoSelectTextBox
+                                                MinWidth="0"
+                                                Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                Text="{Binding Mesure}"
+                                                TextAlignment="Left"
+                                                ToolTip="Счетчик. Сколько раз в день нужно выполнить задачу" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Text=" → " />
+                                            <xctk:AutoSelectTextBox
+                                                Grid.Column="2"
+                                                MinWidth="0"
+                                                Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                Text="{Binding AimMesure}"
+                                                TextAlignment="Center"
+                                                ToolTip="Целевое значение" />
+                                        </Grid>
+                                    </GroupBox>
+                                </Grid>
+
+                                <GroupBox
+                                    Header="Состояния"
+                                    Style="{StaticResource myGroupBoxStyle}"
+                                    Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <DataGrid
+                                        AutoGenerateColumns="False"
+                                        CanUserResizeColumns="False"
+                                        CanUserResizeRows="False"
+                                        CanUserSortColumns="False"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        ItemsSource="{Binding TaskStates}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                                Width="*"
+                                                Binding="{Binding Tittle}"
+                                                EditingElementStyle="{StaticResource DataGridDescrColumnStyle}"
+                                                ElementStyle="{StaticResource DataGridDescrColumnStyle}" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+                                <!--  Подзадачи  -->
+                                <GroupBox Header="Подзадачи" Style="{StaticResource myGroupBoxStyle}">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,4" Visibility="{Binding DataContext.SubTasksRecVisibility, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                            <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="Повторять: " />
+                                            <ComboBox
+                                                ItemsSource="{Binding DataContext.SubTasksRec, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                SelectedValue="{Binding SubTasksRec}"
+                                                SelectedValuePath="Item1"
+                                                Style="{StaticResource ComboBoxStyle}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="{Binding Item2}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DockPanel>
+                                        <DataGrid
+                                            HorizontalAlignment="Center"
+                                            AutoGenerateColumns="False"
+                                            HorizontalScrollBarVisibility="Disabled"
+                                            ItemsSource="{Binding SubTasks}"
+                                            VerticalScrollBarVisibility="Disabled">
+                                            <DataGrid.Columns>
+                                                <DataGridTemplateColumn Width="50">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <UniformGrid Rows="1">
+                                                                <Button
+                                                                    Background="Transparent"
+                                                                    Command="{Binding DataContext.MoveSubTaskUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="&lt;"
+                                                                    ToolTip="Сдвинуть вверх" />
+                                                                <Button
+                                                                    Background="Transparent"
+                                                                    Command="{Binding DataContext.MoveSubTaskDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="&gt;"
+                                                                    ToolTip="Сдвинуть вниз" />
+                                                            </UniformGrid>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+
+                                                <DataGridTextColumn
+                                                    Width="*"
+                                                    Binding="{Binding Path=Tittle}"
+                                                    EditingElementStyle="{StaticResource DataGridDescrColumnStyle}"
+                                                    ElementStyle="{StaticResource DataGridDescrColumnStyle}" />
+                                                <DataGridCheckBoxColumn Width="20" Binding="{Binding isDone, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </GroupBox>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <!--  Награды  -->
+                    <TabItem Visibility="Collapsed">
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource TextBlock-SketchWrap}">
+                                    <Run Text="Награды" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <ScrollViewer Margin="{StaticResource ElementScrollMarg}" Style="{StaticResource EditableItemScroll}">
+                            <i:Interaction.Behaviors>
+                                <behavior:VerticalScrollBehavior />
+                            </i:Interaction.Behaviors>
+                            <UniformGrid VerticalAlignment="Top" Columns="1">
+                                <GroupBox Header="Опыт" Style="{StaticResource myGroupBoxStyle}">
+                                    <UniformGrid Rows="1">
+                                        <xctk:AutoSelectTextBox
+                                            MinWidth="0"
+                                            Style="{StaticResource AutoSelectTextBoxStyle}"
+                                            TabIndex="0"
+                                            Text="{Binding PlusExp, NotifyOnValidationError=True, ValidatesOnExceptions=True}"
+                                            TextAlignment="Left" />
+                                        <local:ucSetGoldExpRevard DataContext="{Binding UcSetGoldExpRevardViewModel}" isExpSet="True" />
+                                    </UniformGrid>
+                                </GroupBox>
+                                <GroupBox
+                                    Header="Золото"
+                                    Style="{StaticResource myGroupBoxStyle}"
+                                    Visibility="{Binding DataContext.PersProperty.PersSettings.IsGoldEnabled, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <UniformGrid Rows="1">
+                                        <xctk:AutoSelectTextBox
+                                            MinWidth="0"
+                                            Style="{StaticResource AutoSelectTextBoxStyle}"
+                                            TabIndex="0"
+                                            Text="{Binding PlusGold, NotifyOnValidationError=True, ValidatesOnExceptions=True}"
+                                            TextAlignment="Left" />
+                                        <local:ucSetGoldExpRevard DataContext="{Binding UcSetGoldExpRevardViewModel}" isExpSet="False" />
+                                    </UniformGrid>
+                                </GroupBox>
+                            </UniformGrid>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+
+            <UniformGrid
+                Grid.Row="2"
+                Height="{StaticResource DownButtonHeight}"
+                Rows="1">
+                <Button
+                    x:Name="btnOk"
+                    Background="{StaticResource TopBrush}"
+                    Command="{Binding DataContext.OkAddOrEditCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                    Content="OK"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    TabIndex="3" />
+                <Button
+                    x:Name="btnCansel"
+                    Background="{StaticResource TopBrush}"
+                    Command="{Binding DataContext.CanselCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                    Content="Отмена"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    Visibility="{Binding DataContext.VisibleCanselProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+            </UniformGrid>
+        </Grid>
+    </Border>
+</UserControl>

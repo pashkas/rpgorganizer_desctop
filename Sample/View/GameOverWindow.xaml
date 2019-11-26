@@ -1,0 +1,76 @@
+﻿<Window
+    x:Class="Sample.View.GameOverWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="GameOverWindow"
+    mc:Ignorable="d">
+    <Window.Style>
+        <StaticResource ResourceKey="FullWindowStyle" />
+    </Window.Style>
+    <Border
+        Margin="0"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource HeaderBorder}">
+                <TextBlock Style="{StaticResource HeaderText}">
+                    <TextBlock Text="КОНЕЦ ИГРЫ!!!" />
+                </TextBlock>
+            </Border>
+            <Image
+                x:Name="img"
+                Grid.Row="1"
+                Margin="5" />
+            <StackPanel
+                Grid.Row="2"
+                MaxWidth="800"
+                Margin="25"
+                HorizontalAlignment="Center">
+                <RichTextBox BorderBrush="Transparent" IsReadOnly="True">
+                    <FlowDocument FontSize="22">
+                        <Paragraph
+                            FontSize="36"
+                            FontWeight="Bold"
+                            TextAlignment="Center">
+                            Поздравляю, Странник!
+                        </Paragraph>
+                        <Paragraph>Ты стал чемпионом &quot;Игры жизни&quot;. Ты преодолел самого серьезного противника - себя самого. Ты стал тем, кем стремился.</Paragraph>
+                        <Paragraph>Тебе больше не нужен &quot;Рпг Органайзер&quot;, cледуй велению своего сердца в своих действиях и сохрани то, что приобрел.</Paragraph>
+                        <Paragraph>Оставь свое имя в Зале Героев и покажи своим примером, что невозможное возможно!!!</Paragraph>
+                        <Paragraph TextAlignment="Right">Да прибудет с тобой сила!!!!</Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
+            </StackPanel>
+            <UniformGrid
+                Grid.Row="3"
+                Height="65"
+                Rows="1">
+                <Button
+                    x:Name="btnHallOfGlory"
+                    Background="{StaticResource TopBrush}"
+                    Click="BtnHallOfGlory_Click"
+                    Content="Оставить свое имя в Зале Славы"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Предыдущий навык" />
+                <Button
+                    x:Name="btnExit"
+                    Background="{StaticResource TopBrush}"
+                    Click="BtnExit_Click"
+                    Content="Выход из игры"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+            </UniformGrid>
+        </Grid>
+
+    </Border>
+</Window>

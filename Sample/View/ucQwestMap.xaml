@@ -1,0 +1,432 @@
+﻿<UserControl
+    x:Class="Sample.View.ucQwestMap"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+    xmlns:Example="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:ViewModels="clr-namespace:Graphviz4Net.WPF.ViewModels;assembly=Graphviz4Net.WPF"
+    xmlns:WPF="clr-namespace:Graphviz4Net.WPF;assembly=Graphviz4Net.WPF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Sample.View"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Example:QwestsForLevelProgressConverter x:Key="QwestsForLevelProgressConverter" />
+        <Example:ArrowColorConverter x:Key="ArrowColorConverter" />
+        <Example:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Example:MapQwestOpacityConverter x:Key="MapQwestOpacityConverter" />
+        <DataTemplate DataType="{x:Type Example:CompositeArrow}">
+            <Canvas Width="6" Height="11">
+                <Polygon
+                    Points="3,0 6,5 3,10 0,5"
+                    Stroke="Green"
+                    StrokeThickness="1" />
+            </Canvas>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Example:Arrow}">
+            <Canvas Width="6" Height="11">
+                <Polygon
+                    Points="3,0 6,5 3,10 0,5"
+                    Stroke="Black"
+                    StrokeThickness="2" />
+            </Canvas>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:ArrowLevels}">
+            <Canvas
+                Width="30"
+                Height="30"
+                Visibility="Collapsed">
+                <Polygon
+                    Fill="Green"
+                    Points="0,0 15,20 30,0 "
+                    Stroke="Green"
+                    StrokeThickness="1" />
+            </Canvas>
+        </DataTemplate>
+        <!--  Шаблон квеста  -->
+        <DataTemplate DataType="{x:Type Example:Aim}">
+            <Border
+                Padding="0"
+                Background="White"
+                BorderBrush="{Binding Converter={StaticResource MapQwestOpacityConverter}, ConverterParameter=цветКвеста, Mode=OneWay}"
+                BorderThickness="{Binding Converter={StaticResource MapQwestOpacityConverter}, ConverterParameter=толщинаКвеста, Mode=OneWay}"
+                CornerRadius="5"
+                Opacity="{Binding StatusProperty, Converter={StaticResource MapQwestOpacityConverter}, ConverterParameter=прозрачность, Mode=OneWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnMenu"
+                            Value="Visible" />
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnLink"
+                            Value="Visible" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnMenu"
+                            Value="Hidden" />
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnLink"
+                            Value="Hidden" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding DataContext.QwestMouseUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid>
+                    <ProgressBar
+                        Foreground="Yellow"
+                        Maximum="100.0"
+                        Minimum="0"
+                        Value="{Binding AutoProgressValueProperty}" />
+                    <Grid Panel.ZIndex="1">
+                        <StackPanel>
+                            <!--  Кнопка связи  -->
+                            <UniformGrid
+                                x:Name="btnMenu"
+                                Height="20"
+                                Margin="1"
+                                Rows="1"
+                                Visibility="Hidden">
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать квест как дочерний для настройки связей">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToChildCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Редактировать квест">
+                                    <ContentControl Template="{StaticResource ContentControlEdit}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.SendSelAimCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Создать новый родительский квест (+cntrl квест для которого этот будет составным)">
+                                    <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.AddParrentQwestCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Создать СЛЕДУЮЩИЙ квест">
+                                    <ContentControl Template="{StaticResource ContentControlRightArrow}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.AddNextQwestCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                            </UniformGrid>
+
+                            <StackPanel Width="150" VerticalAlignment="Center">
+
+                                <!--  Картинка  -->
+                                <StackPanel Grid.Column="1">
+                                    <StackPanel
+                                        Margin="2"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Visibility="Collapsed">
+                                        <TextBlock
+                                            FontFamily="Times New Roman"
+                                            FontSize="10"
+                                            FontStyle="Italic"
+                                            Foreground="DarkSlateGray"
+                                            Text="Уровень: "
+                                            TextAlignment="Center"
+                                            TextWrapping="Wrap" />
+                                        <TextBlock
+                                            FontFamily="Times New Roman"
+                                            FontSize="10"
+                                            FontStyle="Italic"
+                                            Foreground="DarkSlateGray"
+                                            Text="{Binding MinLevelProperty}"
+                                            TextAlignment="Center"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Margin="2"
+                                        FontFamily="Times New Roman"
+                                        FontSize="14"
+                                        Foreground="DarkSlateGray"
+                                        Text="{Binding NameOfProperty}"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!--  Кнопки  -->
+                            <UniformGrid
+                                x:Name="btnLink"
+                                Height="20"
+                                Margin="1"
+                                Rows="1"
+                                Visibility="Hidden">
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать квест как родительский для настройки связей">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToParrentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Создать новый дочерний квест (+cntrl создать квест, входящий в состав этого)">
+                                    <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.AddChildQwestCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Удалить квест">
+                                    <ContentControl Template="{StaticResource ContentControlDelete}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.DelAimCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                            </UniformGrid>
+
+
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModels:EdgeLabelViewModel}">
+            <UniformGrid Rows="1">
+                <Button
+                    Width="{StaticResource MapItemHeight}"
+                    Height="{StaticResource MapItemHeight}"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    ToolTip="Добавить квест между этими">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding DataContext.AddBetweenQwestCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                </Button>
+                <Button
+                    Width="{StaticResource MapItemHeight}"
+                    Height="{StaticResource MapItemHeight}"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    ToolTip="Удалить связь">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding DataContext.DelQwestRelayCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ContentControl Template="{StaticResource ContentControlDelete}" />
+                </Button>
+            </UniformGrid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModels:EdgeViewModel}">
+            <Path
+                Data="{Binding Data}"
+                Stroke="{Binding Edge.DestinationArrow, Converter={StaticResource ArrowColorConverter}}"
+                StrokeDashArray="{Binding Edge.DestinationArrow, Converter={StaticResource ArrowColorConverter}, ConverterParameter=пунктир}"
+                StrokeThickness="{Binding Edge.DestinationArrow, Converter={StaticResource ArrowColorConverter}, ConverterParameter=толщина}" />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModels:BorderViewModel}">
+            <Border
+                BorderBrush="Transparent"
+                BorderThickness="2"
+                CornerRadius="10">
+
+                <StackPanel
+                    Margin="5,2,2,2"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal"
+                    Visibility="Collapsed">
+
+                    <Button
+                        Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource Brush1}"
+                        Command="{Binding DataContext.MoveAllUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Label}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Сдвинуть все квесты этого уровня и выше на уровень вверх.">
+                        <ContentControl Template="{StaticResource ContentControlArrowUp}" />
+                    </Button>
+                    <Button
+                        Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource Brush1}"
+                        Command="{Binding DataContext.MoveDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding Label}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Сдвинуть все квесты этого уровня и выше на уровень вниз.">
+                        <ContentControl Template="{StaticResource ContentControlArrowDown}" />
+                    </Button>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinHeight="{StaticResource ToolButtonHeight}"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontStyle="Italic"
+                                FontWeight="Bold"
+                                Foreground="DarkSlateGray"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="Уровень:"
+                                Visibility="Visible" />
+                            <TextBlock
+                                MinHeight="{StaticResource ToolButtonHeight}"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontStyle="Italic"
+                                FontWeight="Bold"
+                                Foreground="DarkSlateGray"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding Label}"
+                                Visibility="Visible" />
+                        </StackPanel>
+                        <ProgressBar
+                            Width="250"
+                            Panel.ZIndex="-1"
+                            Foreground="Yellow"
+                            Maximum="1.0"
+                            Minimum="0.0"
+                            Style="{StaticResource ProgressBar-Sketch}"
+                            Value="{Binding Label, Converter={StaticResource QwestsForLevelProgressConverter}, Mode=OneWay}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModel:ucQwestMap />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Visibility="Collapsed">
+            <WrapPanel Background="LightGreen" Visibility="{Binding ShowLinkTooltipProperty, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <TextBlock
+                    FontStyle="Italic"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text=" Щелкните правой кнопкой мыши на квест с которым хотите создать или удалить связь (+cntrl сделать или отменить составной квест)!!! "
+                    TextWrapping="Wrap" />
+
+                <Button
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="Transparent"
+                    Command="{Binding ClearAddLinkCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Отменить добавление связи">
+                    <ContentControl Template="{StaticResource ContentControlDelete}" />
+                </Button>
+            </WrapPanel>
+            <Button
+                Width="auto"
+                Height="{StaticResource DownButtonHeight}"
+                Background="Transparent"
+                Command="{Binding AddNewQwestCommand}"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Добавить новый квест!">
+                <ContentControl Template="{StaticResource ContentControlAddNew}" />
+            </Button>
+
+        </DockPanel>
+
+        <Controls:ZoomControl Grid.Row="1">
+            <Controls:ZoomControl.Background>
+                <ImageBrush
+                    ImageSource="{Binding MapBackgroundProperty}"
+                    Opacity="0.5"
+                    Stretch="UniformToFill" />
+            </Controls:ZoomControl.Background>
+            <WPF:GraphLayout
+                x:Name="GraphLayout"
+                Grid.Row="1"
+                DotExecutablePath="{Binding PathToGraphvizProperty}"
+                Graph="{Binding QwestsGraphProperty}"
+                LogGraphvizOutput="True"
+                UseContentPresenterForAllElements="True" />
+        </Controls:ZoomControl>
+
+        <Border
+            Grid.Row="1"
+            Margin="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1">
+            <CheckBox
+                Margin="2"
+                Content="Скрывать завершенные?"
+                IsChecked="{Binding isHideDone}" />
+        </Border>
+    </Grid>
+</UserControl>

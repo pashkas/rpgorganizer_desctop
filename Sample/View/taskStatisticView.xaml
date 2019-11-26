@@ -1,0 +1,38 @@
+﻿<Window x:Class="Sample.View.taskStatisticView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:model="clr-namespace:Sample.Model"
+        Title="Статистика по задачам"
+        Width="480"
+        Height="640"
+        UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow">
+    <Window.DataContext>
+        <ViewModel:StatisticViewModel />
+    </Window.DataContext>
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Tasks}">
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Название задачи">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontFamily" Value="Buxton Sketch" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="Foreground" Value="{StaticResource BaseForeground-Sketch}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type model:Task}">
+                            <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding NameOfProperty}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</Window>

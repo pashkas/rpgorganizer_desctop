@@ -1,0 +1,82 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:model="clr-namespace:Sample.Model"
+        x:Class="Sample.View.ImportCharacteristicsView"
+        Title="ImportCharacteristicsView"
+        Width="800"
+        Height="600"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        WindowStyle="None"> 
+    <Window.DataContext>
+        <ViewModel:ImportCharacteristicViewModel/>
+    </Window.DataContext>
+    <Border Style="{StaticResource ToolBorder}">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="8*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Margin="5" Style="{StaticResource ListBox-Sketch}" ItemsSource="{Binding Characteristics}" SelectedItem="{Binding SelectedCharacteristicProperty}">
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border Background="DeepSkyBlue">
+                                        <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Style="{StaticResource TextBlock-Sketch}"
+                                                   Text="{Binding Name}"
+                                                   TextAlignment="Center" FontWeight="Bold"/>
+                                        <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
+                                    </Border>
+                                        
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
+                    <ListBox.ItemTemplate><DataTemplate DataType="model:Characteristic">
+                            <TextBlock Style="{DynamicResource TextBlock-Sketch}" Text="{Binding NameOfProperty}" TextWrapping="Wrap" />
+                    </DataTemplate></ListBox.ItemTemplate>
+                </ListBox>
+
+                <Grid Margin="15,5" Grid.Column="1" DataContext="{Binding SelectedCharacteristicProperty}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="8*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding NameOfProperty}" TextWrapping="Wrap" Margin="10" FontSize="22" TextAlignment="Center" />
+                    <Image Grid.Row="1" Style="{StaticResource ImageStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding ImageProperty}" />
+                    <TextBlock Margin="10" Grid.Row="2" Style="{StaticResource TextBlock-Sketch}" Text="{Binding DescriptionProperty}" TextWrapping="Wrap" FontStyle="Italic" VerticalAlignment="Top" />
+                </Grid>
+            
+            </Grid>
+
+            <UniformGrid Grid.Row="1"
+				Height="{StaticResource DownButtonHeight}"
+				Rows="1">
+                <Button Background="{StaticResource TopBrush}" Click="ButtonBase_OnClick"
+					Content="OK" Command="{Binding OkImportCharactCommand}"
+					Foreground="White"
+					Style="{StaticResource Button-Sketch}" />
+                <Button Background="{StaticResource TopBrush}"
+					Content="Отмена"
+					Foreground="White"
+					Style="{StaticResource Button-Sketch}" Click="ButtonBase_OnClick"/>
+
+            </UniformGrid>
+        </Grid>
+    </Border>
+</Window>

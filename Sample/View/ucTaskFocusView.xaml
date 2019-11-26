@@ -1,0 +1,905 @@
+﻿<UserControl
+    x:Class="Sample.View.ucTaskFocusView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Sample"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    d:DataContext="{Binding MainVM, Source={StaticResourceExtension Locator}}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <system:Double x:Key="HeightDoneNot">50</system:Double>
+        <sample:TimeFocConverter x:Key="TimeFocConverter" />
+    </UserControl.Resources>
+    <Grid Margin="0,2">
+        <DockPanel>
+            <Button
+                Margin="0,4,0,4"
+                VerticalContentAlignment="Bottom"
+                Command="{Binding PrevFocViewTasksCommand}"
+                DockPanel.Dock="Left"
+                Style="{StaticResource FocViewButtons}"
+                ToolTip="Переместить влево"
+                Visibility="Collapsed">
+                <!--  Visibility="{Binding Pers.IsSetViz, Converter={StaticResource BoolToVisibilityConverter}}"  -->
+                <ContentControl Height="30" Template="{StaticResource ContentControlLeftArrow}" />
+            </Button>
+            <Button
+                Margin="0,4,0,4"
+                VerticalContentAlignment="Bottom"
+                Command="{Binding NextFocViewTasksCommand}"
+                DockPanel.Dock="Right"
+                Style="{StaticResource FocViewButtons}"
+                ToolTip="Переместить вправо"
+                Visibility="Collapsed">
+                <!--  Visibility="{Binding Pers.IsSetViz, Converter={StaticResource BoolToVisibilityConverter}}"  -->
+                <ContentControl Height="30" Template="{StaticResource ContentControlRightArrow}" />
+            </Button>
+            <ItemsControl ItemsSource="{Binding TasksForFoc}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="5"
+                            Background="{Binding BackGroundBrush, Converter={StaticResource BackgroundConverter}}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="2">
+                            <DockPanel>
+
+                                <!--<TextBlock
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Foreground="Green"
+                                    Style="{StaticResource Norm}"
+                                    Text="{Binding TimeString, Mode=OneWay}" />-->
+
+                                <Viewbox
+                                    Height="32"
+                                    Margin="5,0"
+                                    DockPanel.Dock="Top">
+                                    <TextBlock
+                                        FontSize="28"
+                                        FontWeight="Bold"
+                                        Foreground="{Binding ForeGroundBrush}"
+                                        LineHeight="5"
+                                        Style="{StaticResource Tittle}"
+                                        TextAlignment="Center">
+                                        <Hyperlink
+                                            Command="{Binding DataContext.GoToURL, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding Link}"
+                                            Style="{StaticResource HyperStyle}">
+                                            <Run>
+                                                <Run.Text>
+                                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                        <Binding Path="NameOfProperty" />
+                                                        <Binding Path="PlusNameOf" />
+                                                    </MultiBinding>
+                                                </Run.Text>
+                                            </Run>
+                                            <Run Foreground="Green" Text="{Binding TimeString, Mode=OneWay, Converter={StaticResource TimeFocConverter}}" />
+                                        </Hyperlink>
+                                    </TextBlock>
+
+                                </Viewbox>
+
+                                <!--<Viewbox
+                                    Height="25"
+                                    Margin="0,0,0,10"
+                                   StretchDirection="DownOnly"
+                                    DockPanel.Dock="Bottom">
+                                    <DockPanel VerticalAlignment="Center">
+
+                                -->
+                                <!--  Описание  -->
+                                <!--
+                                        <TextBlock
+                                            Margin="0,0,0,2"
+                                            VerticalAlignment="Center"
+                                            DockPanel.Dock="Top"
+                                            Style="{StaticResource about}"
+                                            Text="{Binding DescriptionProperty, UpdateSourceTrigger=PropertyChanged}"
+                                            Visibility="{Binding DescriptionProperty, Converter={StaticResource EmptyStringVisibilityConverter}}" />
+
+
+                                -->
+                                <!--  Таймер счетчик ярость  -->
+                                <!--
+                                        <StackPanel
+                                            x:Name="dopi"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+
+                                -->
+                                <!--  Ссылки  -->
+                                <!--
+                                            <ItemsControl
+                                                x:Name="allLnks"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                ItemTemplate="{StaticResource TaskLinksDataTemplate}"
+                                                ItemsPanel="{StaticResource TaskLinksPanel}"
+                                                ItemsSource="{Binding DirectTaskLinks}"
+                                                Visibility="{Binding ItemsSource.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource ItemsCountVisibilityConverter}}" />
+
+                                -->
+                                <!--  Просто таймер  -->
+                                <!--<Button
+                                            Margin="4,1,1,1"
+                                            BorderBrush="{Binding TimerBorder}"
+                                            BorderThickness="1"
+                                            Style="{StaticResource btnIc}"
+                                            ToolTip="Запустить таймер"
+                                            Visibility="{Binding TimerVisibility}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseDown">
+                                                    <i:InvokeCommandAction Command="{Binding ClickTimerCommand}" />
+                                                </i:EventTrigger>
+                                -->
+                                <!--<ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="True">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Gold" />
+                                                </ei:DataTrigger>
+                                                <ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="False">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+                                                </ei:DataTrigger>-->
+                                <!--
+                                            </i:Interaction.Triggers>
+                                                <Grid  Margin="5">
+                                                    <StackPanel
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <ContentControl Height="20" Style="{StaticResource SandWatchStyle}" />
+                                                        <TextBlock
+                                                            Margin="2,0,0,0"
+                                                            Style="{StaticResource TextBlock-SketchWrap}"
+                                                            TextAlignment="Center">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                                    <Binding Path="TimerValueProperty" />
+                                                                    <Binding Source="/" />
+                                                                    <Binding Path="TimeMustProperty" />
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Grid>
+                                        </Button>-->
+                                <!--<Button
+                                            Margin="4,1,1,1"
+                                            BorderBrush="{Binding TimerBorder}"
+                                            BorderThickness="1"
+                                            Style="{StaticResource btnIc}"
+                                            ToolTip="Запустить таймер"
+                                            Visibility="{Binding TimerVisibility}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseDown">
+                                                    <i:InvokeCommandAction Command="{Binding ClickTimerCommand}" />
+                                                </i:EventTrigger>
+                                -->
+                                <!--<ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="True">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Gold" />
+                                                </ei:DataTrigger>
+                                                <ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="False">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+                                                </ei:DataTrigger>-->
+                                <!--
+                                            </i:Interaction.Triggers>
+                                            <Viewbox MaxHeight="50" Margin="2">
+                                                <Grid>
+                                                    <ProgressBar Style="{DynamicResource pbarCircularStyle}">
+                                                        <ProgressBar.Value>
+                                                            <MultiBinding Converter="{StaticResource RoundProgressBarValueConverter}">
+                                                                <Binding Path="TimerValueProperty" />
+                                                                <Binding Path="TimeMustProperty" />
+                                                            </MultiBinding>
+                                                        </ProgressBar.Value>
+                                                    </ProgressBar>
+                                                    <StackPanel
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <ContentControl Height="35" Style="{StaticResource SandWatchStyle}" />
+                                                        <TextBlock
+                                                            Margin="2,0,0,0"
+                                                            FontSize="35"
+                                                            Style="{StaticResource Norm}"
+                                                            TextAlignment="Center">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding Converter="{StaticResource RoundProgressIconValueConverter}">
+                                                                    <Binding Path="TimerValueProperty" />
+                                                                    <Binding Path="TimeMustProperty" />
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Viewbox>
+                                        </Button>-->
+                                <!--  Счетчик  -->
+                                <!--<Button
+                                            Margin="1"
+                                            BorderThickness="1"
+                                            Style="{StaticResource btnIc}"
+                                            ToolTip="+1 к счетчику"
+                                            Visibility="{Binding MesureVisibility}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseDown">
+                                                    <i:InvokeCommandAction Command="{Binding ClickMesureCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <Grid Margin="5">
+                                                <StackPanel
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                    <ContentControl Height="20" Template="{StaticResource ContentControlDoneIcon}" />
+                                                    <TextBlock
+                                                            Margin="2,0,0,0"
+                                                            Style="{StaticResource TextBlock-SketchWrap}"
+                                                            TextAlignment="Center">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                                <Binding Path="MesureIs" />
+                                                                <Binding Source="/" />
+                                                                <Binding Path="Mesure" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Button>-->
+                                <!--<Button
+                                            Margin="1"
+                                            BorderThickness="1"
+                                            Style="{StaticResource btnIc}"
+                                            ToolTip="+1 к счетчику"
+                                            Visibility="{Binding MesureVisibility}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseDown">
+                                                    <i:InvokeCommandAction Command="{Binding ClickMesureCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <Viewbox MaxHeight="50" Margin="2">
+                                                <Grid>
+                                                    <ProgressBar Style="{DynamicResource pbarCircularStyle}">
+                                                        <ProgressBar.Value>
+                                                            <MultiBinding Converter="{StaticResource RoundProgressBarValueConverter}">
+                                                                <Binding Path="MesureIs" />
+                                                                <Binding Path="Mesure" />
+                                                            </MultiBinding>
+                                                        </ProgressBar.Value>
+                                                    </ProgressBar>
+                                                    <StackPanel
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <ContentControl Height="35" Template="{StaticResource ContentControlDoneIcon}" />
+                                                        <TextBlock
+                                                            Margin="2,0,0,0"
+                                                            FontSize="35"
+                                                            Style="{StaticResource Norm}"
+                                                            TextAlignment="Center">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding Converter="{StaticResource RoundProgressIconValueConverter}">
+                                                                    <Binding Path="MesureIs" />
+                                                                    <Binding Path="Mesure" />
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Viewbox>
+                                        </Button>-->
+                                <!--  Ярость  -->
+                                <!--<Button
+                                                Margin="1"
+                                                BorderThickness="1"
+                                                ToolTip="Ярость. Сколько раз подряд было пропущено.">
+                                                <Button.Style>
+                                                    <Style BasedOn="{StaticResource btnIc}" TargetType="Button">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Rage}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                                <Viewbox MaxHeight="50" Margin="2">
+                                                    <Grid>
+                                                        <ProgressBar
+                                                            Foreground="Red"
+                                                            Style="{DynamicResource pbarCircularStyle}"
+                                                            Visibility="Hidden"
+                                                            Value="100" />
+                                                        <StackPanel
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                            <ContentControl Height="35" Template="{StaticResource ContentControlFireIcon}" />
+                                                            <TextBlock
+                                                                Margin="2,0,0,0"
+                                                                FontSize="35"
+                                                                FontWeight="Bold"
+                                                                Foreground="Red"
+                                                                Style="{StaticResource Norm}"
+                                                                Text="{Binding Rage}"
+                                                                TextAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Viewbox>
+                                            </Button>-->
+
+                                <!--  Подзадачи  -->
+                                <!--<Border x:Name="stsks" DockPanel.Dock="Top">
+                                                <ItemsControl
+                                                    Margin="2"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    ItemTemplate="{StaticResource SubTasksTemplate}"
+                                                    ItemsSource="{Binding NotDoneSubtasksFirstTasks}"
+                                                    Visibility="{Binding ItemsSource.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource ItemsCountVisibilityConverter}}" />
+                                            </Border>-->
+                                <!--
+
+                                        </StackPanel>
+
+
+                                -->
+                                <!--  Ссылки  -->
+                                <!--
+
+
+
+                                    </DockPanel>
+                                </Viewbox>-->
+
+                                <DockPanel
+                                    Grid.Column="1"
+                                    Margin="0,5"
+                                    HorizontalAlignment="Center">
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{Binding DataContext.AlternatePlusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource FocViewButtons}">
+                                        <!--<Button.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Style="{StaticResource TextBlock-Sketch}"
+                                                    Text="Клик! Победить монстра!&#x0a;(+alt перенос на завтра)"
+                                                    TextAlignment="Center" />
+                                            </StackPanel>
+                                        </Button.ToolTip>-->
+                                        <ContentControl
+                                            Height="{StaticResource HeightDoneNot}"
+                                            Margin="10"
+                                            Template="{StaticResource ContentControlDone}" />
+
+                                    </Button>
+
+
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{Binding DataContext.AlternateMinusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Left">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource FocViewButtons}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsShildVisible}" Value="Visible">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsShildVisible}" Value="Collapsed">
+                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <!--<Button.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Style="{StaticResource TextBlock-Sketch}"
+                                                    Text="Защита! Монстр атакует!"
+                                                    TextAlignment="Center" />
+                                            </StackPanel>
+                                        </Button.ToolTip>-->
+                                        <ContentControl
+                                            Height="{StaticResource HeightDoneNot}"
+                                            Margin="10"
+                                            Template="{StaticResource ContentControlMinus}" />
+                                    </Button>
+
+                                    <Button
+                                        Margin="0,4,0,2"
+                                        Command="{Binding DataContext.AlterEditTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource ButtonWidthImageStyle}"
+                                        UseLayoutRounding="True">
+                                        <Image
+                                            Grid.Column="1"
+                                            Margin="0"
+                                            Source="{Binding PathToIm}"
+                                            Style="{StaticResource FantImageStyle}" />
+                                    </Button>
+
+
+                                </DockPanel>
+
+                            </DockPanel>
+                        </Border>
+
+                        <!--<UniformGrid
+                            x:Name="ggg"
+                            Margin="0,5"
+                            Rows="1">
+                            <Border
+                                Height="{Binding ActualHeight, ElementName=ggg}"
+                                Margin="5,0"
+                                Background="{Binding BackGroundBrush, Converter={StaticResource BackgroundConverter}}"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="2">
+                                <DockPanel Margin="5">
+
+                        -->
+                        <!--<TextBlock
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Foreground="Green"
+                                    Style="{StaticResource Norm}"
+                                    Text="{Binding TimeString, Mode=OneWay}" />-->
+                        <!--
+
+                                    <Viewbox
+                                        Height="30"
+                                        Margin="5,0"
+                                        DockPanel.Dock="Top">
+                                        <TextBlock
+                                            FontSize="28"
+                                            FontWeight="Bold"
+                                            Foreground="{Binding ForeGroundBrush}"
+                                            Style="{StaticResource Tittle}"
+                                            TextAlignment="Center">
+                                            <Hyperlink
+                                                Command="{Binding DataContext.GoToURL, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding Link}"
+                                                Style="{StaticResource HyperStyle}">
+                                                <Run>
+                                                    <Run.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                            <Binding Path="NameOfProperty" />
+                                                            <Binding Path="PlusNameOf" />
+                                                        </MultiBinding>
+                                                    </Run.Text>
+                                                </Run>
+                                                <Run Foreground="Green" Text="{Binding TimeString, Mode=OneWay, Converter={StaticResource TimeFocConverter}}" />
+                                            </Hyperlink>
+                                        </TextBlock>
+
+                                    </Viewbox>
+
+                                    <DockPanel
+                                        MinHeight="55"
+                                        Margin="0,0,0,5"
+                                        DockPanel.Dock="Bottom">
+
+                        -->
+                        <!--  Описание  -->
+                        <!--
+                                        <TextBlock
+                                            Margin="0,0,0,2"
+                                            VerticalAlignment="Center"
+                                            DockPanel.Dock="Top"
+                                            Style="{StaticResource about}"
+                                            Text="{Binding DescriptionProperty, UpdateSourceTrigger=PropertyChanged}"
+                                            Visibility="{Binding DescriptionProperty, Converter={StaticResource EmptyStringVisibilityConverter}}" />
+
+
+                        -->
+                        <!--  Таймер счетчик ярость  -->
+                        <!--
+                                        <StackPanel
+                                            x:Name="dopi"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+
+                        -->
+                        <!--  Ссылки  -->
+                        <!--
+                                            <ItemsControl
+                                                x:Name="allLnks"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                ItemTemplate="{StaticResource TaskLinksDataTemplate}"
+                                                ItemsPanel="{StaticResource TaskLinksPanel}"
+                                                ItemsSource="{Binding DirectTaskLinks}"
+                                                Visibility="{Binding ItemsSource.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource ItemsCountVisibilityConverter}}" />
+
+                        -->
+                        <!--  Просто таймер  -->
+                        <!--
+                                            <Button
+                                                Margin="4,1,1,1"
+                                                BorderBrush="{Binding TimerBorder}"
+                                                BorderThickness="1"
+                                                Style="{StaticResource btnIc}"
+                                                ToolTip="Запустить таймер"
+                                                Visibility="{Binding TimerVisibility}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                                        <i:InvokeCommandAction Command="{Binding ClickTimerCommand}" />
+                                                    </i:EventTrigger>
+                        -->
+                        <!--<ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="True">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Gold" />
+                                                </ei:DataTrigger>
+                                                <ei:DataTrigger Binding="{Binding IsTimerStartProperty}" Value="False">
+                                                    <ei:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent" />
+                                                </ei:DataTrigger>-->
+                        <!--
+                                                </i:Interaction.Triggers>
+                                                <Viewbox MaxHeight="50" Margin="2">
+                                                    <Grid>
+                                                        <ProgressBar Style="{DynamicResource pbarCircularStyle}">
+                                                            <ProgressBar.Value>
+                                                                <MultiBinding Converter="{StaticResource RoundProgressBarValueConverter}">
+                                                                    <Binding Path="TimerValueProperty" />
+                                                                    <Binding Path="TimeMustProperty" />
+                                                                </MultiBinding>
+                                                            </ProgressBar.Value>
+                                                        </ProgressBar>
+                                                        <StackPanel
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                            <ContentControl Height="35" Style="{StaticResource SandWatchStyle}" />
+                                                            <TextBlock
+                                                                Margin="2,0,0,0"
+                                                                FontSize="35"
+                                                                Style="{StaticResource Norm}"
+                                                                TextAlignment="Center">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding Converter="{StaticResource RoundProgressIconValueConverter}">
+                                                                        <Binding Path="TimerValueProperty" />
+                                                                        <Binding Path="TimeMustProperty" />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Viewbox>
+                                            </Button>
+                        -->
+                        <!--  Счетчик  -->
+                        <!--
+                                            <Button
+                                                Margin="1"
+                                                BorderThickness="1"
+                                                Style="{StaticResource btnIc}"
+                                                ToolTip="+1 к счетчику"
+                                                Visibility="{Binding MesureVisibility}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                                        <i:InvokeCommandAction Command="{Binding ClickMesureCommand}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <Viewbox MaxHeight="50" Margin="2">
+                                                    <Grid>
+                                                        <ProgressBar Style="{DynamicResource pbarCircularStyle}">
+                                                            <ProgressBar.Value>
+                                                                <MultiBinding Converter="{StaticResource RoundProgressBarValueConverter}">
+                                                                    <Binding Path="MesureIs" />
+                                                                    <Binding Path="Mesure" />
+                                                                </MultiBinding>
+                                                            </ProgressBar.Value>
+                                                        </ProgressBar>
+                                                        <StackPanel
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                            <ContentControl Height="35" Template="{StaticResource ContentControlDoneIcon}" />
+                                                            <TextBlock
+                                                                Margin="2,0,0,0"
+                                                                FontSize="35"
+                                                                Style="{StaticResource Norm}"
+                                                                TextAlignment="Center">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding Converter="{StaticResource RoundProgressIconValueConverter}">
+                                                                        <Binding Path="MesureIs" />
+                                                                        <Binding Path="Mesure" />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Viewbox>
+                                            </Button>
+                        -->
+                        <!--  Ярость  -->
+                        <!--<Button
+                                                Margin="1"
+                                                BorderThickness="1"
+                                                ToolTip="Ярость. Сколько раз подряд было пропущено.">
+                                                <Button.Style>
+                                                    <Style BasedOn="{StaticResource btnIc}" TargetType="Button">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Rage}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                                <Viewbox MaxHeight="50" Margin="2">
+                                                    <Grid>
+                                                        <ProgressBar
+                                                            Foreground="Red"
+                                                            Style="{DynamicResource pbarCircularStyle}"
+                                                            Visibility="Hidden"
+                                                            Value="100" />
+                                                        <StackPanel
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                            <ContentControl Height="35" Template="{StaticResource ContentControlFireIcon}" />
+                                                            <TextBlock
+                                                                Margin="2,0,0,0"
+                                                                FontSize="35"
+                                                                FontWeight="Bold"
+                                                                Foreground="Red"
+                                                                Style="{StaticResource Norm}"
+                                                                Text="{Binding Rage}"
+                                                                TextAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Viewbox>
+                                            </Button>-->
+
+                        <!--  Подзадачи  -->
+                        <!--<Border x:Name="stsks" DockPanel.Dock="Top">
+                                                <ItemsControl
+                                                    Margin="2"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    ItemTemplate="{StaticResource SubTasksTemplate}"
+                                                    ItemsSource="{Binding NotDoneSubtasksFirstTasks}"
+                                                    Visibility="{Binding ItemsSource.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource ItemsCountVisibilityConverter}}" />
+                                            </Border>-->
+                        <!--
+
+                                        </StackPanel>
+
+
+                        -->
+                        <!--  Ссылки  -->
+                        <!--
+
+
+
+                                    </DockPanel>
+
+                                    <DockPanel
+                                        Grid.Column="1"
+                                        Margin="0,5"
+                                        HorizontalAlignment="Center">
+                                        <Button
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.AlternatePlusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Right"
+                                            Style="{StaticResource FocViewButtons}">
+                                            <Button.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Style="{StaticResource TextBlock-Sketch}"
+                                                        Text="Клик! Победить монстра!&#x0a;(+alt перенос на завтра)"
+                                                        TextAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.ToolTip>
+                                            <ContentControl
+                                                Height="{StaticResource HeightDoneNot}"
+                                                Margin="10"
+                                                Template="{StaticResource ContentControlDone}" />
+
+                                        </Button>
+
+
+                                        <Button
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.AlternateMinusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Left">
+                                            <Button.Style>
+                                                <Style BasedOn="{StaticResource FocViewButtons}" TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsShildVisible}" Value="Visible">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsShildVisible}" Value="Collapsed">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <Button.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Style="{StaticResource TextBlock-Sketch}"
+                                                        Text="Защита! Монстр атакует!"
+                                                        TextAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.ToolTip>
+                                            <ContentControl
+                                                Height="{StaticResource HeightDoneNot}"
+                                                Margin="10"
+                                                Template="{StaticResource ContentControlMinus}" />
+                                        </Button>
+
+                                        <Button
+                                            Margin="0,4"
+                                            Command="{Binding DataContext.AlterEditTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource ButtonWidthImageStyle}"
+                                            UseLayoutRounding="True">
+                                            <Image
+                                                Grid.Column="1"
+                                                Margin="0"
+                                                Source="{Binding PathToIm}"
+                                                Style="{StaticResource FantImageStyle}" />
+                                        </Button>
+
+
+                                    </DockPanel>
+
+                                </DockPanel>
+                            </Border>
+                            <ItemsControl
+                                DockPanel.Dock="Right"
+                                ItemsSource="{Binding NotDoneSubtasksFirstTasks}"
+                                Visibility="{Binding NotDoneSubtasksFirstTasks, Converter={StaticResource ItemsCountVisibilityConverter}}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Height="{Binding ActualHeight, ElementName=ggg}"
+                                            Margin="5,0"
+                                            BorderBrush="{StaticResource BorderBrush}"
+                                            BorderThickness="2">
+                                            <DockPanel Margin="5">
+
+                        -->
+                        <!--<TextBlock
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Foreground="Green"
+                                    Style="{StaticResource Norm}"
+                                    Text="{Binding TimeString, Mode=OneWay}" />-->
+                        <!--
+
+                                                <Viewbox
+                                                    Height="30"
+                                                    Margin="5,0"
+                                                    DockPanel.Dock="Top">
+                                                    <TextBlock
+                                                        FontSize="28"
+                                                        FontWeight="Bold"
+                                                        Foreground="#FF606060"
+                                                        Style="{StaticResource Tittle}"
+                                                        TextAlignment="Center">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                <Binding Path="Tittle" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+
+                                                </Viewbox>
+
+                                                <DockPanel
+                                                    MinHeight="55"
+                                                    Margin="0,0,0,5"
+                                                    DockPanel.Dock="Bottom" />
+
+                                                <DockPanel
+                                                    Grid.Column="1"
+                                                    Margin="0,5"
+                                                    HorizontalAlignment="Center">
+                                                    <Button
+                                                        VerticalAlignment="Center"
+                                                        Command="{Binding DataContext.AlternatePlusTaskCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding}"
+                                                        DockPanel.Dock="Right"
+                                                        Style="{StaticResource FocViewButtons}">
+                                                        <Button.ToolTip>
+                                                            <StackPanel>
+                                                                <TextBlock
+                                                                    Style="{StaticResource TextBlock-Sketch}"
+                                                                    Text="Клик! Победить монстра!"
+                                                                    TextAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Button.ToolTip>
+                                                        <ContentControl
+                                                            Height="{StaticResource HeightDoneNot}"
+                                                            Margin="10"
+                                                            Template="{StaticResource ContentControlDone}" />
+
+                                                    </Button>
+
+                                                    <Button
+                                                        VerticalAlignment="Center"
+                                                        DockPanel.Dock="Left"
+                                                        Visibility="Hidden">
+                                                        <Button.Style>
+                                                            <Style BasedOn="{StaticResource FocViewButtons}" TargetType="Button">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsShildVisible}" Value="Visible">
+                                                                        <Setter Property="Visibility" Value="Visible" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsShildVisible}" Value="Collapsed">
+                                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Button.Style>
+                                                        <Button.ToolTip>
+                                                            <StackPanel>
+                                                                <TextBlock
+                                                                    Style="{StaticResource TextBlock-Sketch}"
+                                                                    Text="Защита! Монстр атакует!"
+                                                                    TextAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Button.ToolTip>
+                                                        <ContentControl
+                                                            Height="{StaticResource HeightDoneNot}"
+                                                            Margin="10"
+                                                            Template="{StaticResource ContentControlMinus}" />
+                                                    </Button>
+
+
+
+
+                                                    <Button
+                                                        Margin="0,4"
+                                                        Style="{StaticResource ButtonWidthImageStyle}"
+                                                        UseLayoutRounding="True">
+                                                        <Image
+                                                            Grid.Column="1"
+                                                            Margin="0"
+                                                            Source="{Binding PathToIm}"
+                                                            Style="{StaticResource FantImageStyle}" />
+                                                    </Button>
+
+
+                                                </DockPanel>
+
+                                            </DockPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+
+                            </ItemsControl>
+                        </UniformGrid>-->
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DockPanel>
+    </Grid>
+
+</UserControl>

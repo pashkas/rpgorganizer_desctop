@@ -1,0 +1,29 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Sample.View" 
+    xmlns:models="clr-namespace:Sample.Model" 
+    x:Class="Sample.View.ucSubtasks" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="Control" UseLayoutRounding="True">
+    <UserControl.Resources>
+        <DataTemplate x:Key="SubTasksTemplate" DataType="{x:Type models:SubTask}">
+            <DockPanel>
+                <CheckBox Style="{DynamicResource CheckBox-Sketch}" VerticalAlignment="Center" IsChecked="{Binding isDone}" />
+                <TextBlock Style="{DynamicResource TextBlock-Sketch}" >
+                    <Hyperlink NavigateUri="{Binding LinkProperty}" RequestNavigate="Hyperlink_OnRequestNavigate">
+                        <TextBlock FontSize="12" Text="{Binding Tittle}" TextWrapping="Wrap" />
+                    </Hyperlink>
+                </TextBlock>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <d:UserControl.DataContext>
+        <view:ucSubtasks />
+    </d:UserControl.DataContext>
+
+    <ItemsControl ItemsSource="{Binding SubTasks}" x:Name="ItemsControll" HorizontalAlignment="Center" ItemTemplate="{DynamicResource SubTasksTemplate}" />
+</UserControl>

@@ -1,0 +1,1033 @@
+﻿<UserControl
+    x:Class="Sample.PersInfoUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:View="clr-namespace:Sample.View"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="UserControl"
+    d:DataContext="{Binding PersSettingsVM, Source={StaticResource Locator}}"
+    d:DesignHeight="811.2"
+    d:DesignWidth="707.2"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Model:ItemsCountVisibilityConverter x:Key="ItemsCountVisibilityConverter" />
+        <SolidColorBrush
+            x:Key="GlassBackground"
+            Opacity="0.9"
+            Color="White" />
+
+        <CollectionViewSource x:Key="PersRangse" Source="{Binding PersProperty.Rangs}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="LevelRang" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="ChaExpRelayView" Source="{Binding PersProperty.Characteristics}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="CellValue" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="abView" Source="{Binding PersProperty.Abilitis}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Descending" PropertyName="CellValue" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="RangsView" Source="{Binding PersProperty.Rangs}">
+            <!--<CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="LevelRang" />
+            </CollectionViewSource.SortDescriptions>-->
+        </CollectionViewSource>
+
+        <CollectionViewSource
+            x:Key="CharactView"
+            IsLiveSortingRequested="True"
+            Source="{Binding PersProperty.Characteristics}">
+            <!--<CollectionViewSource.SortDescriptions>
+            -->
+            <!--<componentModel:SortDescription Direction="Descending" PropertyName="KExpForNew" />-->
+            <!--
+                <componentModel:SortDescription Direction="Descending" PropertyName="ValueProperty" />
+            </CollectionViewSource.SortDescriptions>-->
+        </CollectionViewSource>
+
+        <CollectionViewSource
+            x:Key="AbilsView"
+            Filter="AbilsView_OnFilter"
+            Source="{Binding PersProperty.Abilitis}">
+            <CollectionViewSource.SortDescriptions>
+                <!--<componentModel:SortDescription Direction="Descending" PropertyName="IsEnebledProperty" />-->
+                <componentModel:SortDescription Direction="Descending" PropertyName="ValueProperty" />
+                <!--<componentModel:SortDescription Direction="Descending" PropertyName="Opacity" />-->
+                <componentModel:SortDescription Direction="Ascending" PropertyName="NameOfProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource
+            x:Key="PerksView"
+            Filter="PerksView_OnFilter"
+            Source="{Binding PersProperty.Abilitis}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Descending" PropertyName="IsEnebledProperty" />
+                <componentModel:SortDescription Direction="Descending" PropertyName="LevelProperty" />
+                <componentModel:SortDescription Direction="Ascending" PropertyName="NameOfProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <DataTemplate x:Key="AbItemsTemplete" DataType="Model:AbilitiModel">
+            <Grid Margin="10,2" Opacity="{Binding Opacity}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource TextBlock-SketchWrap}">
+                    <Hyperlink Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding GUID}">
+                        <TextBlock Text="{Binding NameOfProperty}" TextWrapping="Wrap" />
+                    </Hyperlink>
+                </TextBlock>
+
+                <Line
+                    Grid.Column="1"
+                    Margin="1,1,1,3"
+                    VerticalAlignment="Bottom"
+                    Stroke="Black"
+                    StrokeDashArray="2 2"
+                    X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+
+                <TextBlock
+                    Grid.Column="2"
+                    DockPanel.Dock="Right"
+                    Style="{StaticResource TextBlock-Sketch}">
+                    <TextBlock.Inlines>
+                        <Run Text="{Binding CellValue, Mode=OneWay}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="8*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Popup
+                x:Name="pClassSettings"
+                Grid.RowSpan="2"
+                Width="800"
+                Margin="0,0,0,0"
+                AllowsTransparency="True"
+                Placement="Center"
+                PopupAnimation="Scroll"
+                StaysOpen="True">
+                <Border
+                    Background="#FFE8DFC5"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource ScrollViewer-Sketch}"
+                            VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <xctk:AutoSelectTextBox
+                                    Margin="10"
+                                    FontSize="25"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource AutoSelectTextBoxStyle}"
+                                    Text="{Binding PersProperty.Class1.ValueProperty}"
+                                    TextAlignment="Center" />
+                                <ItemsControl ItemsSource="{Binding Source={StaticResource ChaExpRelayView}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type Model:Characteristic}">
+                                            <Border
+                                                Margin="2"
+                                                BorderBrush="{StaticResource BorderBrush}"
+                                                BorderThickness="1"
+                                                Opacity="{Binding Opacity}">
+                                                <Grid Margin="1" Background="White">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="150" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        Margin="0,3"
+                                                        Style="{StaticResource TextBlock-Sketch}"
+                                                        Text="{Binding NameOfProperty}"
+                                                        TextAlignment="Center"
+                                                        TextDecorations="Underline"
+                                                        TextWrapping="Wrap" />
+
+                                                    <ListBox
+                                                        Grid.Column="1"
+                                                        HorizontalContentAlignment="Center"
+                                                        DisplayMemberPath="NameProperty"
+                                                        ItemsSource="{Binding DataContext.KExpRelays, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        SelectedValue="{Binding KExpRelayProperty}"
+                                                        SelectedValuePath="KProperty"
+                                                        Style="{StaticResource ListBox-Sketch}">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid IsItemsHost="True" Rows="1" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                    </ListBox>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <Button
+                            Grid.Row="1"
+                            Height="{StaticResource DownButtonHeight}"
+                            Background="{StaticResource TopBrush}"
+                            Content="Ok"
+                            Foreground="White"
+                            Style="{StaticResource Button-Sketch}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:ChangePropertyAction
+                                        PropertyName="IsOpen"
+                                        TargetName="pClassSettings"
+                                        Value="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <Popup
+                x:Name="pEditRangs"
+                Grid.RowSpan="2"
+                Width="800"
+                Margin="0,0,0,0"
+                AllowsTransparency="True"
+                IsOpen="{Binding IsOpenEditRangsProperty}"
+                Placement="Center"
+                PopupAnimation="Scroll"
+                StaysOpen="True">
+                <Border
+                    Background="#FFE8DFC5"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource ScrollViewer-Sketch}"
+                            VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="10"
+                                    FontSize="18"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    Text="Настройка званий персонажа"
+                                    TextWrapping="Wrap" />
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="False"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    ItemsSource="{Binding Source={StaticResource RangsView}}"
+                                    VerticalScrollBarVisibility="Auto">
+                                    <DataGrid.Columns>
+                                        <!--<DataGridTextColumn
+                                            Width="Auto"
+                                            Binding="{Binding LevelRang, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource TextBox-Sketch}"
+                                            ElementStyle="{StaticResource TextBlock-Sketch}"
+                                            Header="Уровень"
+                                            Visibility="Collapsed" />-->
+                                        <DataGridTextColumn
+                                            Width="3*"
+                                            Binding="{Binding NameOfRang, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource TextBox-Sketch}"
+                                            ElementStyle="{StaticResource TextBlock-Sketch}"
+                                            Header="Название ранга" />
+                                        <DataGridTextColumn
+                                            Width="60"
+                                            Binding="{Binding LevelRang, UpdateSourceTrigger=PropertyChanged}"
+                                            EditingElementStyle="{StaticResource TextBox-Sketch}"
+                                            ElementStyle="{StaticResource TextBlock-Sketch}"
+                                            Header="Уровень"
+                                            IsReadOnly="True" />
+                                        <!--<DataGridTemplateColumn Width="250" Header="Изображение">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate DataType="Model:Rangs">
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.ChooseImageForRangCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource Button-Sketch}">
+                                                        <Image
+                                                            MaxHeight="85"
+                                                            Margin="2"
+                                                            Source="{Binding ImageProperty}" />
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>-->
+                                        <DataGridTemplateColumn Width="60" Visibility="Collapsed">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <UniformGrid Rows="1">
+                                                        <Button
+                                                            Command="{Binding DataContext.MovePersRangUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Style="{StaticResource ButtonUp}"
+                                                            ToolTip="Сдвинуть выше" />
+                                                        <Button
+                                                            Command="{Binding DataContext.MovePersRangDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Style="{StaticResource ButtonDown}"
+                                                            ToolTip="Сдвинуть ниже" />
+                                                    </UniformGrid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <Button
+                            Grid.Row="1"
+                            Height="{StaticResource DownButtonHeight}"
+                            Background="{StaticResource TopBrush}"
+                            Command="{Binding OkEditrangsCommand}"
+                            Content="Ok"
+                            Foreground="White"
+                            Style="{StaticResource Button-Sketch}" />
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <!--  Лист персонажа  -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*" />
+                    <RowDefinition Height="8*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Margin="5,2,5,2"
+                    Background="{StaticResource GlassBackground}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    CornerRadius="3">
+                    <Button
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding ImageClickCommand}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Выбрать изображение персонажа">
+
+                        <Image
+                            Grid.Row="2"
+                            Margin="2"
+                            VerticalAlignment="Top"
+                            RenderOptions.BitmapScalingMode="Linear"
+                            Source="{Binding DataContext.PersProperty.ImageProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                            Stretch="Uniform" />
+                    </Button>
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="5"
+                    Background="{StaticResource GlassBackground}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    CornerRadius="3">
+                    <Grid Margin="4,4">
+                        <Grid.Resources>
+                            <Thickness x:Key="Marg">2</Thickness>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="Имя: "
+                            TextAlignment="Right" />
+                        <xctk:AutoSelectTextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            MinWidth="0"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource AutoSelectTextBoxStyle}"
+                            Text="{Binding PersNameProperty, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="Уровень: "
+                            TextAlignment="Right"
+                            Visibility="Collapsed" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed">
+                            <TextBlock.Inlines>
+                                <Run Text="{Binding LevelProperty, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                <!--<Run Text="/" />
+                                <Run Text="{Binding PersProperty.MaxLevelProperty, Mode=OneWay}" />-->
+                            </TextBlock.Inlines>
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="Уровень: "
+                            TextAlignment="Right" />
+
+                        <Grid
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}">
+                            <ProgressBar
+                                Margin="0"
+                                Background="Transparent"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Foreground="Yellow"
+                                Maximum="{Binding MaxExpProperty, Mode=OneWay}"
+                                Minimum="{Binding MinExpProperty, Mode=OneWay}"
+                                Value="{Binding ExpProperty, Mode=OneWay}" />
+                            <TextBlock
+                                Margin="{StaticResource Marg}"
+                                Padding="3,0"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                TextWrapping="Wrap">
+                                <TextBlock.Inlines>
+                                    <Run Text="{Binding PersProperty.PersLevelProperty, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                    <Run Text=": " />
+                                    <Run Text="{Binding PersProperty.ExpString, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                        </Grid>
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            TextAlignment="Right"
+                            Visibility="{Binding PersProperty.PersSettings.IsHP, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                    <Binding Path="PersProperty.HPOrDmgString" />
+                                    <Binding Source=": " />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <Grid
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}"
+                            Visibility="{Binding PersProperty.PersSettings.IsHP, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ProgressBar
+                                Margin="0"
+                                Background="Transparent"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Foreground="LightCoral"
+                                Maximum="{Binding PersProperty.MaxHPIneger, Mode=OneWay}"
+                                Minimum="0"
+                                Value="{Binding PersProperty.CurHpFrontEnd, Mode=OneWay}" />
+                            <TextBlock
+                                Margin="{StaticResource Marg}"
+                                Padding="3,0"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                TextWrapping="Wrap">
+                                <TextBlock.Inlines>
+                                    <Run Text="{Binding PersProperty.CurHpFrontEnd, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                    <Run Text="/" />
+                                    <Run Text="{Binding PersProperty.MaxHPIneger, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                        </Grid>
+
+                        <!--<TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="КЗ: "
+                            TextAlignment="Right" />-->
+
+                        <!--<Image
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="2"
+                            HorizontalAlignment="Right"
+                            Source="../Images/diamond.png" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding PersProperty.AbilitisPoints}"
+                            TextWrapping="Wrap" />-->
+
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="Звание: "
+                            TextAlignment="Right"
+                            Visibility="{Binding PersProperty.PersSettings.IsActtivateRangse, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <Button
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}"
+                            HorizontalContentAlignment="Stretch"
+                            Background="Transparent"
+                            Visibility="{Binding PersProperty.PersSettings.IsActtivateRangse, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:ChangePropertyAction
+                                        PropertyName="IsOpen"
+                                        TargetName="pEditRangs"
+                                        Value="true" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                            <Grid>
+                                <ProgressBar
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="Yellow"
+                                    Maximum="{Binding PersProperty.MaxRangLev}"
+                                    Minimum="{Binding PersProperty.MinRangLev}" />
+                                <!--  Value="{Binding PersProperty.PersLevelProperty}"  -->
+                                <TextBlock
+                                    Padding="3,0"
+                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                    Text="{Binding PersProperty.CurRang.NameOfRang}"
+                                    TextAlignment="Left"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </Button>
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="Мировоззрение: "
+                            TextAlignment="Right" />
+
+                        <xctk:AutoSelectTextBox
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            MinWidth="0"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource AutoSelectTextBoxStyle}"
+                            Text="{Binding CharacterProperty, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="Класс: "
+                            TextAlignment="Right"
+                            Visibility="Visible" />
+
+                        <xctk:AutoSelectTextBox
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            MinWidth="0"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource AutoSelectTextBoxStyle}"
+                            Text="{Binding PersProperty.Class1.ValueProperty}"
+                            TextAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource TextBlock-Sketch}"
+                            Text="История: "
+                            TextAlignment="Right" />
+
+                        <xctk:AutoSelectTextBox
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource Marg}"
+                            Padding="3,0"
+                            Style="{StaticResource AboutTextBoxStyle}"
+                            Text="{Binding HistoryProperty, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Border
+                    x:Name="bAllCha"
+                    Margin="17,2,2,5"
+                    Background="{StaticResource GlassBackground}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    CornerRadius="3"
+                    DockPanel.Dock="Top">
+                    <ScrollViewer
+                        Background="Transparent"
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource ScrollViewer-Sketch}"
+                        VerticalScrollBarVisibility="Auto">
+                        <!--  Характеристики  -->
+
+                        <StackPanel Margin="17,0,0,0">
+                            <ItemsControl
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                BorderBrush="{x:Null}"
+                                ItemsSource="{Binding Source={StaticResource CharactView}}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="Model:Characteristic">
+                                        <Grid Margin="4,2,10,2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <ProgressBar
+                                                Grid.Row="0"
+                                                Grid.ColumnSpan="3"
+                                                MinHeight="40"
+                                                Background="LightGray"
+                                                BorderBrush="Gray"
+                                                BorderThickness="1"
+                                                Foreground="Yellow"
+                                                Maximum="{Binding Path=(Model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                                Minimum="0"
+                                                Style="{StaticResource ProgressBarStyle}"
+                                                Value="{Binding ValueToProgress, Mode=OneWay}" />
+
+                                            <!--  Название и изменение  -->
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="6,2,0,2"
+                                                FontWeight="Bold"
+                                                Style="{StaticResource TextBlock-SketchWrap}"
+                                                TextAlignment="Center">
+                                                <Hyperlink
+                                                    Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding GUID}"
+                                                    Style="{StaticResource HyperStyle2}">
+                                                    <TextBlock TextWrapping="Wrap">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                <Binding Path="NameOfProperty" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Hyperlink>
+                                            </TextBlock>
+
+                                            <Line
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="1,2,1,12"
+                                                VerticalAlignment="Bottom"
+                                                Stroke="DarkSlateGray"
+                                                StrokeDashArray="2 2"
+                                                X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                Margin="0,2,6,2"
+                                                FontWeight="Bold"
+                                                Style="{StaticResource TextBlock-SketchWrap}"
+                                                Text="{Binding ChaRang}"
+                                                TextAlignment="Center" />
+
+
+                                            <ItemsControl
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="3"
+                                                VerticalAlignment="Top"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                BorderBrush="{x:Null}"
+                                                ItemsSource="{Binding RelayAbilitys}"
+                                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="Model:AbilityModel">
+                                                        <Border
+                                                            Grid.Column="0"
+                                                            Margin="6,1"
+                                                            BorderBrush="YellowGreen"
+                                                            BorderThickness="0">
+
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <ProgressBar
+                                                                    Grid.Column="1"
+                                                                    Grid.ColumnSpan="3"
+                                                                    MinHeight="0"
+                                                                    Panel.ZIndex="-1"
+                                                                    Background="Transparent"
+                                                                    BorderBrush="Transparent"
+                                                                    Foreground="Yellow"
+                                                                    Maximum="{Binding Path=(Model:StaticMetods.MaxAbLevel), Mode=OneWay}"
+                                                                    Minimum="0"
+                                                                    Opacity="{Binding AbilProperty.Opacity}"
+                                                                    Style="{StaticResource ProgressBarStyle}"
+                                                                    Value="{Binding AbilProperty.ValueToProgress, Mode=OneWay}" />
+                                                                <TextBlock
+                                                                    Grid.Column="1"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Opacity="{Binding AbilProperty.Opacity}"
+                                                                    Style="{StaticResource TextBlock-SketchWrap}">
+                                                                    <Hyperlink
+                                                                        Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                        CommandParameter="{Binding AbilProperty.GUID}"
+                                                                        Style="{StaticResource AbHyperStyle}">
+                                                                        <TextBlock
+                                                                            FontStyle="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextItalicConverter}}"
+                                                                            FontWeight="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextBoldConverter}}"
+                                                                            Foreground="{Binding ForeGroundd}"
+                                                                            TextWrapping="Wrap">
+                                                                            <TextBlock.Text>
+                                                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                                    <Binding Path="AbilProperty.PlusAbName" />
+                                                                                    <Binding Path="AbilProperty.NameOfProperty" />
+                                                                                </MultiBinding>
+                                                                            </TextBlock.Text>
+                                                                        </TextBlock>
+                                                                    </Hyperlink>
+                                                                </TextBlock>
+                                                                <Line
+                                                                    Grid.Column="2"
+                                                                    Margin="1,1,1,3"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Opacity="{Binding AbilProperty.Opacity}"
+                                                                    Stroke="{Binding AbilProperty.ForeGroundd}"
+                                                                    StrokeDashArray="2 2"
+                                                                    X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                                                                <TextBlock
+                                                                    Grid.Column="3"
+                                                                    VerticalAlignment="Bottom"
+                                                                    DockPanel.Dock="Right"
+                                                                    FontStyle="{Binding AbilProperty.ToChaRelaysProperty, Converter={StaticResource AbTextItalicConverter}}"
+                                                                    FontWeight="{Binding AbilProperty.ToChaRelaysProperty, Converter={StaticResource AbTextBoldConverter}}"
+                                                                    Foreground="{Binding AbilProperty.ForeGroundd}"
+                                                                    Opacity="{Binding AbilProperty.Opacity}"
+                                                                    Style="{StaticResource TextBlock-SketchWrap}">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                                            <Binding Mode="OneWay" Path="AbilProperty.RangName" />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+                </Border>
+
+                <!--<DockPanel>
+                -->
+                <!--  Характеристики  -->
+                <!--
+                    <Border
+                        x:Name="bAllCha"
+                        Background="{StaticResource GlassBackground}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="2"
+                        CornerRadius="3"
+                        DockPanel.Dock="Top">
+                        <StackPanel>
+                            <DockPanel>
+                -->
+                <!--<TextBlock
+                                    Margin="4"
+                                    DockPanel.Dock="Top"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    Text="Характеристики"
+                                    TextAlignment="Center"
+                                    TextDecorations="Underline" />-->
+                <!--
+                                <ItemsControl
+                                    Width="{Binding ActualWidth, ElementName=bAllCha}"
+                                    Margin="2"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    BorderBrush="{x:Null}"
+                                    ItemsSource="{Binding Source={StaticResource CharactView}}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="Model:Characteristic">
+                                            <Grid Margin="4,2,10,2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+
+                                                <ProgressBar
+                                                    Grid.Row="0"
+                                                    MinHeight="40"
+                                                    Background="LightGray"
+                                                    BorderBrush="Gray"
+                                                    BorderThickness="1"
+                                                    Foreground="Yellow"
+                                                    Maximum="{Binding Path=(Model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                                    Minimum="0"
+                                                    Style="{StaticResource ProgressBarStyle}"
+                                                    Value="{Binding CellValue}" />
+                -->
+                <!--  Value="{Binding CellValue}"  -->
+                <!--  Value="{Binding Percent, Mode=OneWay, IsAsync=True}"  -->
+
+                <!--  Название и изменение  -->
+                <!--
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Margin="0,2"
+                                                    FontWeight="Bold"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    TextAlignment="Center">
+                                                    <Hyperlink
+                                                        Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding GUID}"
+                                                        Style="{StaticResource HyperStyle2}">
+                                                        <TextBlock TextWrapping="Wrap">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                                                    <Binding Path="NameOfProperty" />
+                                                                    <Binding Source="" />
+                                                                    <Binding Path="ChaRang" />
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock
+                                    Margin="4"
+                                    DockPanel.Dock="Top"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    Text="Навыки"
+                                    TextAlignment="Center"
+                                    TextDecorations="Underline" />
+                                <ItemsControl
+                                    Grid.Row="1"
+                                    VerticalAlignment="Top"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    BorderBrush="{x:Null}"
+                                    ItemsSource="{Binding Source={StaticResource abView}}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="2" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="Model:AbilityModel">
+                                            <Border
+                                                Grid.Column="0"
+                                                Margin="6,1"
+                                                BorderBrush="YellowGreen"
+                                                BorderThickness="0">
+
+                                                <Grid>
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+
+
+                                                    <ProgressBar
+                                                        Grid.Column="1"
+                                                        Grid.ColumnSpan="3"
+                                                        MinHeight="0"
+                                                        Panel.ZIndex="-1"
+                                                        Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        Foreground="Yellow"
+                                                        Maximum="{Binding Path=(Model:StaticMetods.MaxAbLevel), Mode=OneWay}"
+                                                        Minimum="0"
+                                                        Opacity="{Binding Opacity}"
+                                                        Style="{StaticResource ProgressBarStyle}" />
+
+                -->
+                <!--  Value="{Binding AbilProperty.CellValue}"  -->
+                <!--  Value="{Binding Percent, Mode=OneWay, IsAsync=True}"  -->
+                <!--
+
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Bottom"
+                                                        Opacity="{Binding AbilProperty.Opacity}"
+                                                        Style="{StaticResource TextBlock-SketchWrap}">
+                                                        <Hyperlink
+                                                            Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            CommandParameter="{Binding GUID}"
+                                                            Style="{StaticResource AbHyperStyle}">
+                                                            <TextBlock
+                                                                FontStyle="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextItalicConverter}}"
+                                                                FontWeight="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextBoldConverter}}"
+                                                                Foreground="{Binding ForeGroundd}"
+                                                                TextWrapping="Wrap">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+
+                                                                        <Binding Path="PlusAbName" />
+                                                                        <Binding Path="NameOfProperty" />
+                -->
+                <!--<Binding Source=" (" />
+                                                                            <Binding Path="GetKoefName" />
+                                                                            <Binding Source=")" />-->
+                <!--
+
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <Line
+                                                        Grid.Column="2"
+                                                        Margin="1,1,1,3"
+                                                        VerticalAlignment="Bottom"
+                                                        Opacity="{Binding Opacity}"
+                                                        Stroke="{Binding ForeGroundd}"
+                                                        StrokeDashArray="2 2"
+                                                        X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                                                    <TextBlock
+                                                        Grid.Column="3"
+                                                        VerticalAlignment="Bottom"
+                                                        DockPanel.Dock="Right"
+                                                        FontStyle="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextItalicConverter}}"
+                                                        FontWeight="{Binding ToChaRelaysProperty, Converter={StaticResource AbTextBoldConverter}}"
+                                                        Foreground="{Binding ForeGroundd}"
+                                                        Opacity="{Binding Opacity}"
+                                                        Style="{StaticResource TextBlock-SketchWrap}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                                <Binding Mode="OneWay" Path="RangName" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DockPanel>
+                        </StackPanel>
+
+
+
+
+                    </Border>
+                </DockPanel>-->
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

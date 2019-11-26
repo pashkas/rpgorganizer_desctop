@@ -1,0 +1,309 @@
+﻿<Window
+    x:Class="Sample.View.PersSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:Sample="clr-namespace:Sample"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:policy="clr-namespace:System.Security.Policy;assembly=mscorlib"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Настройки персонажа"
+    DataContext="{Binding PersSettingsVM, Source={StaticResource Locator}}"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <Model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <DataTemplate x:Key="InventoryItem" DataType="Model:Revard">
+            <Border
+                x:Name="xxxBord"
+                Margin="3"
+                Background="White"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0">
+                <DockPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Top">
+                        <TextBlock
+                            Margin="3"
+                            FontWeight="Bold"
+                            Foreground="DarkSlateGray"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NameOfProperty}"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            Margin="3"
+                            FontStyle="Italic"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding DescriptionProperty}"
+                            TextAlignment="Center"
+                            Visibility="{Binding DescriptionProperty, Converter={StaticResource NullToVisibleConverter}, ConverterParameter=string}" />
+                        <DockPanel
+                            HorizontalAlignment="Center"
+                            LastChildFill="False"
+                            Visibility="Collapsed">
+                            <TextBlock
+                                Margin="3"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="Стоимость: " />
+                            <TextBlock
+                                Margin="3"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding CostProperty}" />
+                        </DockPanel>
+                    </StackPanel>
+
+                    <UniformGrid
+                        x:Name="invMenu"
+                        Height="35"
+                        Columns="1"
+                        DockPanel.Dock="Bottom"
+                        Visibility="Visible">
+
+                        <Button
+                            Width="35"
+                            Height="Auto"
+                            Command="{Binding DataContext.UseRevardCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ToolButtonStyle}"
+                            ToolTip="Использовать награду (удалить из инвентаря)"
+                            Visibility="{Binding IsBaige, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+                            <ContentControl Template="{StaticResource ContentControlInventory}" />
+                        </Button>
+
+                        <Button
+                            Height="Auto"
+                            Command="{Binding DataContext.SaleRevardCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonBuy}"
+                            ToolTip="Продать награду. Будет возвращена половина стоимости награды в золоте."
+                            Visibility="Collapsed" />
+                    </UniformGrid>
+
+                    <Image
+                        x:Name="invIm"
+                        Margin="2"
+                        Source="{Binding ImageProperty}" />
+
+                </DockPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter TargetName="invMenu" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+
+        </DataTemplate>
+    </Window.Resources>
+
+    <Border
+        Background="{StaticResource Brush1}"
+        BorderBrush="{StaticResource BorderBrush}"
+        BorderThickness="4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <TabControl
+                x:Name="TabControl"
+                Grid.ColumnSpan="2"
+                Margin="2"
+                TabStripPlacement="Left">
+
+                <!--  Region (Основная информация о персонаже)  -->
+                <TabItem Header="Информация">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}">
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <ei:CallMethodAction MethodName="UpdatePersInfo" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBlock>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding RefreshInfoCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Sample:PersInfoUC Margin="0" Background="White" />
+                </TabItem>
+
+
+
+                <TabItem Header="Характеристики">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:ucCharactView Grid.RowSpan="2" Margin="2" />
+                </TabItem>
+
+                <TabItem Header="Навыки">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding UpdateAbilitisCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBlock>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:ucAbilityView Margin="2" />
+                </TabItem>
+
+
+                <!--  EXTENDEDVERS  -->
+                <TabItem Header="Квесты" IsEnabled="{Binding PersProperty.IsQwestsEnabled}">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}">
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding UpdateQwestsCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBlock>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:AimView x:Name="QwestsView" Margin="2" />
+                </TabItem>
+
+                <!--<TabItem IsEnabled="False">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                FontStyle="Italic"
+                                Style="{StaticResource TextBlock-Sketch}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                </TabItem>-->
+
+                <TabItem Header="Трофеи">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:ucRewardsView DataContext="{Binding ucRewVM}" />
+                </TabItem>
+
+
+                <TabItem Header="Инвентарь" IsEnabled="{Binding PersProperty.IsRewardsEnabled}">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListBox
+                        Margin="2"
+                        VerticalAlignment="Top"
+                        Background="White"
+                        ItemTemplate="{StaticResource InventoryItem}"
+                        ItemsPanel="{StaticResource InventoryPanel}"
+                        ItemsSource="{Binding DataContext.InventoryItems, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource ListsStyle}">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                                            <TextBlock
+                                                Background="LightSteelBlue"
+                                                Style="{StaticResource TextBlock-Sketch}"
+                                                Text="{Binding Name}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                    </ListBox>
+                </TabItem>
+
+
+                <!--<TabItem Header="Артефакты">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:ucRewardsView DataContext="{Binding ucArtVM}" />
+                </TabItem>-->
+
+                <!--<TabItem Header="Знаки отличия">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="2,5"
+                                Style="{StaticResource TextBlock-Sketch}"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <local:ucRewardsView DataContext="{Binding ucBaigVM}" />
+                </TabItem>-->
+
+            </TabControl>
+
+            <Button
+                x:Name="btnOk"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Height="{StaticResource DownButtonHeight}"
+                Padding="5"
+                Background="{StaticResource TopBrush}"
+                Click="closePSV"
+                Command="{Binding ClosePSVCommand}"
+                Content="OK"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </Grid>
+    </Border>
+</Window>

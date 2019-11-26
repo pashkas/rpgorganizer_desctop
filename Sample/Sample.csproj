@@ -1,0 +1,1672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ExpressionBlendVersion>12.0.41002.1</ExpressionBlendVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8527F09D-5BC1-4753-9AFC-BBC387131959}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sample</RootNamespace>
+    <AssemblyName>Sample</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <ApplicationIcon>shield_and_swords.ico</ApplicationIcon>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>D:\Rpg Organizer Publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>3</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <UpdateUrl>http://softforlife.ucoz.com/rpg/</UpdateUrl>
+    <TargetCulture>ru</TargetCulture>
+    <ProductName>MyLife RPG Organizer</ProductName>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationVersion>5.0.3.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>C99BCBDC1AE69FD03B171681ACFBA1DD301D0908</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Sample_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\..\..\..\loads\graphviz4net\graphviz4net\WPF_example\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonMark.NET.0.14.0\lib\net45\CommonMark.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fastenshtein, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fastenshtein.1.0.0.5\lib\net40-client\Fastenshtein.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WPF4\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WPF4\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="Graphviz4Net">
+      <HintPath>..\..\..\..\..\loads\graphviz4net\graphviz4net\WPF_example\Graphviz4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Graphviz4Net.WPF">
+      <HintPath>..\..\..\..\..\loads\graphviz4net\graphviz4net\WPF_example\Graphviz4Net.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqOptimizer.Base, Version=0.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqOptimizer.FSharp.0.6.3\lib\LinqOptimizer.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqOptimizer.Core, Version=0.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqOptimizer.FSharp.0.6.3\lib\LinqOptimizer.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqOptimizer.CSharp, Version=0.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqOptimizer.CSharp.0.6.3\lib\LinqOptimizer.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqOptimizer.FSharp, Version=0.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqOptimizer.FSharp.0.6.3\lib\LinqOptimizer.FSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mantin.Controls.Wpf.Notification, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mantin.Controls.Wpf.Notification.2.8.1.0\lib\net40\Mantin.Controls.Wpf.Notification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing" />
+    <Reference Include="Microsoft.Expression.Prototyping.SketchControls, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59d6d24383174ac4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WPF4\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Converters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Converters.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Core, Version=0.3.1.1588, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Css, Version=0.3.1.1590, Culture=neutral, PublicKeyToken=7a46e3f532fdb787, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Css.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Dom, Version=0.3.1.1589, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Dom.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Model, Version=0.3.1.1592, Culture=neutral, PublicKeyToken=2236cfc76b505845, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Gdi, Version=0.3.1.1595, Culture=neutral, PublicKeyToken=03902092284347e3, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Rendering.Gdi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Rendering.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Svg, Version=2.2.1.1459, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.2.2.1\lib\net35\Svg.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="System.Windows.Interactivity" />
+    <Reference Include="WPFExtensions">
+      <HintPath>..\..\..\..\..\loads\graphviz4net\graphviz4net\WPF_example\WPFExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>G:\ExtendedWPFToolkit_Binaries\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Behavior\AutoCloseBehavior.cs" />
+    <Compile Include="Behavior\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Behavior\DropDownButtonBehavior.cs" />
+    <Compile Include="Behavior\FrameworkElementAdorner.cs" />
+    <Compile Include="Behavior\FrameworkElementDragBehavior.cs" />
+    <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
+    <Compile Include="Behavior\FullWindowBehavior.cs" />
+    <Compile Include="Behavior\IDragable.cs" />
+    <Compile Include="Behavior\IDropable.cs" />
+    <Compile Include="Behavior\ListBoxAdorner.cs" />
+    <Compile Include="Behavior\ListBoxAdornerManager.cs" />
+    <Compile Include="Behavior\ListBoxDropBehavior.cs" />
+    <Compile Include="Behavior\OpenHyperlinkBehavior.cs" />
+    <Compile Include="Behavior\PlayCloseBehavior.cs" />
+    <Compile Include="Behavior\PlayEditBehavior.cs" />
+    <Compile Include="Behavior\ReCenterWindowBehavior.cs" />
+    <Compile Include="Behavior\VerticalScrollBehavior.cs" />
+    <Compile Include="Common\CommandBase.cs" />
+    <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="FocusItems.xaml.cs">
+      <DependentUpon>FocusItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InerPanelNameTasksConverter.cs" />
+    <Compile Include="MainWindowAllMenu.xaml.cs">
+      <DependentUpon>MainWindowAllMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AbChaRelayVisConverter.cs" />
+    <Compile Include="Model\AbilitiModel.cs" />
+    <Compile Include="Model\AbilityNeedConverter.cs" />
+    <Compile Include="Model\AbillGroups.cs" />
+    <Compile Include="Model\AbTaskConv.cs" />
+    <Compile Include="Model\AbTextItalicConverter.cs" />
+    <Compile Include="Model\AbTextStyleConverter.cs" />
+    <Compile Include="Model\AbUslStrikeOutConverter.cs" />
+    <Compile Include="Model\Aim.cs" />
+    <Compile Include="Model\AbilReqwirement.cs" />
+    <Compile Include="Model\AimChaReqwirements.cs" />
+    <Compile Include="Model\AimNeeds.cs" />
+    <Compile Include="Model\Arrow.cs" />
+    <Compile Include="Model\ArrowColorConverter.cs" />
+    <Compile Include="Model\AutofocusOpacityConverter.cs" />
+    <Compile Include="Model\AutofocusTaskBackgroubdConverter.cs" />
+    <Compile Include="Model\barValueConverter.cs" />
+    <Compile Include="Model\BaseRPGItem.cs" />
+    <Compile Include="Model\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Model\BoolToVisibilityConverter.cs" />
+    <Compile Include="Model\ChaAbilitis.cs" />
+    <Compile Include="Model\ChaLevAndValues.cs" />
+    <Compile Include="Model\ChangeAbilityModele.cs" />
+    <Compile Include="Model\ChangeAimModel.cs" />
+    <Compile Include="Model\ChangeConverter.cs" />
+    <Compile Include="Model\ChangeCharactersConverter.cs" />
+    <Compile Include="Model\changesVisibleConverter.cs" />
+    <Compile Include="Model\ChangeTaskAbilityNotDoneConverter.cs" />
+    <Compile Include="Model\CharactChangeValueConverter.cs" />
+    <Compile Include="Model\CharactDebuphValueConverter.cs" />
+    <Compile Include="Model\CharactExpValueConverter.cs" />
+    <Compile Include="Model\CharactParameters.cs" />
+    <Compile Include="Model\charactWithDebuphConverter.cs" />
+    <Compile Include="Model\ChaToolTipConverter.cs" />
+    <Compile Include="Model\ChParHeight.cs" />
+    <Compile Include="Model\CircularProgress.cs" />
+    <Compile Include="Model\Class.cs" />
+    <Compile Include="Model\Class1.cs" />
+    <Compile Include="Model\ColorConverter2.cs" />
+    <Compile Include="Model\CompositeAims.cs" />
+    <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\CounKCharactMessege.cs" />
+    <Compile Include="Model\Counters.cs" />
+    <Compile Include="Model\countTaskConverter.cs" />
+    <Compile Include="Model\CurAbLevelUnderlineConverter.cs" />
+    <Compile Include="Model\CustomTickBar.cs" />
+    <Compile Include="Model\DataSorter.cs" />
+    <Compile Include="Model\DateToStringConverter.cs" />
+    <Compile Include="Model\DaysOfWeekRepeat.cs" />
+    <Compile Include="Model\DescVisibleConverter.cs" />
+    <Compile Include="Model\DGTJSON.cs" />
+    <Compile Include="Model\DGTSync.cs" />
+    <Compile Include="Model\Diary.cs" />
+    <Compile Include="Model\DostijeniyaTittleConverter.cs" />
+    <Compile Include="Model\DoubleToPctConverter.cs" />
+    <Compile Include="Model\DropBehavior.cs" />
+    <Compile Include="Model\edgeVisibleConverter.cs" />
+    <Compile Include="Model\editModeVisibility.cs" />
+    <Compile Include="Model\EmptyStringVisibilityConverter.cs" />
+    <Compile Include="Model\ExpAbilityModel.cs" />
+    <Compile Include="Model\expConverter.cs" />
+    <Compile Include="Model\ExpQwests.cs" />
+    <Compile Include="Model\FirstTaskBackgroundConverter.cs" />
+    <Compile Include="Model\FocuseItUserControl.xaml.cs">
+      <DependentUpon>FocuseItUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FocusFieldVisibility.cs" />
+    <Compile Include="Model\FocusIsActiveOpacityConverter.cs" />
+    <Compile Include="Model\FocusModel.cs" />
+    <Compile Include="Model\GetStringTimeConverter.cs" />
+    <Compile Include="Model\GroupedComlexNeed.cs" />
+    <Compile Include="Model\HeilightItemsControllItemConverter.cs" />
+    <Compile Include="Model\HP.cs" />
+    <Compile Include="Model\HPValueConverter.cs" />
+    <Compile Include="Model\IDialog.cs" />
+    <Compile Include="Model\IdToNameConverter.cs" />
+    <Compile Include="Model\IExpable.cs" />
+    <Compile Include="Model\IItemsNeedable.cs" />
+    <Compile Include="Model\IItemsRelaysable.cs" />
+    <Compile Include="Model\IItemsReqvirementsable.cs" />
+    <Compile Include="Model\ImageHeight.cs" />
+    <Compile Include="Model\IndexConverter.cs" />
+    <Compile Include="Model\InetImageGen.cs" />
+    <Compile Include="Model\IntervalsConverter.cs" />
+    <Compile Include="Model\IntervalsModel.cs" />
+    <Compile Include="Model\IntervalVisibleConverter.cs" />
+    <Compile Include="Model\invertDouble.cs" />
+    <Compile Include="Model\IRangable.cs" />
+    <Compile Include="Model\IRelaysable.cs" />
+    <Compile Include="Model\ISActiveQwestsOpasitiConverter.cs" />
+    <Compile Include="Model\IsChildElementSelected.cs" />
+    <Compile Include="Model\isDateExpanded.cs" />
+    <Compile Include="Model\IsElementVisibleConverter.cs" />
+    <Compile Include="Model\IsEnabledBackgroundConverter.cs" />
+    <Compile Include="Model\ItemsCountConverter.cs" />
+    <Compile Include="Model\IToolTipable.cs" />
+    <Compile Include="Model\KValueConverter.cs" />
+    <Compile Include="Model\LevelableRPGItem.cs" />
+    <Compile Include="Model\LevelColorConverter.cs" />
+    <Compile Include="Model\levelOneConverter.cs" />
+    <Compile Include="Model\Links.cs" />
+    <Compile Include="Model\ListBoxExtenders.cs" />
+    <Compile Include="Model\ListBoxItemAttachedProperties.cs" />
+    <Compile Include="Model\Log.cs" />
+    <Compile Include="Model\mainVindowPokazatelConverter.cs" />
+    <Compile Include="Model\MainWindowOwnerBehavior.cs" />
+    <Compile Include="Model\MapLinkToolTipVisibleConverter.cs" />
+    <Compile Include="Model\MapQwestOpacityConverter.cs" />
+    <Compile Include="Model\MaxTimerConverter.cs" />
+    <Compile Include="Model\maxValueVisibleConverter.cs" />
+    <Compile Include="Model\MinimizeToTray.cs" />
+    <Compile Include="Model\minMaxChaConverter.cs" />
+    <Compile Include="Model\MinMaxProgressChangesConverter.cs" />
+    <Compile Include="Model\MoveTaskMessege.cs" />
+    <Compile Include="Model\MultiBoolToVisibleConverter.cs" />
+    <Compile Include="Model\NameToImageConverter.cs" />
+    <Compile Include="Model\NeedAbility.cs" />
+    <Compile Include="Model\NeedCharact.cs" />
+    <Compile Include="Model\Needness.cs" />
+    <Compile Include="Model\needsCharactBackgroundConverter.cs" />
+    <Compile Include="Model\needsListBoxBachroundConverter.cs" />
+    <Compile Include="Model\NeedTaskProgressConverter.cs" />
+    <Compile Include="Model\NeedTasks.cs" />
+    <Compile Include="Model\needTaskVisibility.cs" />
+    <Compile Include="Model\NeedValueConverter.cs" />
+    <Compile Include="Model\NullConverter.cs" />
+    <Compile Include="Model\nullToVisibleConverter.cs" />
+    <Compile Include="Model\Osobennosti.cs" />
+    <Compile Include="Model\ParametrModel.cs" />
+    <Compile Include="Model\PercentageConverter.cs" />
+    <Compile Include="Model\PersLevelsValues.cs" />
+    <Compile Include="Model\picConverter.cs" />
+    <Compile Include="Model\PopupInformationMessege.cs" />
+    <Compile Include="Model\progLevelConverter.cs" />
+    <Compile Include="Model\ProgramSettings.cs" />
+    <Compile Include="Model\QwestColorConverter.cs" />
+    <Compile Include="Model\QwestNeedOpacityConverter.cs" />
+    <Compile Include="Model\QwestRelayToAbValueConverter.cs" />
+    <Compile Include="Model\QwestsChangesModele.cs" />
+    <Compile Include="Model\QwestsForLevelProgressConverter.cs" />
+    <Compile Include="Model\QwestsSorter.cs" />
+    <Compile Include="Model\QwestStarVisibilityConverter.cs" />
+    <Compile Include="Model\QwestStrikeOutConverter.cs" />
+    <Compile Include="Model\QwestTaskMapViewModel.cs" />
+    <Compile Include="Model\QwestValueConverter.cs" />
+    <Compile Include="Model\qwickAbilityChangeConverter.cs" />
+    <Compile Include="Model\qwickAbilityLevelBackgroundConverter.cs" />
+    <Compile Include="Model\qwickAimChangeBackgroundConverter.cs" />
+    <Compile Include="Model\QwickChaExpBackgroundConverter.cs" />
+    <Compile Include="Model\qwickCharacteristicChangeConverter.cs" />
+    <Compile Include="Model\qwickCharactLevelBackgroundConverter.cs" />
+    <Compile Include="Model\QwickPick.cs" />
+    <Compile Include="Model\qwickSetAbilityExpConverter.cs" />
+    <Compile Include="Model\qwickSetChaRelayBackgroundConverter.cs" />
+    <Compile Include="Model\qwickTaskExpBackgroundConverter.cs" />
+    <Compile Include="Model\RangBacgroundConverter.cs" />
+    <Compile Include="Model\RangNameFromLevelConverter.cs" />
+    <Compile Include="Model\RangNameOfConverter.cs" />
+    <Compile Include="Model\Rangs.cs" />
+    <Compile Include="Model\RangsConverter.cs" />
+    <Compile Include="Model\rangVisibilityConverter.cs" />
+    <Compile Include="Model\Rase.cs" />
+    <Compile Include="Model\relaysConverter.cs" />
+    <Compile Include="Model\RelaysItem.cs" />
+    <Compile Include="Model\Revard.cs" />
+    <Compile Include="Model\RevardEnabledConverter.cs" />
+    <Compile Include="Model\RevardVisibilityConverter.cs" />
+    <Compile Include="Model\RoundProgressBarValueConverter.cs" />
+    <Compile Include="Model\RoundProgressIconValueConverter.cs" />
+    <Compile Include="Model\RPGItem.cs" />
+    <Compile Include="Model\RpgItemsTypes.cs" />
+    <Compile Include="Model\SelectedImageConverter.cs" />
+    <Compile Include="Model\SettingsPers.cs" />
+    <Compile Include="Model\SkillsMayUpModel.cs" />
+    <Compile Include="Model\sliderConverter.cs" />
+    <Compile Include="Model\splitArrayToStringConverter.cs" />
+    <Compile Include="Model\SplitStringsConverter.cs" />
+    <Compile Include="Model\StarsConverter.cs" />
+    <Compile Include="Model\starsVisible.cs" />
+    <Compile Include="Model\StaticMetods.cs" />
+    <Compile Include="Model\StaticSettings.cs" />
+    <Compile Include="Model\StatusTask.cs" />
+    <Compile Include="Model\StringDateToShortStringDateConverter.cs" />
+    <Compile Include="Model\StringToColorConverter.cs" />
+    <Compile Include="Model\stringToDateConverter.cs" />
+    <Compile Include="Model\StringToPic.cs" />
+    <Compile Include="Model\SubTask.cs" />
+    <Compile Include="Model\subtasksListConverter.cs" />
+    <Compile Include="Model\subtasksVisibleConverter.cs" />
+    <Compile Include="Model\subVisibleConverter.cs" />
+    <Compile Include="Model\taskAbilChaChengeBackgroundConverter.cs" />
+    <Compile Include="Model\taskDoneOrNotToolTipConverter.cs" />
+    <Compile Include="Model\TaskEditModes.cs" />
+    <Compile Include="Model\taskImageHeightConverter.cs" />
+    <Compile Include="Model\TaskInfoImageWidthConverter.cs" />
+    <Compile Include="Model\TaskLinkDictItem.cs" />
+    <Compile Include="Model\TaskLinkedAbilitis.cs" />
+    <Compile Include="Model\TaskLinks.cs" />
+    <Compile Include="Model\TaskLog.cs" />
+    <Compile Include="Model\TaskMessege.cs" />
+    <Compile Include="Model\TaskRangsConverter.cs" />
+    <Compile Include="Model\TaskRelayAbil.cs" />
+    <Compile Include="Model\TaskRelayQwest.cs" />
+    <Compile Include="Model\TaskRelaysItem.cs" />
+    <Compile Include="Model\taskRelayValueConverter.cs" />
+    <Compile Include="Model\TaskState.cs" />
+    <Compile Include="Model\TasksViewVisibility.cs" />
+    <Compile Include="Model\TasksVisibleConverter.cs" />
+    <Compile Include="Model\taskTimerVisibilityConverter.cs" />
+    <Compile Include="Model\TaskValueConverter.cs" />
+    <Compile Include="Model\TimerValueVisibleConverter.cs" />
+    <Compile Include="Model\TransparancyConverter.cs" />
+    <Compile Include="Model\TreeAbBorderConverter.cs" />
+    <Compile Include="Model\TypesCharactEnum.cs" />
+    <Compile Include="Model\TypeToGroupName.cs" />
+    <Compile Include="Model\ucQwestAbReqViewModel.cs" />
+    <Compile Include="Model\UniformGridColumnsConverter.cs" />
+    <Compile Include="Model\UniformRowsConverter.cs" />
+    <Compile Include="Model\valWithK.cs" />
+    <Compile Include="Model\verBacgroundConverter.cs" />
+    <Compile Include="Model\ViewChangesClass.cs" />
+    <Compile Include="Model\viewChangesModel.cs" />
+    <Compile Include="Model\ViewsModel.cs" />
+    <Compile Include="Model\WaveToTxtConverter.cs" />
+    <Compile Include="Model\WindowCloseBehavior.cs" />
+    <Compile Include="Model\ZvanieVisibilityConverter.cs" />
+    <Compile Include="PersInfoUC.xaml.cs">
+      <DependentUpon>PersInfoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="FirstTasksView.xaml.cs">
+      <DependentUpon>FirstTasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="rectConverter.cs" />
+    <Compile Include="Stat.cs" />
+    <Compile Include="TasksViewUC.xaml.cs">
+      <DependentUpon>TasksViewUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeBackgroundConverter.cs" />
+    <Compile Include="TimeFocConverter.cs" />
+    <Compile Include="ucMaterPage\ucMasterAbilities.xaml.cs">
+      <DependentUpon>ucMasterAbilities.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ucMaterPage\ucMasterAbilitiesTasks.xaml.cs">
+      <DependentUpon>ucMasterAbilitiesTasks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ucMaterPage\ucMasterCharacteristics.xaml.cs">
+      <DependentUpon>ucMasterCharacteristics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ucMaterPage\ucMasterPers.xaml.cs">
+      <DependentUpon>ucMasterPers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewChangesMinConverter.cs" />
+    <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\abilityRelayCalculator.cs" />
+    <Compile Include="ViewModel\AbilityTreeViewModel.cs" />
+    <Compile Include="ViewModel\AbTaskMapViewModel.cs" />
+    <Compile Include="ViewModel\AbTaskMapViewModele.cs" />
+    <Compile Include="ViewModel\ActiveAbilsTasksVM.cs" />
+    <Compile Include="ViewModel\ActiveQwestTasksViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditAbilityReqvirementsViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditAbilityViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditAbilNeedViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditAimNeedViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditCharacteristicViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditRevardViewModel.cs" />
+    <Compile Include="ViewModel\AddOrEditTaskNeedViewModel.cs" />
+    <Compile Include="ViewModel\AimNeeds.cs" />
+    <Compile Include="ViewModel\AimsViewModel.cs" />
+    <Compile Include="ViewModel\AutofocusViewModel.cs" />
+    <Compile Include="ViewModel\ChooseAbilityVM.cs" />
+    <Compile Include="ViewModel\ChooseAbRelaysToChaVM.cs" />
+    <Compile Include="ViewModel\ClassAndAbSettingsVM.cs" />
+    <Compile Include="ViewModel\closeAimsMwssege.cs" />
+    <Compile Include="ViewModel\closeMoreLevelsMwssege.cs" />
+    <Compile Include="ViewModel\ColumnsSettingsViewModel.cs" />
+    <Compile Include="ViewModel\ComplecsNeed.cs" />
+    <Compile Include="ViewModel\CorrectRelaysAbilityViewModel.cs" />
+    <Compile Include="ViewModel\CountAllCharactsViewModel.cs" />
+    <Compile Include="ViewModel\CountBalanceViewModel.cs" />
+    <Compile Include="ViewModel\CountCharacteristicViewModel.cs" />
+    <Compile Include="ViewModel\CountersViewModel.cs" />
+    <Compile Include="ViewModel\DefoultPicsAndImages.cs" />
+    <Compile Include="ViewModel\DostijeniaViewModel.cs" />
+    <Compile Include="ViewModel\firstViewViewModel.cs" />
+    <Compile Include="ViewModel\FocusModelComparer.cs" />
+    <Compile Include="ViewModel\HardnessDescr.cs" />
+    <Compile Include="ViewModel\IHaveTaskPanel.cs" />
+    <Compile Include="ViewModel\ImportAbstract.cs" />
+    <Compile Include="ViewModel\ImportAbVM.cs" />
+    <Compile Include="ViewModel\ImportCharacteristicViewModel.cs" />
+    <Compile Include="ViewModel\ImportCharactViewModel.cs" />
+    <Compile Include="ViewModel\ImportChaVM.cs" />
+    <Compile Include="ViewModel\ImportQwestsViewModel.cs" />
+    <Compile Include="ViewModel\InicilizeRevardNeedAbilityMessege.cs" />
+    <Compile Include="ViewModel\InicilizeRevardNeedCharacteristicsMessege.cs" />
+    <Compile Include="ViewModel\InicilizeRevardNeedQwestsMessege.cs" />
+    <Compile Include="ViewModel\IQwickAdd.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewTasksMapVM.cs" />
+    <Compile Include="ViewModel\MasterPageViewModel.cs" />
+    <Compile Include="ViewModel\MindMapViewModel.cs" />
+    <Compile Include="ViewModel\NewGameViewModel.cs" />
+    <Compile Include="ViewModel\NextActionViewModel.cs" />
+    <Compile Include="ViewModel\notNowAimsMwssege.cs" />
+    <Compile Include="ViewModel\PersSettingsViewModel.cs" />
+    <Compile Include="ViewModel\PlaningViewModel.cs" />
+    <Compile Include="ViewModel\QwestHardness.cs" />
+    <Compile Include="ViewModel\QwestsViewModel.cs" />
+    <Compile Include="ViewModel\RelTaskToAb.cs" />
+    <Compile Include="ViewModel\RelToAbQwests.cs" />
+    <Compile Include="ViewModel\ShortChangesViewModel.cs" />
+    <Compile Include="ViewModel\StatisticViewModel.cs" />
+    <Compile Include="ViewModel\TaskAbMapMessege.cs" />
+    <Compile Include="ViewModel\TaskForTypesSorter.cs" />
+    <Compile Include="ViewModel\TaskMapMessege.cs" />
+    <Compile Include="ViewModel\TasksMapViewModele.cs" />
+    <Compile Include="ViewModel\ucAbilityViewModel.cs" />
+    <Compile Include="ViewModel\ucAllTasksViewModel.cs" />
+    <Compile Include="ViewModel\ucArtefactsViewModel.cs" />
+    <Compile Include="ViewModel\ucBaigesViewModel.cs" />
+    <Compile Include="ViewModel\ucCharactViewModel.cs" />
+    <Compile Include="ViewModel\ucContextSettingsViewModel.cs" />
+    <Compile Include="ViewModel\ucElementRewardsViewModel.cs" />
+    <Compile Include="ViewModel\ucItemRevardsViewModel.cs" />
+    <Compile Include="ViewModel\ucMainAimsViewModel.cs" />
+    <Compile Include="ViewModel\ucNeednessInMainViewModel.cs" />
+    <Compile Include="ViewModel\ucNeednessViewModel.cs" />
+    <Compile Include="ViewModel\UcPerksViewModel.cs" />
+    <Compile Include="ViewModel\ucPopupInformationViewModel.cs" />
+    <Compile Include="ViewModel\ucQwestMap.cs" />
+    <Compile Include="ViewModel\ucRelaysItemsVM.cs" />
+    <Compile Include="ViewModel\ucRevardAbilityNeedViewModel.cs" />
+    <Compile Include="ViewModel\ucRevardNeedCharacteristics.cs" />
+    <Compile Include="ViewModel\ucRewardsViewModel.cs" />
+    <Compile Include="ViewModel\ucSetGoldExpRevardViewModel.cs" />
+    <Compile Include="ViewModel\ucStatusesSettingsViewModel.cs" />
+    <Compile Include="ViewModel\ucSubtasksViewModel.cs" />
+    <Compile Include="ViewModel\UcTasksSettingsViewModel.cs" />
+    <Compile Include="ViewModel\ucViewChangesQwestsViewModel.cs" />
+    <Compile Include="ViewModel\ucViewChangesViewModel.cs" />
+    <Compile Include="ViewModel\ViewsViewModel.cs" />
+    <Compile Include="View\abilitiRelayCalculator.xaml.cs">
+      <DependentUpon>abilitiRelayCalculator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AbilityNeedSettingsView.xaml.cs">
+      <DependentUpon>AbilityNeedSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AbilityTreeWindow.xaml.cs">
+      <DependentUpon>AbilityTreeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AbTaskMap.xaml.cs">
+      <DependentUpon>AbTaskMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActiveAbTasksView.xaml.cs">
+      <DependentUpon>ActiveAbTasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActiveAbTasksWindow.xaml.cs">
+      <DependentUpon>ActiveAbTasksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActiveQwestTasksView.xaml.cs">
+      <DependentUpon>ActiveQwestTasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActiveQwestTasksWindow.xaml.cs">
+      <DependentUpon>ActiveQwestTasksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditAbilityView.xaml.cs">
+      <DependentUpon>AddOrEditAbilityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditAbilNeedView.xaml.cs">
+      <DependentUpon>AddOrEditAbilNeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditAimView.xaml.cs">
+      <DependentUpon>AddOrEditAimView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditCharacteristic.xaml.cs">
+      <DependentUpon>AddOrEditCharacteristic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditNeedAimView.xaml.cs">
+      <DependentUpon>AddOrEditNeedAimView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditParametr.xaml.cs">
+      <DependentUpon>AddOrEditParametr.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditRevard.xaml.cs">
+      <DependentUpon>AddOrEditRevard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditTaskNeedView.xaml.cs">
+      <DependentUpon>AddOrEditTaskNeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddOrEditTaskView.xaml.cs">
+      <DependentUpon>AddOrEditTaskView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AimView.xaml.cs">
+      <DependentUpon>AimView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AllPreferenses.xaml.cs">
+      <DependentUpon>AllPreferenses.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AllTasksWindowView.xaml.cs">
+      <DependentUpon>AllTasksWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AvtofocusView.xaml.cs">
+      <DependentUpon>AvtofocusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChooseAbility.xaml.cs">
+      <DependentUpon>ChooseAbility.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChooseAbRelaysToCha.xaml.cs">
+      <DependentUpon>ChooseAbRelaysToCha.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChooseTaskToQwest.xaml.cs">
+      <DependentUpon>ChooseTaskToQwest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ClassAndAbGroupsSettingsView.xaml.cs">
+      <DependentUpon>ClassAndAbGroupsSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ColumnsSettingsView.xaml.cs">
+      <DependentUpon>ColumnsSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Congranteletions.xaml.cs">
+      <DependentUpon>Congranteletions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CorrectRelaysAbility.xaml.cs">
+      <DependentUpon>CorrectRelaysAbility.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CountAllCharactView.xaml.cs">
+      <DependentUpon>CountAllCharactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CountBalanceView.xaml.cs">
+      <DependentUpon>CountBalanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CountCharacteristicView.xaml.cs">
+      <DependentUpon>CountCharacteristicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DostijeniyaView.xaml.cs">
+      <DependentUpon>DostijeniyaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditQwestWindowView.xaml.cs">
+      <DependentUpon>EditQwestWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\firstViewView.xaml.cs">
+      <DependentUpon>firstViewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FocusedViewUC.xaml.cs">
+      <DependentUpon>FocusedViewUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GameOverWindow.xaml.cs">
+      <DependentUpon>GameOverWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\HelpProject.xaml.cs">
+      <DependentUpon>HelpProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportChaOrAb.xaml.cs">
+      <DependentUpon>ImportChaOrAb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportCharacteristicsView.xaml.cs">
+      <DependentUpon>ImportCharacteristicsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportCharacts.xaml.cs">
+      <DependentUpon>ImportCharacts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportQwestsView.xaml.cs">
+      <DependentUpon>ImportQwestsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\kWithVal.xaml.cs">
+      <DependentUpon>kWithVal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LevelsChangesView.xaml.cs">
+      <DependentUpon>LevelsChangesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindowCharacteristics.xaml.cs">
+      <DependentUpon>MainWindowCharacteristics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindowMenuUc.xaml.cs">
+      <DependentUpon>MainWindowMenuUc.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindowPersUC.xaml.cs">
+      <DependentUpon>MainWindowPersUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MasterPageView.xaml.cs">
+      <DependentUpon>MasterPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MindMapView.xaml.cs">
+      <DependentUpon>MindMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MotivatorsWindow.xaml.cs">
+      <DependentUpon>MotivatorsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewGameWindow.xaml.cs">
+      <DependentUpon>NewGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewRang.xaml.cs">
+      <DependentUpon>NewRang.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NextActionsView.xaml.cs">
+      <DependentUpon>NextActionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PassWindow.xaml.cs">
+      <DependentUpon>PassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PersSettingsView.xaml.cs">
+      <DependentUpon>PersSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PlaningWindowView.xaml.cs">
+      <DependentUpon>PlaningWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QwestMapWindow.xaml.cs">
+      <DependentUpon>QwestMapWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QwestsInTaskView.xaml.cs">
+      <DependentUpon>QwestsInTaskView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QwestsMapTasksWindow.xaml.cs">
+      <DependentUpon>QwestsMapTasksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QwestsView.xaml.cs">
+      <DependentUpon>QwestsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QwickAddTasksView.xaml.cs">
+      <DependentUpon>QwickAddTasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShortChangesWindow.xaml.cs">
+      <DependentUpon>ShortChangesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartWindow.xaml.cs">
+      <DependentUpon>StartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SuperDone.xaml.cs">
+      <DependentUpon>SuperDone.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskAtackView.xaml.cs">
+      <DependentUpon>TaskAtackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskItemInfoUserControll.xaml.cs">
+      <DependentUpon>TaskItemInfoUserControll.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskMap.xaml.cs">
+      <DependentUpon>TaskMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskMapUserControl.xaml.cs">
+      <DependentUpon>TaskMapUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\taskStatisticView.xaml.cs">
+      <DependentUpon>taskStatisticView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucAbilitiesUp.xaml.cs">
+      <DependentUpon>ucAbilitiesUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucAbilityView.xaml.cs">
+      <DependentUpon>ucAbilityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucAbilTree.xaml.cs">
+      <DependentUpon>ucAbilTree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucAddCharactNeedView.xaml.cs">
+      <DependentUpon>ucAddCharactNeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UcAddQwestLinkTo.xaml.cs">
+      <DependentUpon>UcAddQwestLinkTo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucAllTasksView.xaml.cs">
+      <DependentUpon>ucAllTasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucChaAbilInfo.xaml.cs">
+      <DependentUpon>ucChaAbilInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucCharactView.xaml.cs">
+      <DependentUpon>ucCharactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucContextsSettings.xaml.cs">
+      <DependentUpon>ucContextsSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucCountersView.xaml.cs">
+      <DependentUpon>ucCountersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucElementRewardsView.xaml.cs">
+      <DependentUpon>ucElementRewardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UcElementToolTip.xaml.cs">
+      <DependentUpon>UcElementToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucEXPRelay.xaml.cs">
+      <DependentUpon>ucEXPRelay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucExpSettings.xaml.cs">
+      <DependentUpon>ucExpSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucImageInTool.xaml.cs">
+      <DependentUpon>ucImageInTool.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucInterfacePanel.xaml.cs">
+      <DependentUpon>ucInterfacePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucItemRevardsView.xaml.cs">
+      <DependentUpon>ucItemRevardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucKRelay.xaml.cs">
+      <DependentUpon>ucKRelay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucMainAims.xaml.cs">
+      <DependentUpon>ucMainAims.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucNeednessInMainView.xaml.cs">
+      <DependentUpon>ucNeednessInMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucNeednessView.xaml.cs">
+      <DependentUpon>ucNeednessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucNeedTask.xaml.cs">
+      <DependentUpon>ucNeedTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucOsobennostiView.xaml.cs">
+      <DependentUpon>ucOsobennostiView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucPopupInformation.xaml.cs">
+      <DependentUpon>ucPopupInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucProgressBarWithScale.xaml.cs">
+      <DependentUpon>ucProgressBarWithScale.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucQwestMap.xaml.cs">
+      <DependentUpon>ucQwestMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucRelaysItems.xaml.cs">
+      <DependentUpon>ucRelaysItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucRevardNeedAbilityView.xaml.cs">
+      <DependentUpon>ucRevardNeedAbilityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucRewardsView.xaml.cs">
+      <DependentUpon>ucRewardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucSetGoldExpRevard.xaml.cs">
+      <DependentUpon>ucSetGoldExpRevard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucStatusesSettings.xaml.cs">
+      <DependentUpon>ucStatusesSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucSubtasks.xaml.cs">
+      <DependentUpon>ucSubtasks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucTaskFocusView.xaml.cs">
+      <DependentUpon>ucTaskFocusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucTaskItemMenu.xaml.cs">
+      <DependentUpon>ucTaskItemMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UcTasksSettingsView.xaml.cs">
+      <DependentUpon>UcTasksSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucViewChangeQwests.xaml.cs">
+      <DependentUpon>ucViewChangeQwests.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ucViewChangesView.xaml.cs">
+      <DependentUpon>ucViewChangesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewChangesWindow.xaml.cs">
+      <DependentUpon>ViewChangesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewsView.xaml.cs">
+      <DependentUpon>ViewsView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\ChangeCharacteristic.cs" />
+    <Compile Include="Model\Characteristic.cs" />
+    <Compile Include="Model\Pers.cs" />
+    <Compile Include="Model\Task.cs" />
+    <Compile Include="Model\TimeIntervals.cs" />
+    <Compile Include="Model\TypeOfRecurrense.cs" />
+    <Compile Include="Model\TypeOfTask.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+    <Content Include="Images\AbDefoult.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\abUp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Android.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\bad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Coin-equality.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Congrant.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\diamond.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\DoneIcon.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\fire.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Images\FocusAim.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\gold.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\Golden_star.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Images\good.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\helpProj.png" />
+    <Content Include="Images\HP.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Fonts\MORPHEUS.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Arthur Gothic.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\folkard_.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Resources\abLevelUp.wav" />
+    <None Include="Resources\death.wav" />
+    <None Include="Resources\coin.wav" />
+    <None Include="Resources\doorClose.wav" />
+    <None Include="Resources\qwestDone.wav" />
+    <None Include="Resources\edit.wav" />
+    <None Include="Resources\fight.wav" />
+    <None Include="Resources\openDoor.wav" />
+    <None Include="Resources\AxeMissile2.wav" />
+    <None Include="Resources\AxeMissile1.wav" />
+    <None Include="Resources\Done.wav" />
+    <None Include="Resources\Heal.wav" />
+    <None Include="Resources\NewLevel.wav" />
+    <None Include="Resources\Fail.wav" />
+    <Resource Include="Images\HP_bottle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Images\Atack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\lcMoucs.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\levelUp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\map.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MarioMashroom.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\bobba.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\episode5Final.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\panda.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\гномКузнец.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\даблдор.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\Завтра.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\иньянь.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\самурай.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Splashes\супермен.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\star.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Task.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Task.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Task_images\lifeRpg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Task_images\loadInstr.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\Восход.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Images\tawern.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tomato.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\T_Shirt_Characteristics.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\кубок.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\лего друид.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\монеты.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\опыт.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\соколиный глаз.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ChaDefoult.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Текстуры\бумага.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Текстуры\шапка.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="shield_and_swords.ico" />
+    <None Include="app.config" />
+    <None Include="Application.ico">
+      <Visible>false</Visible>
+    </None>
+    <Content Include="Images\mission.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="splashs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="gam1232.ani">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Sample_TemporaryKey.pfx" />
+    <Resource Include="Fonts\BuxtonSketch.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\SegoeMarker.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\SketchFlow Print.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\merlin.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\charact_Images\" />
+    <Folder Include="Images\Pers_images\" />
+    <Folder Include="Images\Templates\" />
+    <Folder Include="SampleData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FocusItems.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindowAllMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Model\FocuseItUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PersInfoUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="Simple Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SketchStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Skin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FirstTasksView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TasksViewUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ucMaterPage\ucMasterAbilities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ucMaterPage\ucMasterAbilitiesTasks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ucMaterPage\ucMasterCharacteristics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ucMaterPage\ucMasterPers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\abilitiRelayCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AbilityNeedSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AbilityTreeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AbTaskMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActiveAbTasksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActiveAbTasksWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActiveQwestTasksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActiveQwestTasksWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditAbilityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditAbilNeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditAimView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditCharacteristic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditNeedAimView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditParametr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditRevard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditTaskNeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddOrEditTaskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AimView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AllPreferenses.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AllTasksWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AvtofocusView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChooseAbility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChooseAbRelaysToCha.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChooseTaskToQwest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ClassAndAbGroupsSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ColumnsSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Congranteletions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CorrectRelaysAbility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CountAllCharactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CountBalanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CountCharacteristicView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DostijeniyaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditQwestWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\firstViewView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\FocusedViewUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GameOverWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HelpProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImportChaOrAb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImportCharacteristicsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImportCharacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImportQwestsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\kWithVal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LevelsChangesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindowCharacteristics.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MainWindowMenuUc.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MainWindowPersUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MasterPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MindMapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MotivatorsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewRang.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NextActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PassWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PersSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlaningWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QwestMapWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QwestsInTaskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QwestsMapTasksWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QwestsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QwickAddTasksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ShortChangesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SuperDone.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskAtackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskItemInfoUserControll.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskMapUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\taskStatisticView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucAbilitiesUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucAbilityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucAbilTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucAddCharactNeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UcAddQwestLinkTo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucAllTasksView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ucChaAbilInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucCharactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucContextsSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucCountersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucElementRewardsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UcElementToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucEXPRelay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucExpSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucImageInTool.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucInterfacePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucItemRevardsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucKRelay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucMainAims.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucNeednessInMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucNeednessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucNeedTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucOsobennostiView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ucPopupInformation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucProgressBarWithScale.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucQwestMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucRelaysItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucRevardNeedAbilityView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ucRewardsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucSetGoldExpRevard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucStatusesSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucSubtasks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucTaskFocusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucTaskItemMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UcTasksSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucViewChangeQwests.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ucViewChangesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewChangesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Клиентский профиль Microsoft .NET Framework 4 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	     Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

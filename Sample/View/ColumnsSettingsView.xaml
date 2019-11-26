@@ -1,0 +1,379 @@
+﻿<Window
+    x:Class="Sample.View.ColumnsSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Настройка свойств задач"
+    AllowsTransparency="True"
+    ResizeMode="NoResize"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    WindowStyle="None">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <DataTemplate x:Key="DataTemplate1" DataType="model:TypeOfTask">
+            <Grid>
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding NameOfTypeOfTask}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="comboTemplate" DataType="model:IntervalsModel">
+            <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding NameInterval}" />
+        </DataTemplate>
+    </Window.Resources>
+    <Window.Background>
+        <StaticResource ResourceKey="OpaBacground" />
+    </Window.Background>
+    <Window.DataContext>
+        <ViewModel:ColumnsSettingsViewModel />
+    </Window.DataContext>
+    <Border
+        Margin="100,50"
+        Background="{StaticResource PaperTexture}"
+        BorderBrush="{StaticResource BorderBrush}"
+        BorderThickness="4">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <UniformGrid
+                Grid.ColumnSpan="4"
+                Margin="4,5,4,5"
+                Rows="1">
+
+                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Тип для навыков по умолчанию" />
+                    <ComboBox
+                        DisplayMemberPath="NameOfTypeOfTask"
+                        ItemsSource="{Binding TasksTypes}"
+                        SelectedItem="{Binding Pers.PersSettings.DefoultTaskTypeForAbills}"
+                        Style="{StaticResource ComboBoxStyle}" />
+                </DockPanel>
+
+                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Тип для квестов по умолчанию" />
+                    <ComboBox
+                        DisplayMemberPath="NameOfTypeOfTask"
+                        ItemsSource="{Binding TasksTypes}"
+                        SelectedItem="{Binding Pers.PersSettings.DefoultTaskTypeForQwests}"
+                        Style="{StaticResource ComboBoxStyle}" />
+                </DockPanel>
+
+
+
+            </UniformGrid>
+
+            <Popup
+                x:Name="pAddColumn"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="4"
+                AllowsTransparency="True"
+                IsOpen="{Binding IsAddNewOpen}"
+                Placement="Mouse"
+                PopupAnimation="Scroll"
+                StaysOpen="False">
+                <Border
+                    Background="White"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2">
+                    <StackPanel>
+                        <StackPanel DataContext="{Binding NewTaskType}">
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-название" />
+                                <xctk:AutoSelectTextBox Style="{StaticResource AutoSelectTextBoxStyle}" Text="{Binding NameOfTypeOfTask}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-интервал повторения по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    ItemTemplate="{StaticResource comboTemplate}"
+                                    ItemsSource="{Binding DataContext.IntervalsOfTime, ElementName=MainGrid}"
+                                    SelectedValue="{Binding IntervalForDefoult}"
+                                    SelectedValuePath="Interval"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-статус по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    DisplayMemberPath="NameOfStatus"
+                                    ItemsSource="{Binding DataContext.Pers.VisibleStatuses, ElementName=MainGrid}"
+                                    SelectedValue="{Binding StatusForDefoult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-контекст по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    DisplayMemberPath="NameOfContext"
+                                    ItemsSource="{Binding DataContext.pers.Contexts, ElementName=MainGrid}"
+                                    SelectedValue="{Binding ContextForDefoult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+
+
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-золото по умолчанию" />
+                                <xctk:AutoSelectTextBox
+                                    MinWidth="60"
+                                    Style="{StaticResource AutoSelectTextBoxStyle}"
+                                    Text="{Binding GoldForDefoultProperty}" />
+                            </DockPanel>
+
+                        </StackPanel>
+                        <Button
+                            Height="{StaticResource DownButtonHeight}"
+                            Background="{StaticResource TopBrush}"
+                            Content="OK"
+                            Foreground="White"
+                            Style="{StaticResource Button-Sketch}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:ChangePropertyAction
+                                        PropertyName="IsOpen"
+                                        TargetName="pAddColumn"
+                                        Value="false" />
+                                    <ei:CallMethodAction MethodName="AddNew" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <Popup
+                x:Name="pEditColumn"
+                AllowsTransparency="True"
+                Placement="Mouse"
+                PopupAnimation="Scroll"
+                StaysOpen="False">
+                <Border
+                    Background="White"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    CornerRadius="2">
+                    <StackPanel>
+
+                        <StackPanel DataContext="{Binding CurrentTaskType}">
+
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-название" />
+                                <xctk:AutoSelectTextBox Style="{StaticResource AutoSelectTextBoxStyle}" Text="{Binding NameOfTypeOfTask}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-интервал повторения по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    ItemTemplate="{StaticResource comboTemplate}"
+                                    ItemsSource="{Binding DataContext.IntervalsOfTime, ElementName=MainGrid}"
+                                    SelectedValue="{Binding IntervalForDefoult}"
+                                    SelectedValuePath="Interval"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-статус по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    DisplayMemberPath="NameOfStatus"
+                                    ItemsSource="{Binding DataContext.Pers.VisibleStatuses, ElementName=MainGrid}"
+                                    SelectedValue="{Binding StatusForDefoult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-контекст по умолчанию" />
+                                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                <ComboBox
+                                    DisplayMemberPath="NameOfContext"
+                                    ItemsSource="{Binding DataContext.pers.Contexts, ElementName=MainGrid}"
+                                    SelectedValue="{Binding ContextForDefoult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </DockPanel>
+
+
+                            <DockPanel Style="{StaticResource DockPanelStyle}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DescFild}" Text="-золото по умолчанию" />
+                                <xctk:AutoSelectTextBox
+                                    MinWidth="60"
+                                    Style="{StaticResource AutoSelectTextBoxStyle}"
+                                    Text="{Binding GoldForDefoultProperty}" />
+                            </DockPanel>
+
+
+
+                        </StackPanel>
+
+
+
+
+                        <Button
+                            Height="{StaticResource DownButtonHeight}"
+                            Background="{StaticResource TopBrush}"
+                            Command="{Binding OkEditColumnCommand}"
+                            Content="OK"
+                            Foreground="White"
+                            Style="{StaticResource Button-Sketch}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:ChangePropertyAction
+                                        PropertyName="IsOpen"
+                                        TargetName="pEditColumn"
+                                        Value="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <UniformGrid
+                Grid.Row="1"
+                Grid.ColumnSpan="4"
+                Rows="1">
+                <GroupBox
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Margin="3"
+                    Header="Типы задач"
+                    HeaderTemplate="{StaticResource Group-box-sketch}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ListBox
+                            ItemTemplate="{StaticResource DataTemplate1}"
+                            ItemsSource="{Binding TasksTypes}"
+                            SelectedItem="{Binding CurrentTaskType}"
+                            Style="{StaticResource ListBox-Sketch}" />
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="1">
+                            <Button
+                                Width="{StaticResource ToolButtonWidth}"
+                                Height="{StaticResource ToolButtonHeight}"
+                                Command="{Binding BeginAddTypeCommand}"
+                                Style="{StaticResource Button-Sketch}"
+                                ToolTip="Добавить тип задач">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <ei:ChangePropertyAction
+                                            PropertyName="IsOpen"
+                                            TargetName="pAddColumn"
+                                            Value="true" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                            </Button>
+                            <Button
+                                Width="{StaticResource ToolButtonWidth}"
+                                Height="{StaticResource ToolButtonHeight}"
+                                Command="{Binding DeleteCommand}"
+                                Style="{StaticResource Button-Sketch}"
+                                ToolTip="Удалить тип задач">
+                                <ContentControl Template="{StaticResource ContentControlDelete}" />
+                            </Button>
+                            <Button
+                                Width="{StaticResource ToolButtonWidth}"
+                                Height="{StaticResource ToolButtonHeight}"
+                                Command="{Binding EditColumnCommand}"
+                                Style="{StaticResource Button-Sketch}"
+                                ToolTip="Редактировать тип задач">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <ei:ChangePropertyAction
+                                            PropertyName="IsOpen"
+                                            TargetName="pEditColumn"
+                                            Value="true" />
+
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ContentControl Template="{StaticResource ContentControlEdit}" />
+                            </Button>
+                            <Button
+                                Width="{StaticResource ToolButtonWidth}"
+                                Height="{StaticResource ToolButtonHeight}"
+                                Command="{Binding EditColumnCommand}"
+                                Style="{StaticResource Button-Sketch}"
+                                ToolTip="Сдвинуть вверх">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <ei:CallMethodAction MethodName="MoveUp" TargetObject="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ContentControl Template="{StaticResource ContentControlArrowUp}" />
+                            </Button>
+                            <Button
+                                Width="{StaticResource ToolButtonWidth}"
+                                Height="{StaticResource ToolButtonHeight}"
+                                Command="{Binding EditColumnCommand}"
+                                Style="{StaticResource Button-Sketch}"
+                                ToolTip="Сдвинуть вниз">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <ei:CallMethodAction MethodName="MoveDown" TargetObject="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ContentControl Template="{StaticResource ContentControlArrowDown}" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Margin="3"
+                    Header="Контексты задач"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <local:ucContextsSettings DataContext="{Binding ContSetVMProperty}" />
+
+
+                </GroupBox>
+                <GroupBox
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Margin="3"
+                    Header="Статусы задач"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <local:ucStatusesSettings DataContext="{Binding StatSetVMProperty}" />
+                </GroupBox>
+            </UniformGrid>
+
+
+            <Button
+                x:Name="buttonOk"
+                Grid.Row="2"
+                Grid.ColumnSpan="4"
+                Height="{StaticResource DownButtonHeight}"
+                Background="{StaticResource TopBrush}"
+                Content="OK"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </Grid>
+    </Border>
+</Window>

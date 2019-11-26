@@ -1,0 +1,654 @@
+﻿<Window
+    x:Class="Sample.View.AllPreferenses"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Общие настройки"
+    d:DesignHeight="1300"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <model:MultiBoolToVisibleConverter x:Key="MultiBoolToVisibleConverter" />
+        <model:StringToColorConverter x:Key="StringToColorConverter" />
+        <ControlTemplate x:Key="ScrollItems">
+            <ScrollViewer
+                FocusVisualStyle="{x:Null}"
+                HorizontalScrollBarVisibility="Disabled"
+                Style="{StaticResource ScrollWithoutBorder}"
+                VerticalScrollBarVisibility="Auto">
+                <i:Interaction.Behaviors>
+                    <behavior:VerticalScrollBehavior2 />
+                </i:Interaction.Behaviors>
+                <ItemsPresenter Margin="1" FocusVisualStyle="{x:Null}" />
+            </ScrollViewer>
+        </ControlTemplate>
+    </Window.Resources>
+    <Window.Background>
+        <StaticResource ResourceKey="OpaBacground" />
+    </Window.Background>
+    <Window.Style>
+        <StaticResource ResourceKey="FullWindowStyle" />
+    </Window.Style>
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Border Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TabControl Grid.Row="0" Margin="2">
+
+                <!--  Общие настройки  -->
+                <TabItem Header="Общие настройки" HeaderTemplate="{StaticResource Group-box-sketch}">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource ScrollViewer-Sketch}"
+                        VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="5">
+                            <StackPanel>
+                                <!--  Макс. уровень  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Макс. уровень персонажа" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding MaxPersLevelProperty}" />
+                                </DockPanel>
+
+                                <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Путь к библиотеке Graphviz" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PathToGraphviz}" />
+                                </DockPanel>-->
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Папка с файлом персонажа" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PathToPers}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Папка для импорта/экспорта с телефона" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PathToDrop}" />
+                                </DockPanel>
+
+                                <!--  Характеристики  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Не показывать характеристики в главном окне" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsNotShowCharacteristicsInMain}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Style="{StaticResource PropertyNameStyle}"
+                                        Text="Колонок характеристик в главном окне" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding ColumnsOfCharacteristicsInMain}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Style="{StaticResource PropertyNameStyle}"
+                                        Text="Глобальный бустер навыков" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding GlobalBooster}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Длительность pomodoro, мин." />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PomodorroTime}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Путь к dropbox" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PathToDropbox}" />
+                                </DockPanel>
+
+                                <!--  10 уровней навыков  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Навыки 10 уровней" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Is10AbLevels}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="5 уровней характеристик и навыков, 50 уровень персонажа" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Is5_5_50}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Режим FUDGE" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsFUDGE}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Режим без навыков" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsNoAbs}" />
+                                </DockPanel>
+
+                                <!--  Не показывать оповещения опыта и навыков  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Не показывать оповещения опыта и навыков" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsNotShowNotifications}" />
+                                </DockPanel>
+
+                                <!--  Отключение звуков  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Отключить звуки?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding DisableSounds}" />
+                                </DockPanel>
+
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Тач курсор?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsNotOwerriteCursor}" />
+                                </DockPanel>
+
+                                <!--  Защита паролем  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Защита паролем?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsPassProtectProperty}" />
+                                </DockPanel>
+
+                                <!--  Пароль  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <DockPanel.Visibility>
+                                        <MultiBinding Converter="{StaticResource MultiBoolToVisibleConverter}" ConverterParameter="пароль">
+                                            <Binding Path="IsPassProtectProperty" />
+                                        </MultiBinding>
+                                    </DockPanel.Visibility>
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Пароль" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PassProperty}" />
+                                </DockPanel>
+
+                                <!--  Режим HOMM  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Режим HOMM?" />
+                                    <CheckBox
+                                        VerticalAlignment="Center"
+                                        IsChecked="{Binding HOMMModeProperty}"
+                                        ToolTip="Режим Heroes Of Might And Magic - в конце дня нужно нажмимать кнопку 'завершить ход'. Отключается режим свободного выбора даты." />
+                                </DockPanel>
+
+                                <!--  Активировать звания  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Активировать звания персонажа?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsActtivateRangse}" />
+                                </DockPanel>
+
+                                <!--  Показывать заставку при запуске  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Заставка при запуске?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowSplashesProperty}" />
+                                </DockPanel>
+
+                                <StackPanel>
+                                    <StackPanel.Visibility>
+                                        <MultiBinding Converter="{StaticResource MultiBoolToVisibleConverter}" ConverterParameter="настройкиЗаставки">
+                                            <Binding Path="ShowSplashesProperty" />
+                                        </MultiBinding>
+                                    </StackPanel.Visibility>
+
+                                    <!--  Время показа заставки  -->
+                                    <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                        <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Время показа, млс." />
+                                        <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding TimeShowSplashProperty}" />
+                                    </DockPanel>
+
+                                    <!--  Картинка из папки  -->
+                                    <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                        <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Пользовательские заставки?" />
+                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowSplashesFromFolderProperty}" />
+                                    </DockPanel>
+
+                                    <StackPanel>
+                                        <StackPanel.Visibility>
+                                            <MultiBinding Converter="{StaticResource MultiBoolToVisibleConverter}" ConverterParameter="настройкиПользовательскойЗаставки">
+                                                <Binding Path="ShowSplashesFromFolderProperty" />
+                                            </MultiBinding>
+                                        </StackPanel.Visibility>
+
+                                        <!--  Путь к папке  -->
+                                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Путь к папке с заставками" />
+                                            <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding SplashesFolderProperty}" />
+                                        </DockPanel>
+
+                                        <!--  Имя файла  -->
+                                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Показывать имя файла?" />
+                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowFileSplashNameProperty}" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!--  Мотиваторы  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Мотиватор после завершения задач?" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsTaskDoneMotivatorShowProperty}" />
+                                </DockPanel>
+
+                                <!--  Путь  -->
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <DockPanel.Visibility>
+                                        <MultiBinding Converter="{StaticResource MultiBoolToVisibleConverter}" ConverterParameter="настройкиМотиватора">
+                                            <Binding Path="IsTaskDoneMotivatorShowProperty" />
+                                        </MultiBinding>
+                                    </DockPanel.Visibility>
+
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Путь к папке с мотиваторами" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding PathToMotivatorsProperty}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--<TabItem Header="Поведение" HeaderTemplate="{StaticResource Group-box-sketch}">
+                    <StackPanel>
+                -->
+                <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}"
+                                       Text="Квесты со связанными навыками неактивными, если их задачи выполнены" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsHideQwestsFromAbLink}" />
+                        </DockPanel>-->
+
+                <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Активировать HP" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsHP}" />
+                        </DockPanel>-->
+
+                <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Баланс характеристик" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsCharactBalanse}" />
+                        </DockPanel>-->
+
+                <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Умная сортировка" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSmartTaskSort}" />
+                        </DockPanel>-->
+                <!--
+
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Утро/день/вечер по очереди?" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsShowTasksByTime}" />
+                        </DockPanel>
+
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Задачи навыков по очереди?" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsHideAbTasksOneByOne}" />
+                        </DockPanel>
+
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Урон вместо HP?" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsDamageNotHP}" />
+                        </DockPanel>
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Утро/день/вечер по очереди в Андроид?" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsShowTasksByTimeAndroid}" />
+                        </DockPanel>
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Задачи навыков по очереди в Андроид?" />
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsHideTasksOneByOneAndroid}" />
+                        </DockPanel>
+                    </StackPanel>
+                </TabItem>-->
+
+                <TabItem
+                    Header="Ранги характеристик"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <DockPanel Margin="20,5,5,5">
+                        <!--  Число уровней характеристик  -->
+                        <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Dock="Top">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Макс. уровень" />
+                            <xctk:AutoSelectTextBox
+                                Margin="0,0,17,0"
+                                Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                Text="{Binding MaxChaLev, UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>-->
+                        <ItemsControl
+                            Margin="2"
+                            ItemsSource="{Binding CharacteristicRangs}"
+                            Template="{StaticResource ScrollItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <xctk:AutoSelectTextBox
+                                        MinWidth="0"
+                                        MinHeight="20"
+                                        Margin="1"
+                                        Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                        Text="{Binding Name}"
+                                        TextAlignment="Center" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem
+                    Header="Ранги навыков"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <DockPanel Margin="20,5,5,5">
+                        <!--  Число уровней скиллов  -->
+                        <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Dock="Top">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Очков навыков за уровень" />
+                            <CheckBox
+                                Margin="0,0,17,0"
+                                VerticalAlignment="Center"
+                                Content="Авто?"
+                                DockPanel.Dock="Right"
+                                IsChecked="{Binding AutoCountAbPointsForLev}"
+                                ToolTip="Число очков будет подгоняться под 50" />
+                            <xctk:AutoSelectTextBox
+                                Margin="0,0,2,0"
+                                IsEnabled="{Binding IsMaySetAbPoints}"
+                                Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                Text="{Binding AbPointsForOneLevel, UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>-->
+
+                        <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Dock="Top">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Макс. уровень" />
+                            <xctk:AutoSelectTextBox
+                                Margin="0,0,17,0"
+                                Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                Text="{Binding MaxAbLev, UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>-->
+                        <ItemsControl
+                            Margin="2"
+                            ItemsSource="{Binding AbRangs}"
+                            Template="{StaticResource ScrollItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <!--<ColumnDefinition Width="*" />-->
+                                        </Grid.ColumnDefinitions>
+                                        <xctk:AutoSelectTextBox
+                                            MinWidth="0"
+                                            MinHeight="20"
+                                            Margin="1"
+                                            Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                            Text="{Binding Name}"
+                                            TextAlignment="Center" />
+                                        <!--<xctk:AutoSelectTextBox
+                                            Grid.Column="1"
+                                            MinWidth="0"
+                                            MinHeight="20"
+                                            Margin="1"
+                                            Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                            Text="{Binding Smart}"
+                                            TextAlignment="Center" />-->
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
+                </TabItem>
+
+                <!--  Region (Баланс игры)  -->
+                <TabItem
+                    Header="Баланс игры"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource ScrollViewer-Sketch}"
+                        VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+
+                            <!--<DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Фиксированный максимальный уровень персонажа?" />
+                                <CheckBox VerticalAlignment="Center"
+                                          IsChecked="{Binding IsFixMaxPLevel}"
+                                          ToolTip="Если галочка стоит, то ты указываешь максимальный уровень персонажа, а если нет - то скорость получения опыта." />
+                            </DockPanel>
+
+                            -->
+                            <!--  Коэффициент уровня персонажа  -->
+                            <!--
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding IsFixMaxPLevel, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=инверсия}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Коэффициент уровня" />
+                                <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}"
+                                                        Text="{Binding KPersLevel}"
+                                                        ToolTip="В зависимости от этого коэффициента и количества навыков расчитывается максимальный уровень персонажа." />
+                            </DockPanel>
+
+                            -->
+                            <!--  Максимальный уровень персонажа  -->
+                            <!--
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding IsFixMaxPLevel, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Максимальный уровень персонажа" />
+                                <xctk:AutoSelectTextBox MinWidth="0"
+                                                        Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                        Text="{Binding MaxPLevel}"
+                                                        ToolTip="Максимальный уровень персонажа. Не может быть меньшим, чем число навыков." />
+                            </DockPanel>-->
+
+                            <!--  ТЕС опыт  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Опыт в стиле ТЕС?" />
+                                <CheckBox
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsTesExp}"
+                                    ToolTip="Все навыки делятся на три группы в зависимости от влияния на характеристики: основные, важные и второстепенные. И в соответствии с этим определяется опыт." />
+                            </DockPanel>
+
+                            <!--  Активировать очки здоровья  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Активировать очки здоровья?" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsHPActiveteProperty}" />
+                            </DockPanel>
+
+                            <!--  Region (Очков скиллов на первом уровне)  -->
+                            <StackPanel>
+                                <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                    <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Очков навыков на первом уровне" />
+                                    <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding AbPointsForFirstLevel}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <!--  EndRegion  -->
+
+                <!--  Квесты  -->
+                <TabItem
+                    Header="Квесты"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer Style="{StaticResource ScrollViewer-Sketch}" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!--  Автоактивность квестов  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Автоактивность квестов?" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsQwestAutoActiveForDefoultProperty}" />
+                            </DockPanel>
+
+                            <!--  Макс. уровень  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Максимальный уровень для новых квестов?" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding MaxLevelToNewQwestsProperty}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--  Характеристики  -->
+                <TabItem
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Header="Характеристики"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer Style="{StaticResource ScrollViewer-Sketch}" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!--  Макс. уровень  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Максимальный уровень характеристик" />
+                                <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding MaxCharactLevelProperty}" />
+                            </DockPanel>
+
+                            <!--  Показывать в главном окне  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Показывать характеристики в главном окне?" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding ShowCharacteristicsInMainWindowProperty}" />
+                            </DockPanel>
+
+                            <!--  Показывать картинки  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Показывать картинки характеристик в главном окне?" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChaPicMainWindowEnabledProperty}" />
+                            </DockPanel>
+
+                            <!--  Ранги характеристик  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Ранги характеристик" />
+                                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CharactRangsForDefoultProperty}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="Auto"
+                                            Binding="{Binding LevelRang}"
+                                            Header="Уровень" />
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding NameOfRang}"
+                                            Header="Название" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+
+                            <!--  Обновить ранги  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="" />
+                                <Button
+                                    x:Name="btnChaRangsRefresh"
+                                    Height="{StaticResource ToolButtonHeight}"
+                                    Background="White"
+                                    Click="BtnChaRangsRefresh_OnClick"
+                                    Content="Обновить ранги всех характеристик..."
+                                    Style="{StaticResource Button-Sketch}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--  скиллы  -->
+                <TabItem
+                    Header="Навыки"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer Style="{StaticResource ScrollViewer-Sketch}" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!--  Макс. уровень  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Макс. уровень навыков" />
+                                <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding AbilMaxLevelProperty}" />
+                            </DockPanel>
+
+                            <CheckBox
+                                Margin="{StaticResource CheckBoxMargin}"
+                                Content="-показывать название групп навыков?"
+                                IsChecked="{Binding IsShowAbGroupNameProperty}"
+                                Style="{StaticResource CheckBox-Sketch}"
+                                Visibility="Collapsed" />
+
+                            <!--  Ранги скиллов  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Ранги навыков" />
+                                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding AbilRangsForDefoultProperty}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="Auto"
+                                            Binding="{Binding LevelRang}"
+                                            Header="Уровень" />
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding NameOfRang}"
+                                            Header="Название" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+
+                            <!--  Обновить  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="" />
+                                <Button
+                                    x:Name="btnRangsAbRefresh"
+                                    Height="{StaticResource ToolButtonHeight}"
+                                    Background="White"
+                                    Click="BtnRangsAbRefresh_OnClick"
+                                    Content="Обновить ранги всех навыков..."
+                                    Style="{StaticResource Button-Sketch}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--  Задачи  -->
+                <TabItem
+                    Header="Задачи"
+                    HeaderTemplate="{StaticResource Group-box-sketch}"
+                    Visibility="Collapsed">
+                    <ScrollViewer Style="{StaticResource ScrollViewer-Sketch}" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+
+                            <!--  Автофокус  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Активировать автофокус?" />
+                                <CheckBox
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsAutofocusEnabledProperty}"
+                                    ToolTip="Выполненные задачи переносятся в конец списка, пропущенные в начало." />
+                            </DockPanel>
+
+                            <StackPanel />
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--  Награды  -->
+                <!--  EXTENDEDVERS  -->
+                <TabItem Header="Награды" HeaderTemplate="{StaticResource Group-box-sketch}">
+                    <StackPanel>
+                        <!--  оч. редко  -->
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Очень редкая вероятность появления" />
+                            <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding OchRedcoRevardProperty}" />
+                        </DockPanel>
+
+                        <!--  Редкая  -->
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Редкая вероятность появления" />
+                            <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding RedcoRewardProperty}" />
+                        </DockPanel>
+
+                        <!--  Норм  -->
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Нормальная вероятность появления" />
+                            <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding NormRevardProperty}" />
+                        </DockPanel>
+
+                        <!--  Частая вероятность появления  -->
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Частая вероятность появления" />
+                            <xctk:AutoSelectTextBox Style="{StaticResource PropertyAutoSellectTextBoxStyle}" Text="{Binding OftenRewardProperty}" />
+                        </DockPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+            <Button
+                x:Name="btnOk"
+                Grid.Row="1"
+                Height="{StaticResource DownButtonHeight}"
+                Background="{StaticResource TopBrush}"
+                Content="Ok"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </Grid>
+    </Border>
+</Window>

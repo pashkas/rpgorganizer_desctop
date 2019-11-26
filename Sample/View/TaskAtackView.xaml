@@ -1,0 +1,67 @@
+﻿<Window x:Class="Sample.View.TaskAtackView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:Sample.View"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Background="{StaticResource OpaBacground}"
+        Style="{StaticResource FullWindowStyle}"
+        mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+    </i:Interaction.Behaviors>
+    <Border Width="480"
+            Height="320"
+            MinHeight="0"
+            Margin="0"
+            Background="{StaticResource PaperTexture}"
+            Opacity="1"
+            Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="txtHeader"
+                       Margin="5"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Style="{StaticResource TextBlock-SketchWrap}"
+                       TextAlignment="Center"
+                       Visibility="Collapsed" />
+
+            <Image Grid.Row="1"
+                   Margin="5,10,5,5"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="../Images/Atack.jpg" />
+
+            <ProgressBar x:Name="barProgress"
+                         Grid.Row="2"
+                         Height="75"
+                         Margin="5"
+                         Foreground="Yellow"
+                         Maximum="100.0"
+                         Minimum="0"
+                         Style="{StaticResource ProgressBar-Sketch}">
+                <ProgressBar.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:1"
+                                                 From="0"
+                                                 Storyboard.TargetProperty="Value"
+                                                 To="100.0" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ProgressBar.Triggers>
+            </ProgressBar>
+
+        </Grid>
+    </Border>
+</Window>

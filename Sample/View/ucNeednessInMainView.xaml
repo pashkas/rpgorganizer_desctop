@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Sample.View.ucNeednessInMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Sample.Model"
+             DataContext="{Binding NeednessInMainViewVM,
+                                   Source={StaticResource Locator}}"
+             UseLayoutRounding="True"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <model:SplitStringsConverter x:Key="SplitStringsConverter" />
+    </UserControl.Resources>
+    <ItemsControl HorizontalContentAlignment="Stretch"
+                  VerticalContentAlignment="Stretch"
+                  Background="{x:Null}"
+                  BorderBrush="Transparent"
+                  ItemsSource="{Binding NeednessCollection}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="1" IsItemsHost="True" />
+            </ItemsPanelTemplate>
+
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Border Margin="1"
+                        Panel.ZIndex="-1"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="2">
+
+                    <Grid>
+                        <DockPanel>
+                            <Button Height="auto"
+                                    Command="{Binding RefreshValueCommand}"
+                                    DockPanel.Dock="Right"
+                                    Style="{DynamicResource ToolButtonStyle}"
+                                    ToolTip="Обновить потребность">
+                                <ContentControl Template="{DynamicResource ContentControlDone}" />
+                            </Button>
+                            <TextBlock Foreground="{DynamicResource MenuTextColor}"
+                                       Style="{DynamicResource BasicTextBlock-Sketch}"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                        <Binding Path="NameOfNeednessProperty" />
+                                        <Binding Source=" (" />
+                                        <Binding Path="PercentegeOfValue" />
+                                        <Binding Source=")" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DockPanel>
+
+                        <ProgressBar Panel.ZIndex="-1"
+                                     Background="Transparent"
+                                     BorderBrush="Transparent"
+                                     Maximum="100.0"
+                                     Minimum="0"
+                                     Value="{Binding ValueOfNeednessProperty}">
+                            <ProgressBar.Foreground>
+                                <LinearGradientBrush SpreadMethod="Reflect" StartPoint="0,0" EndPoint="0,0.5">
+                                    <GradientStop Offset="0" Color="{Binding ColorProperty}" />
+                                    <GradientStop Offset="1" Color="#FF9E7E51" />
+                                </LinearGradientBrush>
+                            </ProgressBar.Foreground>
+                        </ProgressBar>
+                    </Grid>
+
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

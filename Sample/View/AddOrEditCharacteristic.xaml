@@ -1,0 +1,413 @@
+﻿<Window
+    x:Class="Sample.View.AddOrEditCharacteristic"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:view="clr-namespace:Sample.View"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="Window"
+    Title="AddOrEditCharacteristic"
+    d:DesignHeight="1000"
+    DataContext="{Binding AddOrEditCharacteristicVM, Source={StaticResource Locator}}"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <model:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="abRelays" DataType="{x:Type model:NeedAbility}">
+            <Border
+                Background="White"
+                BorderThickness="0"
+                Opacity="{Binding Opacity}">
+                <Border.InputBindings>
+                    <MouseBinding
+                        Command="{Binding DataContext.ShowAbilityCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding}"
+                        Gesture="LeftDoubleClick" />
+                </Border.InputBindings>
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <!--<ColumnDefinition Width="2*" />-->
+                    </Grid.ColumnDefinitions>
+                    <Grid Margin="6,1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <DockPanel>
+                            <ComboBox
+                                Grid.Column="1"
+                                MinWidth="70"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                DisplayMemberPath="NameProperty"
+                                ItemsSource="{Binding Koefs}"
+                                SelectedValue="{Binding KoeficientProperty}"
+                                SelectedValuePath="KProperty"
+                                Style="{StaticResource ComboBoxStyle}"
+                                ToolTip="Влияние"
+                                Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}" />
+
+
+                            <TextBlock
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                Text="{Binding AbilProperty.NameOfProperty}"
+                                TextAlignment="Left" />
+
+                        </DockPanel>
+
+                        <Line
+                            Grid.Column="1"
+                            Margin="1,1,1,3"
+                            VerticalAlignment="Bottom"
+                            Stroke="DarkSlateGray"
+                            StrokeDashArray="2 2"
+                            X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding AbilProperty.RangName}">
+                            <!--<Hyperlink Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding AbilProperty.GUID}">
+                            <TextBlock Text="{Binding AbilProperty.NameOfProperty}" TextWrapping="Wrap" />
+                        </Hyperlink>-->
+                        </TextBlock>
+                    </Grid>
+
+                    <UniformGrid
+                        x:Name="mainMenu"
+                        Grid.Column="1"
+                        Rows="1"
+                        Visibility="Collapsed">
+                        <!--<Button
+                            Command="{Binding DataContext.ShowAbilityCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource ButtonSettings}"
+                            ToolTip="Редактирование" />-->
+                        <Button
+                            Command="{Binding DataContext.RemoveAbilityCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource ButtonDelete}"
+                            ToolTip="Удаление"
+                            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </UniformGrid>
+
+                    <ProgressBar
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,1"
+                        Maximum="{Binding Path=(model:StaticMetods.MaxAbLevel), Mode=OneWay}"
+                        Style="{StaticResource AttriburtesProgressBarStyle}" />
+                    <!--  Value="{Binding AbilProperty.CellValue, Mode=OneWay, IsAsync=True}"  -->
+
+                    <!--<ListBox
+                        Grid.Column="1"
+                        BorderBrush="Transparent"
+                        ItemsSource="{Binding NeedK}"
+                        SelectedValue="{Binding KoeficientProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="KProperty"
+                        Style="{StaticResource HorizontalButtonsListBoxStyle}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="0,2"
+                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                    Text="{Binding NameProperty}"
+                                    TextAlignment="Center"
+                                    Visibility="{Binding Visibility}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>-->
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter TargetName="mainMenu" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <model:ColorConverter2 x:Key="ColorConverter2" />
+        <model:StringToColorConverter x:Key="StringToColorConverter" />
+        <model:HeilightItemsControllItemConverter x:Key="HeilightItemsControllItemConverter" />
+    </Window.Resources>
+    <Border
+        Margin="0"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource HeaderBorder}">
+                <TextBlock Style="{StaticResource HeaderText}">
+                    <TextBlock Text="Настройка характеристики ''" />
+                    <TextBlock Text="{Binding Text, ElementName=txtName}" />
+                    <TextBlock Text="''" />
+                </TextBlock>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="{StaticResource EditItemGridMargin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border DataContext="{Binding DataContext.SelectedChaProperty, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                    <DockPanel Margin="{StaticResource InfoMarg}">
+                        <StackPanel DockPanel.Dock="Top">
+                            <!--  Region (Картинка)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" />
+                                <Button Command="{Binding DataContext.AddImagePropertyCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Style="{StaticResource ButtonWithImageStyle}">
+                                    <view:ucImageInTool Picture="{Binding ImageProperty}" />
+                                </Button>
+                            </DockPanel>
+
+                            <!--  Название  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Название" />
+                                <Button
+                                    Background="Transparent"
+                                    Command="{Binding DataContext.ImgGenFromWord, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Content=" веб изо! "
+                                    DockPanel.Dock="Right"
+                                    Style="{StaticResource Button-Sketch}"
+                                    Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                <xctk:AutoSelectTextBox
+                                    x:Name="txtName"
+                                    Style="{StaticResource NameElStyle}"
+                                    TabIndex="0"
+                                    Text="{Binding NameOfProperty, NotifyOnValidationError=True, ValidatesOnExceptions=True}" />
+                            </DockPanel>
+
+                            <!--  Значение  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Прогресс" />
+                                <view:ucProgressBarWithScale
+                                    IsShowScale="Visible"
+                                    Maximum="{Binding Path=(model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                    Minimum="0"
+                                    Text="{Binding ChaRang, Mode=OneWay}"
+                                    Value="{Binding ValueToProgress, Mode=OneWay}" />
+                            </DockPanel>
+
+                            <!--  Награды?  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding UcElementRewardsViewModel.IsVisible}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Награды" />
+                                <view:ucElementRewardsView DataContext="{Binding UcElementRewardsViewModel}" />
+                            </DockPanel>
+
+                            <!--  Region (Начальное значение)  -->
+                            <DockPanel Margin="{StaticResource PropertyDockPanelMargin}" Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}">
+                                <TextBlock Style="{StaticResource PropertyNameStyle}" Text="Начальное значение" />
+                                <!--<xctk:IntegerUpDown
+                                    HorizontalAlignment="Left"
+                                    DockPanel.Dock="Right"
+                                    FontFamily="{StaticResource FontFamily-Sketch}"
+                                    FontSize="{StaticResource SizeDouble-Sketch}"
+                                    Foreground="White"
+                                    Maximum="{Binding Path=(model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                    Minimum="0"
+                                    Value="{Binding FirstVal}" />-->
+                                <DockPanel>
+                                    <TextBlock
+                                        MinWidth="30"
+                                        Margin="0,0,3,0"
+                                        DockPanel.Dock="Bottom"
+                                        Style="{StaticResource TextBlock-SketchWrap}"
+                                        Text="{Binding ChaFirstRang}"
+                                        TextAlignment="Center" />
+                                    <Grid>
+                                        <Slider
+                                            VerticalAlignment="Center"
+                                            IsSnapToTickEnabled="True"
+                                            Maximum="{Binding Path=(model:StaticMetods.MaxChaLevel), Mode=OneWay}"
+                                            Minimum="0"
+                                            TickFrequency="1"
+                                            TickPlacement="Both"
+                                            Value="{Binding FirstVal}" />
+                                    </Grid>
+                                </DockPanel>
+                            </DockPanel>
+                            <!--  EndRegion  -->
+                        </StackPanel>
+
+
+                        <!--  Описание  -->
+                        <DockPanel Margin="{StaticResource PropertyDockPanelMargin}">
+                            <TextBlock
+                                VerticalAlignment="Top"
+                                Style="{StaticResource PropertyNameStyle}"
+                                Text="Описание" />
+                            <xctk:AutoSelectTextBox
+                                Style="{StaticResource AboutTextBoxStyle}"
+                                TabIndex="1"
+                                Text="{Binding DescriptionProperty}" />
+                        </DockPanel>
+                    </DockPanel>
+                </Border>
+
+                <TabControl Grid.Column="1" Margin="5">
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource TextBlock-SketchWrap}">
+                                    <Run Text="Условия" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <DockPanel>
+                            <Border
+                                Margin="2"
+                                DockPanel.Dock="Bottom"
+                                Style="{StaticResource PipBoyBorder}"
+                                Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}">
+
+                                <Button
+                                    Width="auto"
+                                    Height="{StaticResource PipBoyHeyght}"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Command="{Binding ShowAbTreeCommand}"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Дерево навыков">
+                                    <ContentControl Margin="1" Template="{StaticResource ContentControlQwests}" />
+                                </Button>
+
+                            </Border>
+
+                            <ScrollViewer Margin="{StaticResource ElementScrollMarg}" Style="{StaticResource EditableItemScroll}">
+                                <i:Interaction.Behaviors>
+                                    <behavior:VerticalScrollBehavior />
+                                </i:Interaction.Behaviors>
+                                <GroupBox Style="{StaticResource myGroupBoxStyle}">
+                                    <GroupBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="{StaticResource MyGroupTemplMarg}">
+                                                <UniformGrid
+                                                    DockPanel.Dock="Right"
+                                                    Rows="1"
+                                                    Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=Window}}">
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.AddAbilityCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                        Style="{StaticResource ButtonAdd}"
+                                                        ToolTip="Добавить навык (+cntrl быстрое добавление)">
+                                                        <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                                                    </Button>
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.ImportAbsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        Style="{StaticResource ButtonImport}"
+                                                        ToolTip="Импорт навыков"
+                                                        Visibility="Collapsed" />
+                                                </UniformGrid>
+                                                <TextBlock Style="{StaticResource TextBlock-SketchWrap}" Text="Навыки" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </GroupBox.HeaderTemplate>
+
+                                    <ListBox
+                                        x:Name="lstAbRelay"
+                                        Grid.Row="1"
+                                        Margin="1"
+                                        VerticalAlignment="Top"
+                                        BorderBrush="Transparent"
+                                        ItemTemplate="{StaticResource abRelays}"
+                                        ItemsSource="{Binding DataContext.AbRelays, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        SelectedValue="{Binding SelNeed}"
+                                        Style="{StaticResource ListsStyle}" />
+                                </GroupBox>
+                            </ScrollViewer>
+                        </DockPanel>
+
+                    </TabItem>
+                    <!--  EXTENDEDVERS  -->
+                    <TabItem Header="Награды" HeaderTemplate="{StaticResource TabItemHeaderTemplate}">
+                        <view:ucItemRevardsView DataContext="{Binding DataContext.ucItemRevardsViewModel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </TabItem>
+                </TabControl>
+
+                <!--  EndRegion  -->
+            </Grid>
+
+            <Grid Grid.Row="2" Height="{StaticResource DownButtonHeight}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Width="100"
+                    Background="{StaticResource TopBrush}"
+                    Command="{Binding PrevNextCommand}"
+                    CommandParameter="prev"
+                    Content="&lt;&lt;"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Предыдущая характеристика"
+                    Visibility="{Binding Visibility, ElementName=btnOk}" />
+                <UniformGrid Grid.Column="1" Rows="1">
+                    <Button
+                        x:Name="btnAddCharact"
+                        Grid.Row="1"
+                        Background="{StaticResource TopBrush}"
+                        Click="close"
+                        Command="{Binding OkCommand}"
+                        CommandParameter="добавление"
+                        Content="Добавить"
+                        Foreground="White"
+                        Style="{StaticResource Button-Sketch}" />
+                    <Button
+                        x:Name="btnCansel"
+                        Grid.Row="1"
+                        Background="{StaticResource TopBrush}"
+                        Click="close"
+                        Command="{Binding CanselCommand}"
+                        Content="Отмена"
+                        Foreground="White"
+                        Style="{StaticResource Button-Sketch}" />
+                    <Button
+                        x:Name="btnOk"
+                        Grid.Row="1"
+                        Background="{StaticResource TopBrush}"
+                        Click="close"
+                        Command="{Binding OkCommand}"
+                        Content="ОК"
+                        Foreground="White"
+                        Style="{StaticResource Button-Sketch}" />
+                </UniformGrid>
+                <Button
+                    Grid.Column="2"
+                    Width="100"
+                    Background="{StaticResource TopBrush}"
+                    Command="{Binding PrevNextCommand}"
+                    CommandParameter="next"
+                    Content="&gt;&gt;"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Следующая характеристика"
+                    Visibility="{Binding Visibility, ElementName=btnOk}" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

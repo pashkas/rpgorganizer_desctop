@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Sample.View.ucStatusesSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Sample.Model"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             UseLayoutRounding="True"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DataTemplate1" DataType="model:StatusTask">
+            <Grid>
+                <TextBlock Style="{StaticResource TextBlock-Sketch}"
+                           Text="{Binding NameOfStatus}"
+                           TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <d:UserControl.DataContext>
+        <ViewModel:ucStatusesSettingsViewModel />
+    </d:UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ListBox ItemTemplate="{StaticResource DataTemplate1}"
+                 ItemsSource="{Binding TasksStatusesCollectionProperty}"
+                 SelectedItem="{Binding SelectedStatusProperty}"
+                 Style="{StaticResource ListBox-Sketch}" />
+        <Popup x:Name="pAdd"
+               Width="450"
+               AllowsTransparency="True"
+               IsOpen="{Binding IsPopupOpenProperty}"
+               Placement="Mouse"
+               PopupAnimation="Scroll"
+               StaysOpen="True">
+            <Grid Margin="2" Background="{StaticResource Brush1}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <DockPanel Style="{StaticResource DockPanelStyle}">
+                    <TextBlock Style="{StaticResource DescFild}"
+                               Text="-название статуса"
+                               TextAlignment="Right" />
+                    <xctk:AutoSelectTextBox Style="{StaticResource AutoSelectTextBoxStyle}" Text="{Binding SelectedStatusProperty.NameOfStatus, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+
+                <Button Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Height="{StaticResource DownButtonHeight}"
+                        Command="{Binding OkCommand}"
+                        Content="Ok"
+                        Style="{StaticResource Button-Sketch}" />
+            </Grid>
+        </Popup>
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="1"
+                    Visibility="Collapsed">
+            <Button Width="{StaticResource ToolButtonWidth}"
+                    Height="{StaticResource ToolButtonHeight}"
+                    Command="{Binding AdStatusCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Добавить статус">
+                <ContentControl Template="{StaticResource ContentControlAddNew}" />
+            </Button>
+            <Button Width="{StaticResource ToolButtonWidth}"
+                    Height="{StaticResource ToolButtonHeight}"
+                    Command="{Binding EditStatusCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Редактировать статус">
+                <ContentControl Template="{StaticResource ContentControlEdit}" />
+            </Button>
+            <Button Width="{StaticResource ToolButtonWidth}"
+                    Height="{StaticResource ToolButtonHeight}"
+                    Command="{Binding DelStatusCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Удалить статус">
+                <ContentControl Template="{StaticResource ContentControlDelete}" />
+            </Button>
+            <Button Width="{StaticResource ToolButtonWidth}"
+                    Height="{StaticResource ToolButtonHeight}"
+                    Command="{Binding MoveUpCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Сдвинуть вверх">
+                <ContentControl Template="{StaticResource ContentControlArrowUp}" />
+            </Button>
+            <Button Width="{StaticResource ToolButtonWidth}"
+                    Height="{StaticResource ToolButtonHeight}"
+                    Command="{Binding MoveDownCommand}"
+                    Style="{StaticResource Button-Sketch}"
+                    ToolTip="Сдвинуть вниз">
+                <ContentControl Template="{StaticResource ContentControlArrowDown}" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

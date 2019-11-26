@@ -1,0 +1,317 @@
+﻿<Window x:Class="Sample.View.ViewsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Behaviours="clr-namespace:Sample.Model"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        x:Name="window"
+        Title="Настройка видов"
+        AllowsTransparency="True"
+        Background="{StaticResource OpaBacground}"
+        ResizeMode="NoResize"
+        UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        WindowStyle="None"
+        mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Style>
+        <Style>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CloseSignal}" Value="true">
+                    <Setter Property="Behaviours:WindowCloseBehaviour.Close" Value="true" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Window.Resources>
+        <DataTemplate x:Key="TasksTypes" DataType="Behaviours:ViewVisibleTypes">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding taskType.NameOfTypeOfTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Grid.Column="1" IsChecked="{Binding isVisible}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TasksStatuses" DataType="Behaviours:ViewVisibleStatuses">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding taskStatus.NameOfStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Grid.Column="1" IsChecked="{Binding isVisible}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TasksContexts" DataType="Behaviours:ViewVisibleContexts">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding taskContext.NameOfContext, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Grid.Column="1" IsChecked="{Binding isVisible}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Border Margin="100,50"
+            Background="{StaticResource PaperTexture}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="4">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ListBox DisplayMemberPath="NameOfView"
+                     ItemsSource="{Binding Views}"
+                     SelectedItem="{Binding SelectedView}"
+                     Style="{StaticResource ListBox-Sketch}" />
+            <Popup x:Name="pAddColumn"
+                   Width="900"
+                   AllowsTransparency="True"
+                   Placement="Center"
+                   PopupAnimation="Scroll"
+                   StaysOpen="False">
+                <Border Background="{StaticResource Brush1}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="2">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical">
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <xctk:AutoSelectTextBox Style="{StaticResource AutoSelectTextBoxStyle}" Text="{Binding NewView.NameOfView}" />
+                                <TextBlock Style="{StaticResource DescFild}" Text="-название вида" />
+                            </DockPanel>
+                            <Grid Margin="{StaticResource PanelMarginDefoult}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <UniformGrid Grid.RowSpan="2"
+                                             Grid.ColumnSpan="3"
+                                             Rows="1">
+                                    <GroupBox Grid.Column="0"
+                                              Header="Типы задач"
+                                              Visibility="Collapsed">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksTypes}"
+                                                  ItemsSource="{Binding NewView.ViewTypesOfTasks}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Колонки, которые будут отображены в этом виде" />
+                                    </GroupBox>
+                                    <GroupBox Grid.Column="1" Header="Статусы">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksStatuses}"
+                                                  ItemsSource="{Binding NewView.VisStatuses}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Задачи со статусами, которые будут отображены в этом виде" />
+                                    </GroupBox>
+                                    <GroupBox Grid.Column="2"
+                                              Header="Контексты"
+                                              Visibility="Visible">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksContexts}"
+                                                  ItemsSource="{Binding NewView.ViewContextsOfTasks}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Задачи со контекстами, которые будут отображены в этом виде" />
+                                    </GroupBox>
+                                </UniformGrid>
+
+
+                            </Grid>
+                        </StackPanel>
+                        <Button Height="{StaticResource DownButtonHeight}"
+                                Background="{StaticResource TopBrush}"
+                                BorderThickness="1"
+                                Content="Ok"
+                                Foreground="White"
+                                Style="{StaticResource Button-Sketch}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="OkAddView" TargetObject="{Binding}" />
+                                    <ei:ChangePropertyAction PropertyName="IsOpen" TargetName="pAddColumn" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="pEditView"
+                   Width="900"
+                   AllowsTransparency="True"
+                   Placement="Center"
+                   PopupAnimation="Scroll"
+                   StaysOpen="False">
+                <Border Background="{StaticResource Brush1}"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="2">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical">
+                            <DockPanel Style="{StaticResource DockPanelStyle}">
+                                <xctk:AutoSelectTextBox Style="{StaticResource AutoSelectTextBoxStyle}" Text="{Binding SelectedView.NameOfView, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Style="{StaticResource DescFild}" Text="-название вида" />
+                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <UniformGrid Grid.ColumnSpan="3" Rows="1">
+                                    <GroupBox Header="Типы задач" Visibility="Collapsed">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksTypes}"
+                                                  ItemsSource="{Binding SelectedView.ViewTypesOfTasks}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Колонки, которые будут отображены в этом виде" />
+                                    </GroupBox>
+
+                                    <GroupBox Grid.Column="1" Header="Статусы">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksStatuses}"
+                                                  ItemsSource="{Binding SelectedView.VisStatuses}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Задачи со статусами, которые будут отображены в этом виде" />
+                                    </GroupBox>
+
+                                    <GroupBox Grid.Column="2" Header="Контексты">
+                                        <ListView MinHeight="50"
+                                                  Margin="2"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  DataContext="{Binding}"
+                                                  ItemTemplate="{StaticResource TasksContexts}"
+                                                  ItemsSource="{Binding SelectedView.ViewContextsOfTasks}"
+                                                  Style="{StaticResource ListBox-Sketch}"
+                                                  ToolTip="Задачи со контекстами, которые будут отображены в этом виде" />
+                                    </GroupBox>
+
+
+                                </UniformGrid>
+                            </Grid>
+                        </StackPanel>
+                        <Button Height="{StaticResource DownButtonHeight}"
+                                Background="{StaticResource TopBrush}"
+                                Content="Ok"
+                                Foreground="White"
+                                Style="{StaticResource Button-Sketch}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction MethodName="OkEditView" TargetObject="{Binding}" />
+                                    <ei:ChangePropertyAction PropertyName="IsOpen" TargetName="pEditView" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+
+                </Border>
+            </Popup>
+            <StackPanel Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="1">
+                <Button Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Добавить локацию">
+                    <ContentControl Template="{StaticResource ContentControlAddNew}" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <ei:CallMethodAction MethodName="BeforeAddNiewView" TargetObject="{Binding}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Click">
+                            <ei:ChangePropertyAction PropertyName="IsOpen"
+                                                     TargetName="pAddColumn"
+                                                     Value="true" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Button Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Удалить локацию">
+                    <ContentControl Template="{StaticResource ContentControlDelete}" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <ei:CallMethodAction MethodName="Delete" TargetObject="{Binding}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Button Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Редактировать локацию">
+                    <ContentControl Template="{StaticResource ContentControlEdit}" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <ei:ChangePropertyAction PropertyName="IsOpen"
+                                                     TargetName="pEditView"
+                                                     Value="true" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <Button Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Command="{Binding MoveUpCommand}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Сдвинуть вверх">
+                    <ContentControl Template="{StaticResource ContentControlArrowUp}" />
+                </Button>
+                <Button Width="{StaticResource ToolButtonWidth}"
+                        Height="{StaticResource ToolButtonHeight}"
+                        Command="{Binding MoveDownCommand}"
+                        Style="{StaticResource Button-Sketch}"
+                        ToolTip="Сдвинуть вниз">
+                    <ContentControl Template="{StaticResource ContentControlArrowDown}" />
+                </Button>
+            </StackPanel>
+            <Button x:Name="buttonOk"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="{StaticResource TopBrush}"
+                    Content="OK"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction MethodName="Close" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+
+            </Button>
+        </Grid>
+    </Border>
+
+</Window>

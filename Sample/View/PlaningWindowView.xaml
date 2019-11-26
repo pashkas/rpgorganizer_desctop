@@ -1,0 +1,102 @@
+﻿<Window
+    x:Class="Sample.View.PlaningWindowView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    Title="PlaningWindowView"
+    DataContext="{Binding ucAbilitisVM, Source={StaticResource Locator}}"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <CollectionViewSource
+            x:Key="AbView"
+            IsLiveSortingRequested="True"
+            Source="{Binding PersProperty.Abilitis}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Ascending" PropertyName="MinLevelProperty" />
+                <componentModel:SortDescription Direction="Ascending" PropertyName="NameOfProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Border
+        Margin="0"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource HeaderBorder}">
+                <TextBlock Style="{StaticResource HeaderText}">
+                    <TextBlock Text="Окно планирования" />
+                </TextBlock>
+            </Border>
+
+            <TabControl Grid.Row="1" Margin="2">
+                <TabControl.Resources>
+                    <Style x:Key="ElementStyle">
+                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                        <Setter Property="TextBlock.FontSize" Value="15" />
+                    </Style>
+                    <Style x:Key="RowStyleWithAlternation" TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <Trigger Property="AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#FFD0D0E0" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Уровни званий" HeaderTemplate="{StaticResource TabHeaderTemplate}" />
+                <TabItem Header="Уровни навыков" HeaderTemplate="{StaticResource TabHeaderTemplate}">
+                    <DataGrid
+                        Margin="250,5"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding Source={StaticResource AbView}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding NameOfProperty}"
+                                EditingElementStyle="{StaticResource ElementStyle}"
+                                ElementStyle="{StaticResource ElementStyle}"
+                                Header="Название" />
+                            <DataGridTextColumn
+                                Binding="{Binding MinLevelProperty}"
+                                EditingElementStyle="{StaticResource ElementStyle}"
+                                ElementStyle="{StaticResource ElementStyle}"
+                                Header="Мин. уровень" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Уровни квестов" HeaderTemplate="{StaticResource TabHeaderTemplate}" />
+                <TabItem Header="Уровни наград" HeaderTemplate="{StaticResource TabHeaderTemplate}" />
+            </TabControl>
+
+            <UniformGrid
+                Grid.Row="2"
+                Height="{StaticResource DownButtonHeight}"
+                Rows="1">
+                <Button
+                    x:Name="btnOk"
+                    Background="{StaticResource TopBrush}"
+                    Content="ОК"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+            </UniformGrid>
+        </Grid>
+    </Border>
+</Window>

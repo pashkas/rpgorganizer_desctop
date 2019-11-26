@@ -1,0 +1,84 @@
+﻿<UserControl
+    x:Class="Sample.View.ucExpSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="ucExpSet"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <Expander Margin="{StaticResource PanelMarginDefoult}">
+        <Expander.Header>
+            <WrapPanel>
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding ExpText, ElementName=ucExpSet}" />
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding Exp, ElementName=ucExpSet}" />
+            </WrapPanel>
+        </Expander.Header>
+
+        <Grid Margin="{StaticResource PanelMarginDefoult}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Slider
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="0,5"
+                VerticalAlignment="Center"
+                IsSnapToTickEnabled="True"
+                Maximum="0.6"
+                Minimum="0.0"
+                Style="{StaticResource Slider-Sketch}"
+                TickFrequency="0.06"
+                Value="{Binding Importance, ElementName=ucExpSet}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Style="{StaticResource DescFild}"
+                Text="-важность" />
+            <Slider
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,5"
+                VerticalAlignment="Center"
+                IsSnapToTickEnabled="True"
+                Maximum="0.25"
+                Minimum="0.0"
+                Style="{StaticResource Slider-Sketch}"
+                TickFrequency="0.025"
+                Visibility="Collapsed"
+                Value="{Binding Urgency, ElementName=ucExpSet}" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{StaticResource DescFild}"
+                Text="-срочность"
+                Visibility="Collapsed" />
+            <Slider
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="0,5"
+                VerticalAlignment="Center"
+                IsSnapToTickEnabled="True"
+                Maximum="0.4"
+                Minimum="0.0"
+                Style="{StaticResource Slider-Sketch}"
+                TickFrequency="0.04"
+                Value="{Binding Hardness, ElementName=ucExpSet}" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                Style="{StaticResource DescFild}"
+                Text="-страх" />
+
+        </Grid>
+
+    </Expander>
+</UserControl>

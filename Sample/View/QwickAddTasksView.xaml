@@ -1,0 +1,62 @@
+﻿<Window x:Class="Sample.View.QwickAddTasksView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:Sample.View"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Background="{StaticResource OpaBacground}"
+        Style="{StaticResource FullWindowStyle}"
+        mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Border Width="700"
+            Height="auto"
+            MinHeight="0"
+            Margin="0"
+            Opacity="1"
+            Style="{StaticResource ToolBorder}">
+        <StackPanel>
+
+            <TextBlock Margin="2"
+                       FontSize="20"
+                       Style="{StaticResource TextBlock-SketchWrap}"
+                       Text="Впишите задачи для быстрого добавления в квест"
+                       TextAlignment="Center"
+                       Visibility="Collapsed" />
+            <DataGrid MinHeight="200"
+                      Margin="2"
+                      AutoGenerateColumns="false"
+                      CanUserAddRows="True"
+                      CanUserDeleteRows="True"
+                      ItemsSource="{Binding QwickAddTasksList}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*"
+                                        Binding="{Binding name}"
+                                        Header="Название" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <UniformGrid Height="{StaticResource DownButtonHeight}" Rows="1">
+                <Button x:Name="btnOk"
+                        Background="{StaticResource TopBrush}"
+                        Content="ОК"
+                        Foreground="White"
+                        Padding="5"
+                        Style="{StaticResource Button-Sketch}" />
+
+                <Button x:Name="btnCansel"
+                        Background="{StaticResource TopBrush}"
+                        Content="Отмена"
+                        Foreground="White"
+                        Padding="5"
+                        Style="{StaticResource Button-Sketch}" />
+            </UniformGrid>
+
+        </StackPanel>
+    </Border>
+</Window>

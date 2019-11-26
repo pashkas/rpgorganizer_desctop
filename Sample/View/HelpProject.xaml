@@ -1,0 +1,75 @@
+﻿<Window
+    x:Class="Sample.View.HelpProject"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="HelpProject"
+    Style="{StaticResource FullWindowStyle}"
+    Background="{StaticResource OpaBacground}"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Border VerticalAlignment="Center" Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource HeaderBorder}">
+                <TextBlock Style="{StaticResource HeaderText}">
+                    <TextBlock Text=""  FontSize="20"/>
+                </TextBlock>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="8*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="0"  VerticalAlignment="Center">
+                    <Image Source="../Images/helpProj.png"></Image></DockPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10">
+                    <StackPanel.Resources>
+                        <Thickness x:Key="MarginElements">4</Thickness>
+                    </StackPanel.Resources>
+                    <TextBlock Text="Ты нужен проекту!!!" TextAlignment="Center" FontSize="28" FontWeight="Bold" Style="{StaticResource TextBlock-SketchWrap}" Margin="2,16"></TextBlock>
+                    <TextBlock FontStyle="Italic" Text="* Это окно показывается ТОЛЬКО два дня в месяц!" Foreground="Green" TextAlignment="Center" Margin="{StaticResource MarginElements}" Style="{StaticResource TextBlock-SketchWrap}"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="1. Если ты хочешь поддержать проект материально - кинь мне небольшую сумму на карточку СБЕРБАНКА:" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <xctk:AutoSelectTextBox FontStyle="Italic" Style="{StaticResource AutoSelectTextBoxStyle}" TextAlignment="Center" Margin="{StaticResource MarginElements}"  Text="4276 3800 6458 7046"></xctk:AutoSelectTextBox>
+                    <TextBlock FontStyle="Italic" Text="(Павел. ЭТО НОМЕР КАРТЫ А НЕ СЧЕТА! Пожалуйста, не пиши ничего в комментариях к переводу!)" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="2. Опубликуй на своей страничке в соцсетях ссылку на программу:" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <xctk:AutoSelectTextBox FontStyle="Italic" Style="{StaticResource AutoSelectTextBoxStyle}" TextAlignment="Center" Margin="{StaticResource MarginElements}" Text="https://nerdistway.blogspot.ru/2013/07/mylife-rpg-organizer.html"/>
+                    <TextBlock FontWeight="Bold" Text="3. Напиши дружественный комментарий на странице программы, если она тебе нравится:" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <xctk:AutoSelectTextBox FontStyle="Italic" Style="{StaticResource AutoSelectTextBoxStyle}" TextAlignment="Center" Margin="{StaticResource MarginElements}" Text="https://nerdistway.blogspot.ru/2013/07/mylife-rpg-organizer.html"/>
+                    <TextBlock FontWeight="Bold" Text="4. Напиши дружественный комментарий в том месте, где ты скачал программу." TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <TextBlock FontWeight="Bold" Text="5. Поучаствуй в жизни WIKI странички программы:" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <xctk:AutoSelectTextBox FontStyle="Italic" Style="{StaticResource AutoSelectTextBoxStyle}" TextAlignment="Center" Margin="{StaticResource MarginElements}" Text="http://ru.life-rpg-organizer.wikia.com/wiki/%D0%A1%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%BE_Life_Rpg_Organizer_%D0%B2%D0%B8%D0%BA%D0%B8"/>
+                    <TextBlock FontStyle="Italic" Text="(комментируй, редактируй и создавай записи)" TextAlignment="Center" Style="{StaticResource TextBlock-SketchWrap}" Margin="{StaticResource MarginElements}"></TextBlock>
+                    <TextBlock Text="Большое спасибо!" TextAlignment="Center" FontSize="28" FontWeight="Bold" Style="{StaticResource TextBlock-SketchWrap}" Margin="2,16"></TextBlock>
+                </StackPanel>
+            </Grid>
+            <UniformGrid
+                Grid.Row="2"
+                Height="{StaticResource DownButtonHeight}"
+                Rows="1">
+                <Button
+                    x:Name="btnOk"
+                    Background="{StaticResource TopBrush}"
+                    Click="BtnOk_OnClick"
+                    Content="ОК"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+            </UniformGrid>
+        </Grid>
+    </Border>
+</Window>

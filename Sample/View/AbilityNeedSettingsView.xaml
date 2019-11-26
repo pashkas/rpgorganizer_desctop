@@ -1,0 +1,263 @@
+﻿<Window
+    x:Class="Sample.View.AbilityNeedSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Background="{StaticResource OpaBacground}"
+    DataContext="{Binding AddOrEditAbilityVM, Source={StaticResource Locator}}"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <CollectionViewSource
+            x:Key="UmeniyaView"
+            IsLiveSortingRequested="True"
+            Source="{Binding SelectedAbilitiModelProperty.NeedTasks}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Descending" PropertyName="LevelProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource
+            x:Key="QwestsView"
+            IsLiveSortingRequested="True"
+            Source="{Binding SelectedAbilitiModelProperty.NeedAims}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription Direction="Descending" PropertyName="LevelProperty" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    <Border
+        Width="900"
+        Height="auto"
+        MinHeight="0"
+        Margin="0"
+        Opacity="1"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Margin="2"
+                FontSize="20"
+                Style="{StaticResource TextBlock-SketchWrap}"
+                Text="Условия прокачки навыка по уровням"
+                TextAlignment="Center" />
+
+            <ScrollViewer
+                Grid.Row="1"
+                Margin="5,2,5,2"
+                HorizontalScrollBarVisibility="Disabled"
+                Style="{StaticResource ScrollViewer-Sketch}"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Навыки" Style="{StaticResource BigGroupStyle}">
+                        <StackPanel>
+
+                            <ComboBox
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                MinWidth="0"
+                                Margin="2"
+                                DisplayMemberPath="NameOfTypeOfTask"
+                                ItemsSource="{Binding DataContext.PersProperty.TasksTypes, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                SelectedItem="{Binding DataContext.SelectedAbilitiModelProperty.DefoultTaskType, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                Style="{StaticResource ComboBoxStyle}"
+                                ToolTip="Тип по умолчанию для задач" />
+                            <UniformGrid CacheMode="{StaticResource CasheResource}" Rows="1">
+                                <Button
+                                    Command="{Binding DataContext.SelectedAbilitiModelProperty.AddNeedTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="+"
+                                    Style="{StaticResource ButtonAdd}"
+                                    ToolTip="Добавить навык" />
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{Binding DataContext.SelectedAbilitiModelProperty.AddNeedTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="?"
+                                    Style="{StaticResource ButtonImport}"
+                                    ToolTip="Выбрать из имеющихся задач задачу, которая влияет на этот навык" />
+                            </UniformGrid>
+
+                            <ItemsControl Margin="2" ItemsSource="{Binding Source={StaticResource UmeniyaView}}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <Border Background="{Binding BackBrush}">
+                                            <DockPanel HorizontalAlignment="Left">
+                                                <xctk:AutoSelectTextBox
+                                                    MinWidth="30"
+                                                    Background="Transparent"
+                                                    Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                    Text="{Binding LevelProperty, UpdateSourceTrigger=PropertyChanged}"
+                                                    TextAlignment="Center"
+                                                    ToolTip="Уровень" />
+
+
+                                                <UniformGrid
+                                                    Grid.Column="2"
+                                                    Width="64"
+                                                    VerticalAlignment="Center"
+                                                    DockPanel.Dock="Right"
+                                                    Rows="1">
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.ShowTaskFromNeedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource ButtonSettings}"
+                                                        ToolTip="Просмотр элемента" />
+
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.DeleteNeedTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource ButtonDelete}"
+                                                        ToolTip="Удаление элемента" />
+                                                </UniformGrid>
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    TextDecorations="Underline">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <Binding Path="TaskProperty.NameOfProperty" />
+                                                            <Binding Path="TaskProperty.PlusNameOf2" />
+                                                            <Binding Path="TaskProperty.SubTasksString" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </DockPanel>
+                                        </Border>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <UniformGrid Rows="1" Visibility="Collapsed">
+                                <Button
+                                    Height="30"
+                                    Background="White"
+                                    BorderBrush="Transparent"
+                                   Content="Автозаполнение"
+                                    Style="{StaticResource Button-Sketch}" />
+                                <Button
+                                    Height="30"
+                                    Background="White"
+                                    BorderBrush="Transparent"
+                                    Command="{Binding ClearSkillsCommand}"
+                                    Content="Очистить навыки"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Удалить все навыки" />
+                            </UniformGrid>
+
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox
+                        Header="Квесты"
+                        IsEnabled="{Binding DataContext.PersProperty.IsQwestsEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource BigGroupStyle}">
+                        <StackPanel>
+                            <UniformGrid Rows="1">
+                                <Button
+                                    Command="{Binding DataContext.SelectedAbilitiModelProperty.AddNeedAimCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="+"
+                                    Style="{StaticResource ButtonAdd}"
+                                    ToolTip="Добавить новый квест, который вляет на навык" />
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{Binding DataContext.SelectedAbilitiModelProperty.AddNeedAimCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="?"
+                                    Style="{StaticResource ButtonImport}"
+                                    ToolTip="Выбрать из имеющихся квест, который влияет на навык" />
+                            </UniformGrid>
+                            <ItemsControl Margin="2" ItemsSource="{Binding Source={StaticResource QwestsView}}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding BackBrush}">
+                                            <DockPanel HorizontalAlignment="Left">
+                                                <xctk:AutoSelectTextBox
+                                                    MinWidth="30"
+                                                    Style="{StaticResource AutoSelectTextBoxStyle}"
+                                                    Text="{Binding LevelProperty, UpdateSourceTrigger=PropertyChanged}"
+                                                    TextAlignment="Center"
+                                                    ToolTip="Уровень" />
+
+
+                                                <UniformGrid
+                                                    Grid.Column="2"
+                                                    Width="64"
+                                                    VerticalAlignment="Center"
+                                                    CacheMode="{StaticResource CasheResource}"
+                                                    DockPanel.Dock="Right"
+                                                    Rows="1">
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.ShowQwestFromNeedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource ButtonSettings}"
+                                                        ToolTip="Просмотр элемента" />
+
+                                                    <Button
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.SelectedAbilitiModelProperty.DelAimNeedCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource ButtonDelete}"
+                                                        ToolTip="Удаление элемента" />
+                                                </UniformGrid>
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource TextBlock-SketchWrap}"
+                                                    TextDecorations="Underline">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                                            <Binding Path="AimProperty.NameOfProperty" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </DockPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <Button
+                x:Name="btnOk"
+                Grid.Row="2"
+                Height="{StaticResource DownButtonHeight}"
+                Padding="5"
+                Background="{StaticResource TopBrush}"
+                Content="ОК"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </Grid>
+    </Border>
+</Window>

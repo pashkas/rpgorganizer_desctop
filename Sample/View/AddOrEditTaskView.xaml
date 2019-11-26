@@ -1,0 +1,24 @@
+﻿
+<Window x:Class="Sample.View.AddOrEditTaskView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:model="clr-namespace:Sample.Model"
+        xmlns:view="clr-namespace:Sample.View"
+        Title="AddOrEditTaskView"
+        Style="{StaticResource FullWindowStyle}">
+
+
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+
+    <view:UcTasksSettingsView x:Name="UcTasksSettingsView" />
+
+
+
+</Window>

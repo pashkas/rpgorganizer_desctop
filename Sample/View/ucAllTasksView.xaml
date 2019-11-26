@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="Sample.ucAllTasksView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Sample.View"
+    x:Name="UserControl"
+    d:DesignHeight="480"
+    d:DesignWidth="640"
+    CacheMode="{DynamicResource CasheResource}"
+    DataContext="{Binding AllTasksVM, Source={StaticResource Locator}}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Model:IntervalsConverter x:Key="IntervalsConverter" />
+    </UserControl.Resources>
+
+
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.ColumnSpan="2"
+            Margin="5"
+            FontSize="25"
+            FontWeight="Bold"
+            Style="{StaticResource TextBlock-SketchWrap}"
+            Text="Все задачи"
+            TextAlignment="Center">
+            <Grid Background="#FFE5E5E5" />
+        </TextBlock>
+
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="5"
+            Style="{StaticResource ScrollWithoutBorder}">
+            <ItemsControl
+                HorizontalContentAlignment="Stretch"
+                CacheMode="{DynamicResource CasheResource}"
+                ItemsSource="{Binding PersProperty.InverseTasks}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="15" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                IsChecked="{Binding IsDelProperty}"
+                                IsEnabled="False" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                TextAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                        <Binding Path="NameOfProperty" />
+                                        <Binding Path="PlusNameOf2" />
+                                        <Binding Path="SubTasksStringAb" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <UniformGrid
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Rows="1">
+                                <Button
+                                    Height="Auto"
+                                    Command="{Binding DataContext.EditTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource ButtonSettings}"
+                                    ToolTip="Редактировать задачу" />
+                                <Button
+                                    Height="Auto"
+                                    Command="{Binding DataContext.DelTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource ButtonDelete}"
+                                    ToolTip="Удалить задачу" />
+                            </UniformGrid>
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
+
+
+
+
+
+    </Grid>
+</UserControl>

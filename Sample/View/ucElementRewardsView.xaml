@@ -1,0 +1,65 @@
+﻿<UserControl
+    x:Class="Sample.View.ucElementRewardsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:viewModel="clr-namespace:Sample.ViewModel"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="RevPanel">
+            <WrapPanel />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="RevTemolate" DataType="model:RelaysItem">
+            <Border
+                Margin="1"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1">
+                <Button
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    Background="Transparent"
+                    Command="{Binding DataContext.ShowRevardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource Button-Sketch}">
+                    <Grid Width="150" Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Image
+                            MaxHeight="100"
+                            Source="{Binding PictureProperty}"
+                            Style="{StaticResource ImageStyle}" />
+                        <Viewbox
+                            Grid.Row="1"
+                            Width="150"
+                            MaxHeight="50"
+                            VerticalAlignment="Bottom"
+                            StretchDirection="DownOnly">
+                            <TextBlock
+                                MaxWidth="200"
+                                Foreground="Green"
+                                Style="{StaticResource TextBlock-SketchWrap}"
+                                Text="{Binding ElementToolTipProperty}"
+                                TextAlignment="Center" />
+                        </Viewbox>
+                    </Grid>
+                </Button>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <viewModel:ucElementRewardsViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <ItemsControl
+            ItemTemplate="{StaticResource RevTemolate}"
+            ItemsPanel="{StaticResource RevPanel}"
+            ItemsSource="{Binding Revards}" />
+    </Grid>
+</UserControl>

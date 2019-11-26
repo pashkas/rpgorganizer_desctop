@@ -1,0 +1,49 @@
+﻿<Window x:Class="Sample.View.TaskMap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Example="clr-namespace:Sample.Model"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:ViewModels="clr-namespace:Graphviz4Net.WPF.ViewModels;assembly=Graphviz4Net.WPF"
+        xmlns:behavior="clr-namespace:Sample.Behavior"
+        xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:Sample.View"
+        xmlns:wpf="clr-namespace:Graphviz4Net.WPF;assembly=Graphviz4Net.WPF"
+        Title="Карта задач"
+        Style="{StaticResource FullWindowStyle}">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayCloseBehavior />
+        <Example:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Window.DataContext>
+        <ViewModel:TasksMapViewModele />
+    </Window.DataContext>
+    <Border Background="White"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="2"
+            CornerRadius="3">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <local:TaskMapUserControl x:Name="MapUserControl" Grid.Row="1">
+                <local:TaskMapUserControl.DataContext>
+                    <ViewModel:MainViewTasksMapVM />
+                </local:TaskMapUserControl.DataContext>
+            </local:TaskMapUserControl>
+            <Button x:Name="btnClose"
+                    Grid.Row="2"
+                    Height="{StaticResource DownButtonHeight}"
+                    Background="{DynamicResource TopBrush}"
+                    Click="BtnClose_OnClick"
+                    Content="Закрыть"
+                    Foreground="White"
+                    Style="{StaticResource Button-Sketch}" />
+
+        </Grid>
+    </Border>
+</Window>

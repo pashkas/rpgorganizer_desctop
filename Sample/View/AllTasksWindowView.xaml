@@ -1,0 +1,47 @@
+﻿<Window
+    x:Class="Sample.View.AllTasksWindowView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:sample="clr-namespace:Sample"
+    Title="Все задачи"
+    d:DesignHeight="1000"
+    Background="{StaticResource OpaBacground}"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+        <model:MainWindowOwnerBehavior />
+    </i:Interaction.Behaviors>
+    <Border
+        Width="800"
+        Margin="0"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <sample:ucAllTasksView />
+            <Button
+                x:Name="btnOk"
+                Grid.Row="1"
+                Height="{StaticResource DownButtonHeight}"
+                Background="{StaticResource TopBrush}"
+                Click="BtnOk_OnClick"
+                Command="{Binding OkCommand}"
+                Content="ОК"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </Grid>
+    </Border>
+</Window>

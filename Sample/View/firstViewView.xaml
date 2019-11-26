@@ -1,0 +1,111 @@
+﻿<Window x:Class="Sample.firstViewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Behaviours="clr-namespace:Sample.Model"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        x:Name="Window"
+        Title="firstViewView"
+        Width="800"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        UseLayoutRounding="True">
+    <Window.Style>
+        <Style>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CloseSignalProperty}" Value="true">
+                    <Setter Property="Behaviours:WindowCloseBehaviour.Close" Value="true" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Window.DataContext>
+        <ViewModel:firstViewViewModel />
+    </Window.DataContext>
+    <Border Margin="0"
+            Background="{StaticResource DefaultedBorderBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="3">
+        <Grid x:Name="LayoutRoot" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="168*" />
+                <RowDefinition Height="95*" />
+                <RowDefinition Height="331*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="171*" />
+                <ColumnDefinition Width="226*" />
+            </Grid.ColumnDefinitions>
+            <ed:Callout Grid.Column="1"
+                        AnchorPoint="0.03,1.3"
+                        CalloutStyle="Cloud"
+                        Fill="{StaticResource Brush1}"
+                        FontFamily="{StaticResource FontFamily-Sketch}"
+                        FontSize="14.667"
+                        Stroke="{StaticResource BaseBorder-Sketch}"
+                        StrokeThickness="3">
+                <TextBlock Width="348.567"
+                           FontSize="20"
+                           Style="{StaticResource TextBlock-Sketch}"
+                           Text="Приветствую тебя, странник! Вероятно ты впервые вошел в систему. Какими будут твои действия?"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap" />
+            </ed:Callout>
+            <UniformGrid Grid.Row="2"
+                         Grid.Column="1"
+                         Columns="1">
+                <Button Margin="3"
+                        Background="{StaticResource Brush1}"
+                        BorderThickness="2"
+                        Command="{Binding ViewInstructionsCommand}"
+                        Content="Посмотреть инструкцию"
+                        FontFamily="/Sample;component/Fonts/#Buxton Sketch"
+                        FontSize="20"
+                        Style="{StaticResource Button-Sketch}" />
+                <Button Margin="3"
+                        Background="{StaticResource Brush1}"
+                        BorderThickness="2"
+                        Command="{Binding LoadAdvansedTemplateCommand}"
+                        CommandParameter="простой"
+                        Content="Загрузить простой пример"
+                        FontFamily="/Sample;component/Fonts/#Buxton Sketch"
+                        FontSize="20"
+                        Style="{StaticResource Button-Sketch}" />
+                <Button Margin="3"
+                        Background="{StaticResource Brush1}"
+                        BorderThickness="2"
+                        Command="{Binding LoadAdvansedTemplateCommand}"
+                        CommandParameter="продвинутый"
+                        Content="Загрузить продвинутый пример"
+                        FontFamily="/Sample;component/Fonts/#Buxton Sketch"
+                        FontSize="20"
+                        Style="{StaticResource Button-Sketch}" />
+                <Button Margin="3" Visibility="Collapsed"
+                        Background="{StaticResource Brush1}"
+                        BorderThickness="2"
+                        Command="{Binding StartWithClearDataCommand}"
+                        Content="Начать с пустыми данными"
+                        FontFamily="/Sample;component/Fonts/#Buxton Sketch"
+                        FontSize="20"
+                        Style="{StaticResource Button-Sketch}" />
+                <Button Margin="3"
+                        Background="{StaticResource Brush1}"
+                        BorderThickness="2"
+                        Command="{Binding CloseCommand}"
+                        Content="Закрыть"
+                        FontFamily="/Sample;component/Fonts/#Buxton Sketch"
+                        FontSize="20"
+                        Style="{StaticResource Button-Sketch}" />
+
+            </UniformGrid>
+            <Image 
+                Style="{StaticResource ImageStyle}"
+                Grid.RowSpan="3"
+                   Margin="5"
+                   Source="/Sample;component/Images/merlin.jpg"
+                   Stretch="Fill" />
+        </Grid>
+    </Border>
+
+</Window>

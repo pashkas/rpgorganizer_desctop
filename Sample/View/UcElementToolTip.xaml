@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="Sample.View.UcElementToolTip"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    d:DataContext="{d:DesignInstance model:IToolTipable}"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <StackPanel Width="250">
+        <TextBlock
+            Margin="4"
+            FontSize="20"
+            FontWeight="Bold"
+            Style="{StaticResource TextBlock-SketchWrap}"
+            Text="{Binding NameOfProperty}"
+            TextAlignment="Center" />
+        <Image
+            MaxHeight="250"
+            Margin="4"
+            HorizontalAlignment="Center"
+            Source="{Binding ImageProperty}" />
+        <TextBlock
+            Margin="4"
+            FontSize="14"
+            FontStyle="Italic"
+            Style="{StaticResource TextBlock-SketchWrap}"
+            Text="{Binding DescriptionProperty}"
+            TextAlignment="Center" />
+    </StackPanel>
+</UserControl>

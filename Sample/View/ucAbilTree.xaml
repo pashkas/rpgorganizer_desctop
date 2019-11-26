@@ -1,0 +1,272 @@
+﻿<UserControl
+    x:Class="Sample.View.ucAbilTree"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:ViewModels="clr-namespace:Graphviz4Net.WPF.ViewModels;assembly=Graphviz4Net.WPF"
+    xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    xmlns:wpf="clr-namespace:Graphviz4Net.WPF;assembly=Graphviz4Net.WPF"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <model:ArrowColorConverter x:Key="ArrowColorConverter" />
+        <model:TreeAbBorderConverter x:Key="TreeAbBorderConverter" />
+        <DataTemplate DataType="{x:Type model:Arrow}">
+            <Canvas Width="6" Height="11">
+                <Polygon
+                    Points="3,0 6,5 3,10 0,5"
+                    Stroke="Black"
+                    StrokeThickness="2" />
+            </Canvas>
+        </DataTemplate>
+
+        <!--  Шаблон скилла  -->
+        <DataTemplate DataType="{x:Type model:AbilitiModel}">
+            <Border
+                Padding="0"
+                Background="White"
+                BorderBrush="{Binding Converter={StaticResource TreeAbBorderConverter}}"
+                BorderThickness="4"
+                CornerRadius="5">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnEdit"
+                            Value="Visible" />
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnLink"
+                            Value="Visible" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnEdit"
+                            Value="Hidden" />
+                        <ei:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetName="btnLink"
+                            Value="Hidden" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                        <i:InvokeCommandAction Command="{Binding DataContext.MouseUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid>
+                    <Grid Panel.ZIndex="1">
+
+
+                        <!--  Кнопки  -->
+                        <!--<UniformGrid
+                                x:Name="btnLink"
+                                Height="{StaticResource MapItemHeight}"
+                                Rows="1"
+                                Visibility="Hidden">
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать скилл как дочерний для настройки связей">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToChildCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                            </UniformGrid>-->
+
+                        <StackPanel Grid.Column="0" Width="120">
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <Button
+                                    x:Name="btnLink"
+                                    Width="auto"
+                                    Height="25"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать навык как дочерний для настройки связей"
+                                    Visibility="Hidden">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToChildCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <TextBlock
+                                    Margin="2"
+                                    FontFamily="Times New Roman"
+                                    FontSize="14"
+                                    Foreground="DarkSlateGray"
+                                    Text="{Binding NameOfProperty}"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <Image
+                                Margin="25,2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Source="{Binding ImageProperty}" />
+                            <UniformGrid
+                                x:Name="btnEdit"
+                                Rows="1"
+                                Visibility="Hidden">
+                                <Button
+                                    Grid.Column="1"
+                                    Width="auto"
+                                    Height="25"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Редактировать навык">
+                                    <ContentControl Template="{StaticResource ContentControlEdit}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.EditAbilCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button
+                                    Width="auto"
+                                    Height="25"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать навык как родительский для настройки связей">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToParrentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </UniformGrid>
+                        </StackPanel>
+
+                        <!--  Кнопка связи  -->
+                        <!--<UniformGrid
+                                x:Name="btnMenu"
+                                Height="{StaticResource MapItemHeight}"
+                                Rows="1"
+                                Visibility="Hidden">
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Задать навык как родительский для настройки связей">
+                                    <ContentControl Template="{StaticResource buttonLink}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyToParrentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                                <Button
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Style="{StaticResource Button-Sketch}"
+                                    ToolTip="Редактировать навык">
+                                    <ContentControl Template="{StaticResource ContentControlEdit}" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.EditAbilCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+
+                            </UniformGrid>-->
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+
+        <DataTemplate DataType="{x:Type ViewModels:EdgeLabelViewModel}">
+            <TextBlock
+                FontWeight="Bold"
+                Foreground="OrangeRed"
+                Style="{StaticResource TextBlock-SketchWrap}"
+                Text="{Binding Label}" />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModels:EdgeViewModel}">
+            <Path
+                Data="{Binding Data}"
+                Stroke="{Binding Edge.DestinationArrow, Converter={StaticResource ArrowColorConverter}}"
+                StrokeDashArray="3 3"
+                StrokeThickness="1" />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModels:BorderViewModel}">
+            <Border
+                BorderBrush="Transparent"
+                BorderThickness="2"
+                CornerRadius="10" />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModel:ArrowLevels}">
+            <Canvas
+                Width="30"
+                Height="30"
+                Visibility="Collapsed">
+                <Polygon
+                    Fill="Green"
+                    Points="0,0 15,20 30,0 "
+                    Stroke="Green"
+                    StrokeThickness="1" />
+            </Canvas>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModel:AbilityTreeViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0" Visibility="Collapsed">
+            <WrapPanel Background="LightGreen">
+
+                <TextBlock
+                    FontStyle="Italic"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text=" Щелкните правой кнопкой мыши на навык с которым хотите создать или удалить связь! "
+                    TextWrapping="Wrap" />
+
+
+            </WrapPanel>
+
+
+
+        </WrapPanel>
+
+        <controls:ZoomControl Grid.Row="1">
+            <controls:ZoomControl.Background>
+                <ImageBrush
+                    ImageSource="{Binding PersProperty.PersSettings.PathToMapBackgroundProperty}"
+                    Opacity="0.5"
+                    Stretch="UniformToFill" />
+            </controls:ZoomControl.Background>
+            <wpf:GraphLayout
+                x:Name="GraphLayout"
+                Grid.Row="1"
+                DotExecutablePath="{Binding PersProperty.PersSettings.PathToGraphviz}"
+                Graph="{Binding GraphProperty}"
+                LogGraphvizOutput="True"
+                UseContentPresenterForAllElements="True" />
+        </controls:ZoomControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,78 @@
+﻿<UserControl
+    x:Class="Sample.View.QwestsInTaskView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    d:DataContext="{Binding MainVM, Source={StaticResource Locator}}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid>
+        <ItemsControl
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Background="Transparent"
+            ItemsSource="{Binding QwestsList, RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding colNumQwests, RelativeSource={RelativeSource AncestorType=UserControl}}" IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button
+                        Margin="2"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding DataContext.OpenQwestTasksCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding}">
+
+                        <Border
+                            Background="White"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="2">
+
+
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Margin="2,4,2,2"
+                                    Foreground="DarkSlateGray"
+                                    Style="{StaticResource TextBlock-Sketch}"
+                                    Text="{Binding NameOfProperty}"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+
+                                <Image
+                                    Grid.Row="2"
+                                    Margin="3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding ImageProperty}"
+                                    Stretch="Uniform"
+                                    Style="{StaticResource ImageStyle}" />
+
+
+                            </Grid>
+                        </Border>
+
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

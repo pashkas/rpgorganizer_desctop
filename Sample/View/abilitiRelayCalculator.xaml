@@ -1,0 +1,97 @@
+﻿<Window
+    x:Class="Sample.View.abilitiRelayCalculator"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="Калькулятор влияний на навык"
+    Width="500"
+    Height="300"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="ToolWindow">
+    <Window.DataContext>
+        <ViewModel:abilityRelayCalculator />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox
+            Margin="5"
+            Header="Текущее значение"
+            HeaderTemplate="{StaticResource Group-box-sketch}">
+            <WrapPanel VerticalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text="Значение: "
+                    TextDecorations="Underline" />
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding CurrentValueProperty}" />
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text=" , " />
+                <TextBlock
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text="Уровень: "
+                    TextDecorations="Underline" />
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text="{Binding CurrentLevelProperty}" />
+            </WrapPanel>
+        </GroupBox>
+        <GroupBox
+            Grid.Row="1"
+            Margin="5"
+            Header="Желаемое значение значение"
+            HeaderTemplate="{StaticResource Group-box-sketch}">
+            <WrapPanel VerticalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text="Желаемое значение: "
+                    TextDecorations="Underline" />
+                <xctk:AutoSelectTextBox
+                    MinWidth="50"
+                    VerticalContentAlignment="Center"
+                    AutoSelectBehavior="OnFocus"
+                    Style="{StaticResource TextBox-Sketch}"
+                    Text="{Binding NeedValueProperty}"
+                    TextAlignment="Center" />
+                <TextBlock Style="{StaticResource TextBlock-Sketch}" Text=" , " />
+                <TextBlock
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text="Желаемый уровень: "
+                    TextDecorations="Underline" />
+                <Button
+                    Width="25"
+                    Height="25"
+                    Content="-"
+                    Style="{StaticResource Button-Sketch}" />
+                <TextBlock
+                    MinWidth="25"
+                    Margin="1"
+                    Style="{StaticResource TextBlock-Sketch}"
+                    Text="{Binding NeedLevelProperty}"
+                    TextAlignment="Center" />
+                <Button
+                    Width="25"
+                    Height="25"
+                    Content="+"
+                    Style="{StaticResource Button-Sketch}" />
+            </WrapPanel>
+        </GroupBox>
+        <UniformGrid
+            Grid.Row="2"
+            Height="{StaticResource DownButtonHeight}"
+            Rows="1">
+            <Button
+                x:Name="btnOk"
+                Background="{StaticResource TopBrush}"
+                Content="Ок, расчитать"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+            <Button
+                x:Name="btnCansel"
+                Background="{StaticResource TopBrush}"
+                Content="Отмена"
+                Foreground="White"
+                Style="{StaticResource Button-Sketch}" />
+        </UniformGrid>
+    </Grid>
+</Window>

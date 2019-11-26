@@ -1,0 +1,15 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Model="clr-namespace:Sample.Model"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:local="clr-namespace:Sample.View"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        x:Class="Sample.View.AvtofocusView"
+        Title="Автофокус! (отображаются задачи для выбранного вида)"
+        Width="1024"
+        Height="764"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" UseLayoutRounding="True">
+   
+</Window>

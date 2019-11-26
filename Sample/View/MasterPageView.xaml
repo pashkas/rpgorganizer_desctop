@@ -1,0 +1,78 @@
+﻿<Window
+    x:Class="Sample.View.MasterPageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:behavior="clr-namespace:Sample.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ucMaterPage="clr-namespace:Sample.ucMaterPage"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="MasterPageView"
+    Style="{StaticResource FullWindowStyle}"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <ViewModel:MasterPageViewModel />
+    </Window.DataContext>
+    <i:Interaction.Behaviors>
+        <behavior:FullWindowBehavior />
+        <behavior:PlayEditBehavior />
+        <behavior:PlayCloseBehavior />
+    </i:Interaction.Behaviors>
+    <Border
+        Margin="0"
+        VerticalAlignment="Stretch"
+        Style="{StaticResource ToolBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <xctk:Wizard
+                BackButtonContent="&lt; Назад"
+                CancelButtonContent="Отмена"
+                FinishButtonContent="Готово"
+                FinishButtonClosesWindow="True"
+                CancelButtonClosesWindow="True"
+                HelpButtonContent="Помощь"
+                HelpButtonVisibility="Collapsed"
+                NextButtonContent="Дальше &gt;">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Finish">
+                        <i:InvokeCommandAction Command="{Binding FinishCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PageChanged">
+                        <i:InvokeCommandAction Command="{Binding RefreshAllSkillsCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <xctk:WizardPage BackButtonVisibility="Collapsed" CanSelectNextPage="True">
+                    <ucMaterPage:ucMasterPersInfo />
+                </xctk:WizardPage>
+                <!--  Region (Настройка хараткеристик)  -->
+                <xctk:WizardPage BackButtonVisibility="Visible" CanSelectNextPage="True">
+                    <ucMaterPage:ucMasterCharacteristics />
+                </xctk:WizardPage>
+                <!--  EndRegion  -->
+                <!--  Region (Настройка скиллов)  -->
+                <xctk:WizardPage
+                    BackButtonVisibility="Visible"
+                    CanFinish="{Binding CanFinishAfterSkills}"
+                    CanSelectNextPage="{Binding IsSkillsLastPage}">
+                    <ucMaterPage:ucMasterAbilities />
+                </xctk:WizardPage>
+                <!--  EndRegion  -->
+                <!--  Настройка задач скиллов  -->
+                <xctk:WizardPage
+                    BackButtonVisibility="Collapsed"
+                    CanFinish="True"
+                    CanSelectNextPage="False">
+                    <ucMaterPage:ucMasterAbilitiesTasks />
+                </xctk:WizardPage>
+            </xctk:Wizard>
+        </Grid>
+    </Border>
+</Window>

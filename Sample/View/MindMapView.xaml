@@ -1,0 +1,17 @@
+﻿<Window x:Class="Sample.View.MindMapView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+        xmlns:ViewModels="clr-namespace:Graphviz4Net.WPF.ViewModels;assembly=Graphviz4Net.WPF"
+        xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:model="clr-namespace:Sample.ViewModel"
+        xmlns:model1="clr-namespace:Sample.Model"
+        xmlns:wpf="clr-namespace:Graphviz4Net.WPF;assembly=Graphviz4Net.WPF"
+        Title="MindMapView"
+        Background="White"
+        WindowState="Maximized"
+        ResizeMode="NoResize"
+        WindowStyle="None" UseLayoutRounding="True">
+    
+</Window>

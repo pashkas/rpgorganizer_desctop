@@ -1,0 +1,45 @@
+﻿<Window x:Class="Sample.View.StartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="StartWindow"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        WindowStyle="None" UseLayoutRounding="True">
+    <Border Margin="60"
+            Background="Black"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image x:Name="Image"
+                   Margin="15"
+                   Style="{StaticResource ImageStyle}"
+                   Stretch="Uniform" />
+            <TextBlock x:Name="TextBlock"
+                       Grid.Row="1"
+                       Margin="15,15,15,0"
+                       HorizontalAlignment="Center"
+                       FontSize="28"
+                       Style="{StaticResource BasicTextBlock-Sketch}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="who"
+                       Grid.Row="2"
+                       MinWidth="{Binding ActualWidth,
+                                          ElementName=TextBlock}"
+                       Margin="15,0,15,15"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       FontSize="28"
+                       Style="{StaticResource BasicTextBlock-Sketch}"
+                       TextAlignment="Center" />
+        </Grid>
+    </Border>
+</Window>

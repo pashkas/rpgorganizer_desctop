@@ -1,0 +1,187 @@
+﻿<UserControl
+    x:Class="Sample.View.ucRewardsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Sample.Model"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <d:UserControl.DataContext>
+        <ViewModel:ucRewardsViewModel />
+    </d:UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ShopItem" DataType="model:Revard">
+            <Border
+                x:Name="xxxBord"
+                Margin="3"
+                Background="White"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1">
+                <Border.InputBindings>
+                    <MouseBinding
+                        Command="{Binding DataContext.EditRevardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding}"
+                        Gesture="LeftDoubleClick" />
+                </Border.InputBindings>
+                <DockPanel>
+                    <Viewbox
+                        Height="50"
+                        Margin="2"
+                        DockPanel.Dock="Top"
+                        StretchDirection="DownOnly">
+                        <TextBlock
+                            x:Name="itName"
+                            MaxWidth="200"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="DarkSlateGray"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NameOfProperty}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Viewbox>
+
+                    <UniformGrid
+                        x:Name="invMenu"
+                        Grid.Column="2"
+                        Height="35"
+                        DockPanel.Dock="Bottom"
+                        Rows="1"
+                        Visibility="Hidden">
+
+                        <Button
+                            Height="Auto"
+                            Command="{Binding DataContext.BuyRevardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonBuy}"
+                            ToolTip="Купить награду"
+                            Visibility="{Binding CostVisible}" />
+
+                        <!--<Button
+                            Height="Auto"
+                            Command="{Binding DataContext.EditRevardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonSettings}"
+                            ToolTip="Просмотр" />-->
+
+                        <Button
+                            Height="Auto"
+                            Command="{Binding DataContext.DeleteRevardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonDelete}"
+                            ToolTip="Удаление"
+                            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </UniformGrid>
+
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <TextBlock
+                            Margin="2"
+                            FontSize="11"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            ToolTip="Стоимость/всего денег"
+                            Visibility="{Binding CostVisible}">
+                            <TextBlock.Inlines>
+                                <Run Foreground="Goldenrod" Text="{Binding CostProperty}" />
+                                <Run Foreground="Goldenrod" Text=" монет" />
+                            </TextBlock.Inlines>
+                        </TextBlock>
+
+                        <TextBlock
+                            FontSize="11"
+                            Style="{StaticResource about}"
+                            Text="{Binding DescriptionProperty}"
+                            TextAlignment="Center" />
+
+                        <TextBlock
+                            Margin="2"
+                            FontSize="11"
+                            Foreground="Red"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NotAllowReqwirementString}"
+                            TextAlignment="Center"
+                            Visibility="{Binding NotAllowReqwirementString, Converter={StaticResource EmptyStringVisibilityConverter}}" />
+
+                        <TextBlock
+                            Margin="2"
+                            FontSize="11"
+                            Foreground="YellowGreen"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            TextAlignment="Center"
+                            Visibility="{Binding IsFromeTasksProperty, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                    <Binding Source="Вер. выпадения: " />
+                                    <Binding Path="VeroyatnostProperty" />
+                                    <Binding Source="%" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Image
+                        x:Name="invIm"
+                        MaxHeight="200"
+                        Margin="2"
+                        VerticalAlignment="Top"
+                        Source="{Binding ImageProperty}"
+                        Style="{StaticResource ImageStyle}" />
+                </DockPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter TargetName="invMenu" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="invIm" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="xxxBord" Property="BorderBrush" Value="Transparent" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border
+            Grid.Row="2"
+            Margin="5,5,5,0"
+            BorderBrush="Transparent"
+            Style="{StaticResource PipBoyBorder}">
+            <DockPanel>
+                <DockPanel HorizontalAlignment="Left" Visibility="{Binding DataContext.PersProperty.PersSettings.IsGoldEnabled, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <ContentControl Height="30" Template="{StaticResource ContentControlBuy}" />
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="Goldenrod"
+                        Style="{StaticResource TextBlock-Sketch}"
+                        Text="{Binding DataContext.PersProperty.GoldProperty, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                </DockPanel>
+                <Border Style="{StaticResource PipBoyBorder}" Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <Button
+                        Command="{Binding AddShopItemCommand}"
+                        Style="{StaticResource ButtonAdd}"
+                        ToolTip="Добавить" />
+                </Border>
+            </DockPanel>
+        </Border>
+        <ListBox
+            Grid.Row="3"
+            Margin="15,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="White"
+            ItemTemplate="{StaticResource ShopItem}"
+            ItemsPanel="{StaticResource InventoryPanel}"
+            ItemsSource="{Binding ShopItems}"
+            Style="{StaticResource ListsStyle}" />
+    </Grid>
+</UserControl>

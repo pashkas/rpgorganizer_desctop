@@ -1,0 +1,331 @@
+﻿<UserControl
+    x:Class="Sample.View.AimView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Model="clr-namespace:Sample.Model"
+    xmlns:ViewModel="clr-namespace:Sample.ViewModel"
+    xmlns:behavior="clr-namespace:DotNetLead.DragDrop.UI.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Sample.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svg="clr-namespace:Svg;assembly=Svg"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="self"
+    d:DesignHeight="300"
+    d:DesignWidth="480"
+    DataContext="{Binding AimsVM, Source={StaticResource Locator}}"
+    Foreground="{StaticResource BorderBrush}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Model:ItemsCountVisibilityConverter x:Key="ItemsCountVisibilityConverter" />
+        <Model:SplitStringsConverter x:Key="SplitStringsConverter" />
+        <Model:MapQwestOpacityConverter x:Key="MapQwestOpacityConverter" />
+        <Model:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Model:QwestStrikeOutConverter x:Key="QwestStrikeOutConverter" />
+        <DataTemplate x:Key="aimTemplate" DataType="Model:Aim">
+            <Border>
+                <Grid
+                    Margin="{StaticResource ChaAbQwMargin}"
+                    Background="White"
+                    Opacity="{Binding Opacity}">
+                    <Grid.InputBindings>
+                        <MouseBinding
+                            Command="{Binding DataContext.EditQwestAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Gesture="LeftDoubleClick" />
+                    </Grid.InputBindings>
+                    <ProgressBar
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Maximum="10"
+                        Style="{StaticResource AttriburtesProgressBarStyle}"
+                        Visibility="{Binding IsActiveProperty, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                        Value="{Binding ProgressInt, Mode=OneWay, IsAsync=True}" />
+
+                    <DockPanel>
+                        <TextBlock
+                            Grid.Column="0"
+                            DockPanel.Dock="Left"
+                            Foreground="{Binding ForeGroundd}"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NameOfProperty}"
+                            TextDecorations="{Binding Converter={StaticResource QwestStrikeOutConverter}}" />
+
+
+
+                        <TextBlock
+                            Grid.Column="2"
+                            DockPanel.Dock="Right"
+                            Foreground="{Binding ForeGroundd}"
+                            Style="{StaticResource TextBlock-SketchWrap}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                    <Binding Mode="OneWay" Path="AutoProgressValueProperty" />
+                                    <Binding Source="%" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <Line
+                            Grid.Column="1"
+                            Margin="1,1,1,3"
+                            VerticalAlignment="Bottom"
+                            Stroke="{Binding ForeGroundd}"
+                            StrokeDashArray="2 2"
+                            X2="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                    </DockPanel>
+
+
+                </Grid>
+            </Border>
+
+
+        </DataTemplate>
+        <DataTemplate x:Key="SkillsTemplate">
+            <DockPanel>
+                <TextBlock
+                    FontSize="14"
+                    Style="{StaticResource TextBlock-SketchWrap}"
+                    TextAlignment="Center">
+                    <Hyperlink
+                        Command="{Binding DataContext.ShowElementFromIdCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding GUID}"
+                        Style="{StaticResource HyperStyle2}">
+                        <Run>
+                            <Run.Text>
+                                <MultiBinding Converter="{StaticResource SplitStringsConverter}" Mode="OneWay">
+                                    <Binding Source="~ " />
+                                    <Binding Path="NameOfProperty" />
+                                </MultiBinding>
+                            </Run.Text>
+                        </Run>
+                    </Hyperlink>
+                </TextBlock>
+            </DockPanel>
+
+        </DataTemplate>
+        <Model:QwestStarVisibilityConverter x:Key="QwestStarVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="{StaticResource PipBoyWidth}" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+
+        <Border
+            Margin="5,5,5,0"
+            Style="{StaticResource PipBoyBorder}"
+            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+            <Button
+                Width="auto"
+                Command="{Binding AddAimCommand, Mode=OneWay}"
+                Style="{StaticResource ButtonAdd}"
+                ToolTip="Добавить квест" />
+
+        </Border>
+
+        <!--  Region (Пипбой)  -->
+
+        <Grid
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border DataContext="{Binding SelectedAimProperty}" Style="{StaticResource PipBoyBorder}">
+
+                <Grid Margin="5,0" Visibility="{Binding SelectedItem, ElementName=qwListOfList, Converter={StaticResource NullToVisibleConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <UniformGrid
+                        Grid.Row="0"
+                        Rows="1"
+                        Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                        <Button
+                            Width="Auto"
+                            Command="{Binding DataContext.EditQwestAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonSettings}"
+                            ToolTip="Настроить квест" />
+                        <Button
+                            Width="Auto"
+                            Command="{Binding DataContext.DeleteAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonDelete}"
+                            ToolTip="Удаление квеста" />
+                    </UniformGrid>
+                    <DockPanel Grid.Row="1">
+                        <TextBlock
+                            Margin="2"
+                            DockPanel.Dock="Top"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Style="{StaticResource TextBlock-SketchWrap}"
+                            Text="{Binding NameOfProperty}"
+                            TextAlignment="Center" />
+
+                        <local:ucProgressBarWithScale
+                            DockPanel.Dock="Bottom"
+                            IsShowScale="Hidden"
+                            Maximum="100"
+                            Minimum="0"
+                            Value="{Binding AutoProgressValueProperty, Mode=OneWay}">
+                            <local:ucProgressBarWithScale.Text>
+                                <MultiBinding Converter="{StaticResource SplitStringsConverter}">
+                                    <Binding Source="Прогресс: " />
+                                    <Binding Mode="OneWay" Path="AutoProgressValueProperty" />
+                                    <Binding Source="%" />
+                                </MultiBinding>
+                            </local:ucProgressBarWithScale.Text>
+                        </local:ucProgressBarWithScale>
+
+
+                        <Button
+                            Command="{Binding DataContext.EditQwestAimCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}"
+                            Style="{StaticResource ButtonWidthImageStyle}">
+                            <Image Source="{Binding PictureProperty}" Style="{StaticResource PipBoyImage}" />
+                        </Button>
+                    </DockPanel>
+                    <DockPanel Grid.Row="2">
+                        <Border
+                            Margin="0,6"
+                            DockPanel.Dock="Top"
+                            ToolTip="Квест завершен? Подтвердить выполнение?"
+                            Visibility="{Binding IsStarVisible}">
+                            <Border
+                                x:Name="btnStar"
+                                BorderBrush="YellowGreen"
+                                BorderThickness="1">
+                                <Button
+                                    Height="40"
+                                    Margin="3"
+                                    Command="{Binding DataContext.DoneQwestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource ButtonStar}" />
+                            </Border>
+                        </Border>
+
+                        <FlowDocumentScrollViewer
+                            HorizontalAlignment="Center"
+                            Document="{Binding QwestPipBoyDescr, Mode=OneWay}"
+                            FontFamily="{DynamicResource FontFamily-Sketch}"
+                            FontSize="{DynamicResource SizeDouble-Sketch}"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto" />
+
+                    </DockPanel>
+
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            Style="{StaticResource PipBoyBorder}">
+            <ListBox
+                x:Name="qwListOfList"
+                ItemContainerStyle="{DynamicResource ListBoxDragDropStyle}"
+                ItemTemplate="{DynamicResource aimTemplate}"
+                ItemsSource="{Binding QCollectionViewProperty}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedValue="{Binding SelectedAimProperty}"
+                Style="{StaticResource AbChaPanel2}">
+                <ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+
+                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                    <TextBlock
+                                        Background="LightSteelBlue"
+                                        Style="{StaticResource TextBlock-Sketch}"
+                                        Text="{Binding Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+            </ListBox>
+
+        </Border>
+        <!--  EndRegion  -->
+
+        <!--  Карта приключений  -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="5,0,5,5"
+            Style="{StaticResource PipBoyBorder}"
+            Visibility="{Binding DataContext.PersProperty.IsSettingsVisibillity, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+            <Button
+                Width="auto"
+                Height="{StaticResource PipBoyHeyght}"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Command="{Binding SendUpdateQwestMapsCommand}"
+                Style="{StaticResource Button-Sketch}"
+                ToolTip="Карта приключений">
+                <ContentControl Margin="1" Template="{StaticResource ContentControlQwests}" />
+            </Button>
+
+        </Border>
+
+        <!--<Border
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="5,0,5,5"
+            Style="{StaticResource PipBoyBorder}" Visibility="Collapsed">
+            <UniformGrid HorizontalAlignment="Center" Rows="1">
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="2"
+                        Style="{StaticResource TextBlock-Sketch}"
+                        Text="Скрывать недоступные? " />
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        FontStyle="Normal"
+                        IsChecked="{Binding IsCloseNotNowAimsProperty}"
+                        Style="{StaticResource CheckBox-Sketch}" />
+                </WrapPanel>
+
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="2"
+                        Style="{StaticResource TextBlock-Sketch}"
+                        Text="Скрывать завершенные? " />
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        FontStyle="Normal"
+                        IsChecked="{Binding IsCloseCompleteAimsProperty}"
+                        Style="{StaticResource CheckBox-Sketch}" />
+                </WrapPanel>
+            </UniformGrid>
+        </Border>-->
+
+
+
+
+    </Grid>
+</UserControl>

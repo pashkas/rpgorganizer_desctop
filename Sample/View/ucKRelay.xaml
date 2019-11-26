@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Sample.View.ucKRelay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Sample.Model"
+             x:Name="uc"
+             Width="{Binding ActualWidth,
+                             ElementName=cmbK}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <ComboBox x:Name="cmbK"
+              MinWidth="60"
+              HorizontalContentAlignment="Stretch"
+              VerticalContentAlignment="Center"
+              ItemsSource="{Binding NeedKs,
+                                    ElementName=uc}"
+              
+              SelectedValue="{Binding KRelay,
+                                      ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+              
+              SelectedValuePath="KProperty"
+              Style="{StaticResource ComboBoxStyle}">
+        <ComboBox.ItemTemplate>
+            <DataTemplate>
+                <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                <TextBlock Style="{StaticResource TextBlock-Sketch}"
+                           Text="{Binding NameProperty}" FontSize="12" FontStyle="Italic"
+                           TextWrapping="Wrap" TextAlignment="Center"/>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+    </ComboBox>
+
+</UserControl>
