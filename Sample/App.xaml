@@ -126,7 +126,7 @@
             <System:Double x:Key="MenuIconSize">27</System:Double>
             <ImageBrush
                 x:Key="PaperTexture"
-                ImageSource="/Sample;component/Текстуры/бумага.png"
+                ImageSource="/Sample;component/Textures/paper.png"
                 Stretch="UniformToFill"
                 TileMode="FlipXY"
                 Viewport="0 0 250 250"

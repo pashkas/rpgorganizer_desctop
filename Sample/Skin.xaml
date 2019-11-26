@@ -20,7 +20,7 @@
 
     <ImageBrush
         x:Key="TopBrush"
-        ImageSource="/Sample;component/Текстуры/шапка.png"
+        ImageSource="/Sample;component/Textures/header.png"
         Stretch="UniformToFill"
         TileMode="FlipXY"
         Viewport="0 0 300 300"
